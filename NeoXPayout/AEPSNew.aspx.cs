@@ -44,6 +44,9 @@ namespace NeoXPayout
 
             if (!IsPostBack)
             {
+                HttpContext context = HttpContext.Current;
+                string UserId = context.Session["BankURTUID"].ToString();
+                hdnUserId.Value = UserId;
                 getbanklist();
                 lblMessage1.Text = "No request available";
                     lblMessage1.ForeColor = System.Drawing.Color.Red;// remove this after report active
