@@ -1,0 +1,381 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="developer.master.cs" Inherits="NeoXPayout.APIDocument.developer" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>BankU India Limited Admin</title>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     
+     <!--[ Favicon]-->
+     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/apple-touch-icon.png">
+     <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/apple-touch-icon.png">
+     <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+     <!--[ Template main css file ]-->
+     <link rel="stylesheet" href="../assets/css/style.min.css">
+    <link rel="stylesheet" href="../assets/vendor/dataTables.min.css">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body data-theme="theme-Greylight" class="svgstroke-a add-tooltip">
+   <form id="form1" runat="server">
+       <main class="container-fluid px-0">
+                
+            <div class="content">
+                  <!-- start: page header -->
+               <header class="px-xl-5 px-lg-4 px-3 top-0" data-bs-theme="none">
+                    <div
+                         class="d-flex flex-wrap justify-content-start justify-content-sm-between align-items-center py-2 w-100">
+                         <div class="d-flex justify-content-center  d-none d-md-flex" >
+                          <a href="DashboardAdmin.aspx" title="logo" class="brand-icon">     
+                            <div class="ms-3 mt-1 logo-name">
+                              <img src="../bankulogo1.png" style="width:200px"/>
+                            </div>
+                          </a>
+                         </div>
+                         <div>
+                              <a href="DashboardAdmin.aspx" title="logo" class="brand-icon d-sm-none">
+                                   
+                                   <div class="ms-3 logo-name">
+                                       
+                                       <img src="../BankULogo1.png" style="height:20px; width:auto"/>
+                                   </div>
+                              </a>
+                         </div>
+                         <hr class="border bs-border-color w-100 d-sm-none my-2">
+                         <ul class="header-menu flex-grow-1 justify-content-between justify-content-sm-end">                           
+ 
+                                  <li class="nav-item dropdown px-md-1">
+                                       <a class="dropdown-toggle gray-6  btn-grey-outline fw-medium border rounded px-3 py-2" href="#" id="bd-theme-one1"
+                                            data-bs-toggle="dropdown" style="color:purple;" aria-expanded="false">
+                                           <i class="bi bi-envelope me-1"></i> Contact
+                                       </a>
+                                       <ul class="dropdown-menu dropdown-menu-end p-2 p-xl-3 shadow rounded-4"
+                                            aria-labelledby="bd-theme-one">
+                                        <li class="mb-1">
+                                            <a class="dropdown-item rounded-pill" href="Profile.aspx">
+                                                RM Name : BankU
+                                            </a>
+                                        </li>
+                                        <li class="mb-1">
+                                            <a class="dropdown-item rounded-pill"  href="tel:9999999999">
+                                            RM Phone : 9999999999
+                                            </a>
+                                        </li>  
+                                        <li class="mb-1">
+                                            <a class="dropdown-item rounded-pill" href="mailto:help@banku.co.in">
+                                                Email: help@banku.co.in
+                                            </a>
+                                        </li>
+                                   </ul>                                
+                              </li>                            
+
+                            
+
+                              <li class="nav-item py-2 py-md-1 col-auto d-none d-sm-flex">
+                                   <div class="vr d-none d-sm-flex h-100 mx-sm-2"></div>
+                              </li>
+                                                           
+                            <li class="dropdown">
+                                <a class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center profile-btn dropdown-toggle" 
+                                    href="#" id="profileDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false" style=" width: 40px;height: 40px;  padding: 0; font-size: 20px;" >
+                                <i class="bi bi-person-fill"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end p-2 p-xl-3 shadow rounded-4" aria-labelledby="profileDropdown">
+                                <li class="mb-1">
+                                    <a class="dropdown-item rounded-pill" href="../LoginBankU.aspx">
+                                    <i class="bi bi-person me-2"></i> Login
+                                    </a>
+                                </li>
+                               
+                             
+                                </ul>
+                            </li>
+
+                              <li class="dropdown d-block d-lg-none">
+                                   <button class="btn btn-sm sidebar-toggle ms-3 border" type="button"><i
+                                             class="fa fa-bars"></i></button>
+                              </li>
+                         </ul>
+                    </div>
+               </header>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+                </div>
+        </main>
+
+    </form>
+     <!--============== active class js =============-->
+     <script src="../assets/js/active-class.js"></script>
+     <!--[ FintechWeb template vender js ]-->
+     <script src="../assets/bundles/libscripts.bundle.js"></script>
+     <script src="../assets/bundles/dynamicselect.js"></script>
+      <script src="../assets/bundles/dataTables.bundle.js"></script>
+     <!-- Template page js -->
+     <script src="../assets/js/main.js" defer></script>
+
+     <script>
+         $(document).ready(function () {
+             // Initialize DataTable
+             function initializeDataTable() {
+                 $('.dataTable')
+                     .addClass('nowrap')
+                     .DataTable({
+                         responsive: true,
+                         destroy: true, // Allows reinitialization
+                         columnDefs: [
+                             {
+                                 targets: 4,
+                                 render: DataTable.render.date(),
+                             },
+                             {
+                                 targets: 5,
+                                 render: DataTable.render.number(null, null, 0, '$'),
+                             }
+                         ]
+                     });
+             }
+
+             // Initial DataTable setup
+             initializeDataTable();
+
+             // Reinitialize DataTable on accordion show
+             $('.accordion').on('shown.bs.collapse', function () {
+                 initializeDataTable();
+             });
+         });
+     </script>
+     <script>
+         // Basic Column
+         $(document).ready(function () {
+             var options = {
+                 chart: {
+                     height: 280,
+                     type: 'bar',
+                 },
+                 colors: ['var(--theme-color6)', 'var(--theme-color3)'],
+                 plotOptions: {
+                     bar: {
+                         horizontal: false,
+                         columnWidth: '55%',
+                         endingShape: 'rounded'
+                     },
+                 },
+                 dataLabels: {
+                     enabled: true,
+                 },
+                 stroke: {
+                     show: true,
+                     width: 2,
+                     colors: ['transparent']
+                 },
+                 series: [{
+                     name: 'Revenue',
+                     data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                 }, {
+                     name: 'Free Cash Flow',
+                     data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                 }],
+                 xaxis: {
+                     categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                 },
+                 yaxis: {
+                     title: {
+                         text: '$ (thousands)'
+                     }
+                 },
+                 fill: {
+                     opacity: 1
+
+                 },
+                 tooltip: {
+                     y: {
+                         formatter: function (val) {
+                             return "$ " + val + " thousands"
+                         }
+                     }
+                 }
+             }
+
+             var chart = new ApexCharts(document.querySelector("#apex-basic-column"), options); chart.render();
+         });
+
+         $(document).ready(function () {
+             // Stacked Area
+             var options = {
+                 chart: {
+                     height: 200,
+                     type: 'area',
+                     stacked: true,
+                     toolbar: {
+                         show: false,
+                     },
+                     events: {
+                         selection: function (chart, e) {
+                             console.log(new Date(e.xaxis.min))
+                         }
+                     },
+                 },
+                 colors: ['#e4bd51'],
+                 dataLabels: {
+                     enabled: false
+                 },
+
+                 series: [
+                     {
+                         name: 'Central',
+                         data: generateDayWiseTimeSeries(new Date('14 Aug 2024 GMT').getTime(), 10, {
+                             min: 20,
+                             max: 48
+                         })
+                     }
+                 ],
+
+                 fill: {
+                     type: 'gradient',
+                     gradient: {
+                         opacityFrom: 0.6,
+                         opacityTo: 0.8,
+                     }
+                 },
+
+                 legend: {
+                     position: 'top',
+                     horizontalAlign: 'right',
+                     show: true,
+                 },
+                 xaxis: {
+                     type: 'datetime',
+                 },
+                 grid: {
+                     yaxis: {
+                         lines: {
+                             show: false,
+                         }
+                     },
+                     padding: {
+                         top: 0,
+                         right: 0,
+                         bottom: 0,
+                         left: 0
+                     },
+                 },
+                 stroke: {
+                     show: true,
+                     curve: 'smooth',
+                     width: 2,
+                 },
+             }
+
+             var chart = new ApexCharts(document.querySelector("#movement-apex"), options);
+             chart.render();
+             function generateDayWiseTimeSeries(baseval, count, yrange) {
+                 var i = 0;
+                 var series = [];
+                 while (i < count) {
+                     var x = baseval;
+                     var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+                     series.push([x, y]);
+                     baseval += 86400000;
+                     i++;
+                 }
+                 return series;
+             }
+
+         });
+
+         //Spending Summary
+         var currentValue = 67; // Initial value for the radial bar (for "Outcome")
+
+         var options = {
+             series: [currentValue], // Start with one value
+             chart: {
+                 height: 300,
+                 type: 'radialBar',
+                 offsetY: -10
+             },
+             colors: ['var(theme-color4),var(theme-color4)'],
+             plotOptions: {
+                 radialBar: {
+                     startAngle: -135,
+                     endAngle: 135,
+                     dataLabels: {
+                         name: {
+                             show: true,
+                             fontSize: '16px',
+                             color: 'var(theme-color4)',
+                             offsetY: 40,
+                             style: {
+                                 fontWeight: 'bold',
+                                 textAnchor: 'middle'
+                             }
+                         },
+                         value: {
+                             show: true,
+                             offsetY: 70,
+                             fontSize: '22px',
+                             color: 'var(theme-color4)',
+                             formatter: function (val) {
+                                 return val + "%";
+                             },
+                             style: {
+                                 textAnchor: 'middle'
+                             }
+                         }
+                     }
+                 }
+             },
+             fill: {
+                 type: 'gradient',
+                 gradient: {
+                     shade: 'dark',
+                     shadeIntensity: 0.15,
+                     inverseColors: false,
+                     opacityFrom: 1,
+                     opacityTo: 1,
+                     stops: [0, 50, 65, 91]
+                 },
+             },
+             stroke: {
+                 dashArray: 4
+             },
+             labels: ["Spent"],
+             tooltip: {
+                 enabled: true,
+                 style: {
+                     fontSize: '12px',
+                     background: 'rgba(0,0,0,0.8)',
+                     color: '#fff',
+                 },
+                 y: {
+                     formatter: function (val) {
+                         return val + "%"; // Format the tooltip value
+                     }
+                 }
+             }
+         };
+         var chart = new ApexCharts(document.querySelector("#chart-Spending"), options);
+         chart.render();
+
+         // Radio button behavior
+         const radios = document.querySelectorAll('input[name="chartOptions"]');
+         radios.forEach(radio => {
+             radio.addEventListener('change', () => {
+                 // Get the selected value
+                 const value = radio.value;
+                 // Update the chart series data with the selected value
+                 currentValue = value;
+                 options.series = [currentValue]; // Update the series to show only one value
+                 chart.updateOptions(options); // Update the chart
+             });
+         });
+
+     </script>
+</body>
+</html>

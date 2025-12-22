@@ -1,0 +1,80 @@
+
+/*=============== bootstrap switch color dark ==============*/
+.form-switch-dark{
+    .form-check-input{
+        height: 24px;
+        width: 48px;
+        &:focus{
+            border-color: rgba(0, 0, 0, 0.25);
+            outline: 0;
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0,0,0,0.25)'/></svg>");
+        }
+        &:checked{
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            border: none;
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+        }
+    }
+}
+
+/*=============== bootstrap tabs button color white ==============*/
+.nav-pills-white{
+    .nav-item{
+        .active{
+              background-color: var(--body-color);
+              color: var(--reverse-color);
+        }
+    }
+}
+/*=============== bootstrap tabs button underline ==============*/
+.nav-pills-underline{
+.nav-item{
+  .active{
+    background: transparent;
+    color: var(--reverse-color);
+    font-weight: 600;
+   &::after{
+    content: " ";
+    padding: 2px;
+    background-color: var(--reverse-color);
+    display: block;
+    margin-top: 5px;
+    border-radius: 2px;
+
+   }
+  }
+}
+}
+
+/*=============== bootstrap chekbox color dark ==============*/
+.form-check-dark:checked{
+  background-color: var(--theme-color5) !important;
+  border: 0;
+  width: 24px;
+  height: 24px;
+}
+.form-check-dark:focus, 
+.label::after,
+ label.form-check-label:focus,
+  .form-check-dark::after, 
+  .form-check-dark:not(:disabled):not(.disabled):active:focus {
+  color:  var(--body-color);
+  outline: 0;
+  border: 0;
+  box-shadow: 0 0 0 0.1rem  var(--theme-color5) !important;
+}
+/*=============== redio button dark ==============*/
+
+.form-check-input-dark{
+  &:checked{
+    background-color: var(--theme-color4); /* Background color when checked */
+    border-color:  var(--theme-color4); /* Border color when checked */
+  }
+  &:focus{
+    box-shadow: 0 0 0 0.2rem var(--theme-color1); /* Focus color */
+  }
+}
+
+

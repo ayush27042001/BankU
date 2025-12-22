@@ -1,0 +1,364 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KYCDetails.aspx.cs" Inherits="NeoXPayout.onboarding.KYCDetails" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+     <title>Banku Seva Kendra</title>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     
+     <!--[ Favicon]-->
+     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+     <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+     <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+     <!--[ Template main css file ]-->
+     <link rel="stylesheet" href="../assets/css/style.min.css">
+</head>
+<body data-theme="theme-Greylight" class="svgstroke-a ">
+    <form id="form1" runat="server">
+      
+      <nav class="navbar navbar-expand-md position-fixed top-0 w-100 z-3 body-color ">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="index.html">
+                     <img src="../bankulogo.png"  width="200px" />
+               </a>
+               <div class="d-flex d-sm-none">
+                   
+                         <div class="dropdown position-relative">
+                              <button class="btn border dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">eng</button>
+                             
+                         </div>
+                  
+                    <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse"
+                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                         aria-expanded="false" aria-label="Toggle navigation">
+                         <span class="navbar-toggler-icon"></span>
+                    </button>
+               </div>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 justify-content-center">
+                         <li class="nav-item mx-sm-3 after-erro d-flex">
+                              <a class="nav-link active border rounded-5 px-3 ps-2 py-1 d-flex align-items-center my-2 my-sm-0"
+                                   aria-current="page" href="#">
+                                   <span class="border rounded-circle bg-light text-white  ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class=" svg-stroke border m-1 rounded-circle bg-success">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                             <path d="M4 15.5c3 -1 5.5 -.5 8 4.5c.5 -3 1.5 -5.5 3 -8" />
+                                             <path d="M18 9a2 2 0 1 1 0 -4a2 2 0 0 1 0 4z" />
+                                        </svg>
+                                   </span>
+                                   <span class="ps-2">1.Validate Mobile</span>
+                              </a>
+                         </li>
+                         <li class="nav-item mx-sm-3 after-erro d-flex">
+                              <a class="nav-link active border rounded-5 px-3 ps-2 py-1 d-flex align-items-center my-2 my-sm-0"
+                                   aria-current="page" href="#">
+                                  <span class="border rounded-circle bg-light text-white  ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class=" svg-stroke border m-1 rounded-circle bg-success">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                             <path d="M4 15.5c3 -1 5.5 -.5 8 4.5c.5 -3 1.5 -5.5 3 -8" />
+                                             <path d="M18 9a2 2 0 1 1 0 -4a2 2 0 0 1 0 4z" />
+                                        </svg>
+                                   </span>
+                                   <span class="ps-2">2.Personal Information</span>
+                              </a>
+                         </li>
+                         <li class="nav-item mx-sm-3 after-erro d-flex">
+                              <a class="nav-link  active border rounded-5 px-3 ps-2 py-1 d-flex align-items-center my-2 my-sm-0"
+                                   aria-current="page" href="#">
+                                  <span class="border rounded-circle bg-primary text-reverse d-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round" class=" svg-stroke">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path d="M4 15.5c3 -1 5.5 -.5 8 4.5c.5 -3 1.5 -5.5 3 -8"></path>
+                                             <path d="M18 9a2 2 0 1 1 0 -4a2 2 0 0 1 0 4z"></path>
+                                        </svg>
+                                   </span>
+                                   <span
+                                        class="d-flex justify-content-center align-column-center border   rounded-circle p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round" class=" svg-stroke   rounded-circle">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path
+                                                  d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z">
+                                             </path>
+                                             <path d="M5 21v-7"></path>
+                                        </svg>
+                                   </span>
+                                   <span class="ps-2">3.Process Kyc</span>
+                              </a>
+                         </li>
+                         <li class="nav-item mx-sm-3  d-flex">
+                              <a class="nav-link  active border rounded-5 px-3 ps-2 py-1 d-flex align-items-center my-2 my-sm-0"
+                                   aria-current="page" href="#">
+                                    <span class="border rounded-circle bg-primary text-reverse d-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round" class=" svg-stroke">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path d="M4 15.5c3 -1 5.5 -.5 8 4.5c.5 -3 1.5 -5.5 3 -8"></path>
+                                             <path d="M18 9a2 2 0 1 1 0 -4a2 2 0 0 1 0 4z"></path>
+                                        </svg>
+                                   </span>
+                                   <span
+                                        class="d-flex justify-content-center align-column-center border   rounded-circle p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round" class=" svg-stroke   rounded-circle">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path
+                                                  d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z">
+                                             </path>
+                                             <path d="M5 21v-7"></path>
+                                        </svg>
+                                   </span>
+                                   <span class="ps-2">4.Upload Document</span>
+                              </a>
+                         </li>
+                        <li class="nav-item mx-sm-3  d-flex">
+                              <a class="nav-link  active border rounded-5 px-3 ps-2 py-1 d-flex align-items-center my-2 my-sm-0"
+                                   aria-current="page" href="otp.html">
+                                 <span class="border rounded-circle bg-primary text-reverse d-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round" class=" svg-stroke">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path d="M4 15.5c3 -1 5.5 -.5 8 4.5c.5 -3 1.5 -5.5 3 -8"></path>
+                                             <path d="M18 9a2 2 0 1 1 0 -4a2 2 0 0 1 0 4z"></path>
+                                        </svg>
+                                   </span>
+                                   <span
+                                        class="d-flex justify-content-center align-column-center border   rounded-circle p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                             stroke-linejoin="round" class=" svg-stroke   rounded-circle">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path
+                                                  d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z">
+                                             </path>
+                                             <path d="M5 21v-7"></path>
+                                        </svg>
+                                   </span>
+                                   <span class="ps-2">5.Final Agrement</span>
+                              </a>
+                         </li>
+                    </ul>
+                    <div class="d-flex">
+                         <ul class="list-unstyled d-none">
+                              <li class="nav-item dropdown px-md-1">
+                                   <a class="dropdown-toggle gray-6" href="#" id="bd-theme-one"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"
+                                             class="theme-icon-active">
+                                             <use href="#sun-fill"></use>
+                                        </svg>
+                                   </a>
+                                   <ul class="dropdown-menu dropdown-menu-end p-2 p-xl-3 shadow rounded-4"
+                                        aria-labelledby="bd-theme-one">
+                                        <li class="mb-1">
+                                             <a class="dropdown-item rounded-pill" href="#" data-bs-theme-value="light">
+                                                  <svg class="avatar xs me-2 opacity-50 theme-icon" fill="currentColor">
+                                                       <use href="#sun-fill"></use>
+                                                  </svg>
+                                                  Light
+                                             </a>
+                                        </li>
+                                        <li class="mb-1">
+                                             <a class="dropdown-item rounded-pill active" href="#"
+                                                  data-bs-theme-value="dark">
+                                                  <svg class="avatar xs me-2 opacity-50 theme-icon" fill="currentColor">
+                                                       <use href="#moon-stars-fill"></use>
+                                                  </svg>
+                                                  Dark
+                                             </a>
+                                        </li>
+                                        <li class="mb-1">
+                                             <a class="dropdown-item rounded-pill" href="#" data-bs-theme-value="auto">
+                                                  <svg class="avatar xs me-2 opacity-50 theme-icon" fill="currentColor">
+                                                       <use href="#circle-half"></use>
+                                                  </svg>
+                                                  Auto
+                                             </a>
+                                        </li>
+                                   </ul>
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" style="display: none;">
+                                        <symbol id="sun-fill" viewBox="0 0 16 16">
+                                             <path
+                                                  d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
+                                             </path>
+                                        </symbol>
+                                        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+                                             <path
+                                                  d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
+                                             </path>
+                                             <path
+                                                  d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
+                                             </path>
+                                        </symbol>
+                                        <symbol id="circle-half" viewBox="0 0 16 16">
+                                             <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
+                                        </symbol>
+                                   </svg>
+                              </li>
+                              <li class="nav-item dropdown px-md-1">
+                                   <a class="dropdown-toggle gray-6" href="#offcanvas_setting"
+                                        data-bs-toggle="offcanvas" aria-expanded="false" title="template setting">
+                                        <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="22"
+                                             height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path
+                                                  d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                             </path>
+                                             <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                        </svg>
+                                   </a>
+                              </li>
+                         </ul>
+                       
+                              <div class="dropdown position-relative">
+                                   <button class="btn border dropdown-toggle w-100" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">eng</button>
+                                   
+
+                              </div>
+                       
+                    </div>
+               </div>
+          </div>
+     </nav>
+     <main class="container-fluid px-0  " style="background-color:rebeccapurple">
+          <div class="content ">
+               <!-- start: page body area -->
+               <div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
+                    <div style="height: 100vh;" class="row justify-content-center  align-items-center">
+                         <div class="col-xl-4 col-lg-6 col-md-8">
+                               <div class="card">
+                                   <div class="card-body">
+                                        <div class="d-flex flex-column align-items-center ">
+                                             <div class="no-thumbnail rounded-circle border bg-light p-2">
+                                                  <div class="no-thumbnail rounded-circle border bg-white p-2">
+                                                       <svg xmlns="http://www.w3.org/2000/svg" width="34"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                            class=" svg-stroke">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                                            <path d="M16 19h6"></path>
+                                                            <path d="M19 16v6"></path>
+                                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                                       </svg>
+                                                  </div>
+                                             </div>
+                                             <div class="mt-3 ">
+                                                  <h6 class="text-capitalize text-center fw-bold">KYC Verification
+                                                  </h6>
+                                                  <span class="text-muted text-capitalize">
+                                                     Hello <asp:Label ID="Label1" runat="server"></asp:Label>,  Provide Valid Details to Verify Your Company
+                                                       
+                                                  </span>
+                                             </div>
+                                            
+                                             <div class="mt-3 w-100">
+                                                 <div class="row">
+                                                <div class="col-md-6">  <div class="mb-3">
+                                                       <label for="exampleInputEmail1" class="form-label">Pancard No</label>
+                                                      <asp:TextBox ID="txtpancardno" ReadOnly="true" runat="server" class="form-control" required="" placeholder="Pan No" MaxLength="10"></asp:TextBox>
+                                                      
+                                                  </div></div>
+                                                      <div class="col-md-6">  <div class="mb-3">
+                                                       <label for="exampleInputEmail1" class="form-label">Upload Pancard</label>
+                                                          <asp:FileUpload ID="FileUpload1" runat="server" class="form-control"/>
+                                                      
+                                                      
+                                                  </div></div>
+                                                <div class="col-md-6">  <div class="mb-3">
+                                                       <label for="exampleInputEmail1" class="form-label">Aadhar Card No</label>
+                                                      <asp:TextBox ID="txtaadharcard" runat="server" class="form-control" required="" placeholder="Aadharno" MaxLength="12"></asp:TextBox>
+                                                      
+                                                  </div></div>
+                                                       <div class="col-md-6">  <div class="mb-3">
+                                                       <label for="exampleInputEmail1" class="form-label">Upload Aadhar</label>
+                                                     <asp:FileUpload ID="FileUpload2" runat="server" class="form-control"/>
+                                                      
+                                                  </div></div>
+                                            </div>
+                                                <div class="row">
+                                                <div class="col-md-6">   <div class="mb-3">
+                                                       <label for="exampleInputEmail1" class="form-label">Voter ID No</label>
+                                                      <asp:TextBox ID="txtvoterid" runat="server" class="form-control" required="" placeholder="Voter Card"></asp:TextBox>
+                                                      
+                                                  </div></div>
+                                                <div class="col-md-6">  <div class="mb-3">
+                                                       <label for="exampleInputEmail1" class="form-label">Upload Votercard</label>
+                                                       <asp:FileUpload ID="FileUpload3" runat="server" class="form-control"/>
+                                                      
+                                                  </div></div>
+                                            </div>
+                                                
+                                                 
+                                                  
+                                                  
+                                             
+                                                  <div class="row my-3 g-3">
+                                                       <div class="col-12">
+                                                           <asp:LinkButton ID="LinkButton1" runat="server" class="btn btn-dark w-100" OnClick="LinkButton1_Click">Submit</asp:LinkButton>
+                                                           <%--<asp:Button ID="Button1" runat="server" Text="Submit" OnClick="Button1_Click" class="btn btn-dark w-100"/>--%>
+                                                          
+                                                       </div>
+                                                     
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </main>
+     <footer class="w-100 bg-body position-fixed bottom-0">
+          <div class="container-fluid">
+               <div class="d-flex align-items-center">
+                    <div class="p-0 m-0">
+                         <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover text-reverse"
+                              href="#">
+                              @2025 BankU India
+                         </a>
+                    </div>
+                    <div class="  ms-auto p-2 pe-0">
+                         <div class="dropdown position-relative">
+                              <button class="btn border dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">eng</button>
+                            
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </footer>
+
+     <!--[ FintechWeb template vender js ]-->
+     <script src="../assets/bundles/libscripts.bundle.js"></script>
+     <script src="../assets/bundles/dynamicselect.js"></script>
+     <script src="../assets/js/main.js" defer></script> 
+     <!--============== active class js =============-->
+     <script src="../assets/js/active-class.js"></script>
+     <!-- Template page js -->
+
+  
+    </form>
+</body>
+</html>

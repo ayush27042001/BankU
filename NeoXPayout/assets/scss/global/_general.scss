@@ -1,0 +1,384 @@
+body {
+    @include transition(all 0.3s ease);
+    font-family: var(--body-font);
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    text-transform: capitalize !important;
+
+    &.radius-0 {
+
+        // General components with no border-radius
+        .card,
+        .form-select,
+        .btn,
+        .form-control,
+        .nav-link,
+        .dropdown-menu,
+        .choose-skin li div,
+        .rounded,
+        .rounded-1,
+        .rounded-2,
+        .rounded-3,
+        .rounded-4,
+        .rounded-pill,
+        .rounded-circle,
+        .alert,
+        .badge,
+        .input-group-text,
+        .menu-list li a {
+            border-radius: 0 !important;
+        }
+
+        // Card-specific components
+        .card .card-header,
+        .card .card-footer,
+        .card .card-img-top {
+            border-radius: 0 !important;
+        }
+
+        // Skin-related elements
+        .choose-skin li.active::after,
+        .choose-skin li div::after {
+            border-radius: 0 !important;
+        }
+
+        // Button-related elements
+        .btn::after {
+            border-radius: 0 !important;
+        }
+
+        .card-wrapper .cc,
+        .card-wrapper .cc:after {
+            border-radius: 0 !important;
+        }
+
+
+        .dynamic-select .dynamic-select-header,
+        .dynamic-select-options,
+        .dynamic-select-option:hover {
+            border-radius: 0 !important;
+        }
+    }
+
+
+    .list-unstyled li span.valid {
+        color: #5cb85c;
+        /* Color for met criteria */
+    }
+
+    &.monochrome {
+        filter: gray;
+        /* IE6-9 */
+        -webkit-filter: grayscale(1);
+        /* Google Chrome, Safari 6+ & Opera 15+ */
+        filter: grayscale(1);
+        /* Microsoft Edge and Firefox 35+ */
+        overflow: hidden;
+    }
+
+    // svg icon stroke 1, 2, and 3
+    &.svgstroke-a {
+        .svg-stroke {
+            stroke-width: 0.07rem;
+        }
+    }
+
+    &.svgstroke-b {
+        .svg-stroke {
+            stroke-width: 0.1rem;
+        }
+    }
+
+    &.svgstroke-c {
+        .svg-stroke {
+            stroke-width: 0.12rem;
+        }
+    }
+
+    // main layout border
+    &.layout-border {
+        .brand {
+            border-right: 1px solid var(--bs-border-color);
+            border-bottom: 1px solid var(--bs-border-color);
+        }
+
+        header,
+        .page-header {
+            border-bottom: 1px solid var(--bs-border-color);
+        }
+
+        .sidebar {
+            border-right: 1px solid var(--bs-border-color);
+        }
+
+        .rightbar {
+            border-left: 1px solid var(--bs-border-color);
+        }
+    }
+}
+
+// for card layout height
+.row-deck {
+
+    >.col,
+    >[class*='col-'] {
+        display: flex;
+        align-items: stretch;
+
+        .card {
+            flex: 1 1 auto;
+        }
+    }
+}
+
+:is(a) {
+    color: var(--re);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--primary-color);
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.contacts {
+    >li {
+        background: var(--bs-body-bg);
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-radius: .7rem;
+        margin-bottom: 5px;
+
+        &:hover {
+            border-color: var(--primary-color);
+        }
+    }
+
+    .form-check {
+        margin-right: 1rem;
+    }
+
+    a {
+        display: flex;
+        text-decoration: none;
+    }
+}
+
+// pricing table css
+.pricing-table {
+    .owl-stage {
+        display: flex;
+        align-items: stretch;
+
+        .owl-item {
+            background: var(--bs-body-bg);
+            border-radius: .75rem;
+
+            .item {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.note-editing-area {
+    min-height: 250px;
+}
+
+.docs {
+    header {
+        &.cus-header {
+            @include media-breakpoint-up(xl) {
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                z-index: 1030;
+            }
+        }
+    }
+
+    .content {
+        &.bg-card {
+            @include media-breakpoint-up(xl) {
+                margin-top: 65px;
+            }
+        }
+    }
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #dee2e6;
+
+    table {
+        width: max-content;
+        white-space: nowrap;
+
+        th,
+        td {
+            min-width: 100px;
+            padding: 8px;
+
+        }
+    }
+}
+
+.dataTable {
+    th {
+        font-weight: 500;
+    }
+}
+
+.card-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 295px;
+
+    .cc {
+        position: relative;
+        font-size: 16px;
+        color: var(--white-cl);
+        width: 100%;
+        height: 174px;
+        border-radius: 16px;
+
+        &.visa {
+            background-image: linear-gradient(to top right, #424242, #151518);
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            background-image: linear-gradient(to top, transparent, var(--white-cl));
+            opacity: 30%;
+        }
+
+        svg {
+            position: absolute;
+            top: 80px;
+
+            path {
+                fill: transparent;
+                stroke: var(--white-cl);
+                stroke-width: 1px;
+                stroke-linecap: round;
+            }
+        }
+
+        .card-data {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .holder {
+            position: absolute;
+            bottom: 7px;
+            left: 25px;
+
+            span {
+                display: block;
+
+                &.name {
+                    font-size: 14px;
+                    color: var(--white-cl);
+                }
+
+                &.number {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    &.light-card {
+        .cc {
+            color: var(--g9-color);
+
+            &.visa {
+                background-image: linear-gradient(to top right, #eaeaea, #f5f4f4);
+            }
+        }
+
+        svg {
+            path {
+                stroke: var(--g9-color);
+            }
+        }
+
+        .holder {
+            span {
+                &.name {
+                    color: var(--g9-color) !important;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .after-erro {
+        position: relative;
+        left: 0px;
+        margin-right: 10px;
+
+        a {
+            padding-top: 3px !important;
+            padding-bottom: 3px !important;
+        }
+    }
+
+    .after-erro::after {
+        content: '\f054';
+        font-family: 'FontAwesome';
+        margin-left: 3px;
+        font-size: 12px;
+        color: var(--reverse-color);
+        position: absolute;
+        top: 50%;
+        right: -30px;
+        margin-right: 10px;
+        transform: translateY(-50%);
+    }
+}
+
+.text-custom {
+
+    .toastui-editor-defaultUI-toolbar,
+    .toastui-editor-ww-mode {
+        background-color: var(--body-color) !important;
+
+        .toastui-editor-toolbar-icons {
+            color: var(--reverse-color-light) !important;
+        }
+    }
+
+    .toastui-editor-mode-switch {
+        display: none !important;
+    }
+
+    .ProseMirror {
+        color: var(--reverse-color) !important;
+    }
+
+
+    .toastui-editor-mode-switch .tab-item.active {
+        background-color: #424242;
+    }
+}

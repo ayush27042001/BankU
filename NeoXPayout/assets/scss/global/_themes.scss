@@ -1,0 +1,263 @@
+:root {
+	--body-color: #ffffff;
+	--reverse-color: #17161a;
+	--reverse-color-white: 255, 255, 255;
+	--reverse-color-black: 0, 0, 0;
+	--reverse-color-light: #f8f9fa;
+
+	--bs-border-color: #e4e9ed;
+
+	--svg-stroke-1: 1;
+	--svg-stroke-2: 2;
+	--svg-stroke-3: 3;
+
+	--white-cl: #ffffff;
+	--black-cl: #000000;
+
+	--light-bg1: #efefef;
+	--light-bg2: #e3e3eb;
+	--light-bg3: #e2f2e8;
+	--light-bg4: #e7eaee;
+	--light-bg5: #f7f2ed;
+	--light-bg6: #e3f1f5;
+
+	--g1-color: #dfe1e7;
+	--g2-color: #c1c7d0;
+	--g3-color: #a4acb9;
+	--g4-color: #818898;
+	--g5-color: #666d80;
+	--g6-color: #36394a;
+	--g7-color: #272835;
+	--g8-color: #1a1b25;
+	--g9-color: #0d0d12;
+}
+
+/*=============== theme dark==============*/
+[data-bs-theme="dark"] {
+	--reverse-color-white: 0, 0, 0;
+	--reverse-color-black: 255, 255, 255;
+	--reverse-color-light: #000;
+
+	--body-color: #17161a;
+	--bs-body-bg: #1b1a1e;
+	--reverse-color: #f9f9f9;
+	--bs-border-color: #232326;
+
+	.text-dark {
+		color: var(--reverse-color) !important;
+	}
+
+	--g1-color: #1c1c1c;
+	--g2-color: #000000;
+
+	--theme-color1: #ff6a00;
+
+	[data-theme="theme-Greylight"] {
+		--theme-color1: #232326;
+	}
+
+	[data-theme="theme-SunOrange"] {
+		--theme-color1: #232326;
+	}
+
+	[data-theme="theme-AppleGreen"] {
+		--theme-color1: #232326;
+	}
+
+	[data-theme="theme-CeruleanBlue"] {
+		--theme-color1: #232326;
+	}
+
+	[data-theme="theme-Mariner"] {
+		--theme-color1: #232326;
+	}
+
+	[data-theme="theme-PurpleHeart"] {
+		--theme-color1: #232326;
+	}
+
+	[data-theme="theme-FrenchRose"] {
+		--theme-color1: #232326;
+	}
+}
+
+/*===============active theme-Greylight ==============*/
+[data-theme="theme-Greylight"] {
+	--primary-color: #2e0ff8;
+	--accent-color: #101014;
+
+	--primary-rgb: 214, 59, 56;
+	--accent-rgb: 132, 103, 203;
+
+	--grey-color: #dfe1e7;
+	--brand-color: #2e0ff8;
+
+	--theme-color1: #f6f8fa;
+	--theme-color2: #818898;
+	--theme-color3: #666d80;
+	--theme-color4: #36394a;
+	--theme-color5: #272835;
+	--theme-color6: #9aa9e0;
+	--theme-color8: #0d0d12;
+
+	--primary-gradient: linear-gradient(-45deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="theme-SunOrange"] {
+	--primary-color: #f7a614;
+	--accent-color: #006b60;
+
+	--primary-rgb: 247, 166, 20;
+	--accent-rgb: 0, 107, 96;
+
+	--brand-color: #fcaf20;
+
+	--theme-color1: #ececec;
+	--theme-color2: #c25450;
+	--theme-color3: #ff8982;
+	--theme-color4: #9e7c50;
+	--theme-color5: #ffc0b7;
+	--theme-color6: #2f4858;
+
+	--primary-gradient: linear-gradient(-45deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="theme-AppleGreen"] {
+	--primary-color: #5bc43a;
+	--accent-color: #006b5f;
+
+	--primary-rgb: 91, 196, 58;
+	--accent-rgb: 0, 107, 95;
+
+	--brand-color: #5bc43a;
+
+	--theme-color1: #f3fdf2;
+	--theme-color2: #0097aa;
+	--theme-color3: #0084bd;
+	--theme-color4: #004e72;
+	--theme-color5: #96b0b7;
+	--theme-color6: #2f4858;
+
+	--primary-gradient: linear-gradient(-45deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="theme-CeruleanBlue"] {
+	--primary-color: #00b8d6;
+	--accent-color: #00a686;
+
+	--primary-rgb: 0, 184, 214;
+	--accent-rgb: 0, 166, 134;
+
+	--brand-color: #00b8d6;
+
+	--theme-color1: #e7f2f7;
+	--theme-color2: #8966a4;
+	--theme-color3: #bf9adb;
+	--theme-color4: #b2a8b8;
+	--theme-color5: #96b0b7;
+	--theme-color6: #00a686;
+
+	--primary-gradient: linear-gradient(-45deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="theme-Mariner"] {
+	--primary-color: #0066fe;
+	--accent-color: #dead00;
+
+	--primary-rgb: 0, 102, 254;
+	--accent-rgb: 222, 173, 0;
+
+	--brand-color: #0066fe;
+
+	--theme-color1: #e0e2fe;
+	--theme-color2: #d3a518;
+	--theme-color3: #f26a7f;
+	--theme-color4: #002878;
+	--theme-color5: #858fbb;
+	--theme-color6: #5b9591;
+
+	--primary-gradient: linear-gradient(-45deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="theme-PurpleHeart"] {
+	--primary-color: #5519bb;
+	--accent-color: #e05170;
+
+	--primary-rgb: 76, 53, 117;
+	--accent-rgb: 224, 81, 112;
+
+	--brand-color: #5519bb;
+
+	--theme-color1: #e7d8ff;
+	--theme-color2: #354175;
+	--theme-color3: #98427e;
+	--theme-color4: #d55a75;
+	--theme-color5: #fb8665;
+	--theme-color6: #d19a8b;
+
+	--primary-gradient: linear-gradient(145deg, var(--primary-color), var(--accent-color));
+
+	.page-header .header-right>li>a,
+	.page-header .header-right>li>div>a {
+		color: var(--white-color) !important;
+	}
+}
+
+[data-theme="theme-FrenchRose"] {
+	--primary-color: #eb5393;
+	--accent-color: #4d74c9;
+
+	--primary-rgb: 235, 83, 147;
+	--accent-rgb: 77, 116, 201;
+
+	--brand-color: #eb5393;
+
+	--theme-color1: #f6f8fa;
+	--theme-color2: #b67eb6;
+	--theme-color3: #5bbab5;
+	--theme-color4: #b861c2;
+	--theme-color5: #ddd7c6;
+	--theme-color6: #765a76;
+
+	--primary-gradient: linear-gradient(-45deg, var(--primary-color), var(--secondary-color));
+}
+
+// Theme Color Settings
+.choose-skin {
+	display: flex;
+	flex-wrap: wrap;
+
+	li {
+		margin-right: 0.5rem;
+		margin-bottom: 0.5rem;
+		font-size: 0;
+
+		div {
+			background-color: var(--fintech-theme-color);
+			display: flex;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			height: 14px;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+
+			&::after {
+				font-family: "FontAwesome";
+				color: var(--bs-white);
+				position: absolute;
+				content: "\f00c";
+				font-size: 1rem;
+				opacity: 0;
+			}
+		}
+
+		&.active,
+		&:hover {
+			div:after {
+				opacity: 1;
+			}
+		}
+	}
+}

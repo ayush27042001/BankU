@@ -1,0 +1,356 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Team.master.cs" Inherits="NeoXPayout.team.Team" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+   <title>:: Welcome Team</title>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     
+     <!--[ Favicon]-->
+     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+     <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+     <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+     <!--[ Template main css file ]-->
+     <link rel="stylesheet" href="../assets/css/style.min.css">
+    <link rel="stylesheet" href="../assets/vendor/dataTables.min.css">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body data-theme="theme-Greylight" class="svgstroke-a add-tooltip">
+    <form id="form1" runat="server">
+       <main class="container-fluid px-0">
+               <aside class="ps-3 pe-2 py-2 sidebar">
+               <div class="flex-grow-1">
+                    <div class="d-flex align-items-center mb-2 logo-info">
+                         <div class="d-flex align-items-center   ">
+                              <a href="Dashboard.aspx" title="logo" class="brand-icon ">
+                                   
+                                  <asp:HiddenField ID="HiddenField1" runat="server" />
+                                       <img src="<%=HiddenField1.Value %>" width="200px" />
+                              </a>
+                         </div>
+                         <button class="btn btn-sm btn-close sidebar-toggle  border ms-auto d-lg-none"
+                              type="button"></button>
+                         <a class="ms-auto d-lg-inline-flex d-none menu-toggle shadow-sm align-items-center justify-content-center mini-btn"
+                              href="#" title="Sidebar Toggle">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                   fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                   stroke-linejoin="round">
+                                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                   <path d="M15 12h-12"></path>
+                                   <path d="M7 8l-4 4l4 4"></path>
+                                   <path d="M12 21a9 9 0 0 0 0 -18"></path>
+                              </svg>
+                         </a>
+                    </div>
+                    <h6 class="fl-title title-font ps-2 small text-uppercase text-muted"
+                         style="--dynamic-color: var(--theme-color1)"><hr /></h6>
+                    <ul class="list-unstyled mb-2 menu-list ps-3">
+                         <li>
+                              <a href="Dashboard.aspx" aria-label="Dashboard" data-bs-placement="right"
+                                   data-bs-title="Dashboard" data-bs-toggle="tooltip">
+                                   <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                        <path d="M10 12h4v4h-4z"></path>
+                                   </svg>
+                                   <span class="mx-3">Dashboard</span>
+                              </a>
+                         </li>
+                          
+                      
+                       
+                       
+                    </ul>
+                     <h6 class="fl-title title-font ps-2 small text-uppercase text-muted"
+                         style="--dynamic-color: var(--theme-color1)">Manage User</h6>
+                    <ul class="list-unstyled mb-2 menu-list ps-3">
+                          <li>
+                              <a href="ViewNewUser.aspx" aria-label="Transaction" data-bs-toggle="tooltip"
+                                   data-bs-title="Transaction" data-bs-placement="right">
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke" width="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M19 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3"></path>
+                                        <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3"></path>
+                                   </svg>
+                                   <span class="mx-3">New User</span>
+                              </a>
+                         </li>
+                         <li>
+                              <a href="ProcessUser.aspx" aria-label="Settings" data-bs-toggle="tooltip"
+                                   data-bs-title="Settings" data-bs-placement="right">
+                                   <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                             d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                        </path>
+                                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                   </svg>
+                                   <span class="mx-3">Process User</span>
+                              </a>
+                         </li>
+                        
+
+                        <li>
+                              <a href="ApprovedUser.aspx" aria-label="Balance" data-bs-toggle="tooltip"
+                                   data-bs-title="Balance" data-bs-placement="right">
+                                   <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                        <path
+                                             d="M3 6m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
+                                        </path>
+                                        <path d="M18 12l.01 0"></path>
+                                        <path d="M6 12l.01 0"></path>
+                                   </svg>
+                                   <span class="mx-3">Approved User</span>
+                              </a>
+                         </li>
+                         <li>
+                              <a href="RejectedUser.aspx" aria-label="Balance" data-bs-toggle="tooltip"
+                                   data-bs-title="Balance" data-bs-placement="right">
+                                   <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                        <path
+                                             d="M3 6m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
+                                        </path>
+                                        <path d="M18 12l.01 0"></path>
+                                        <path d="M6 12l.01 0"></path>
+                                   </svg>
+                                   <span class="mx-3">Rejected User</span>
+                              </a>
+                         </li>
+                       
+                    </ul>
+                     <h6 class="fl-title title-font ps-2 small text-uppercase text-muted"
+                         style="--dynamic-color: var(--theme-color1)">Attandance</h6>
+                    <ul class="list-unstyled mb-2 menu-list ps-3">
+                           <li>
+                              <a href="TodayAttandance.aspx" aria-label="Card" data-bs-toggle="tooltip" data-bs-title="Card"
+                                   data-bs-placement="right">
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke" width="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                             d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                        </path>
+                                        <path d="M3 10l18 0"></path>
+                                        <path d="M7 15l.01 0"></path>
+                                        <path d="M11 15l2 0"></path>
+                                   </svg>
+                                   <span class="mx-3">Add Attandance</span>
+                              </a>
+                         </li>
+                         <li>
+                              <a href="AttandanceReport.aspx" aria-label="Settings" data-bs-toggle="tooltip"
+                                   data-bs-title="Settings" data-bs-placement="right">
+                                   <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                             d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                        </path>
+                                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                   </svg>
+                                   <span class="mx-3">Attandace Report</span>
+                              </a>
+                         </li>
+                       
+                       
+                       
+                    </ul>
+
+               </div>
+               <div>
+                    <div class="card promo">
+                         <div class="card-body">
+                              <div class="d-flex align-items-center justify-content-between mb-3">
+                                   <h5 class="mb-0">Need Support</h5>
+                                   <div class="card-action">
+                                        
+                                   </div>
+                              </div>
+                              <p class="lh-sm small text-muted">contact with one of our experts to get supports</p>
+                              <a href="Default.aspx" class="btn btn-grey-outline w-100" >LogOut</a>
+                         </div>
+                    </div>
+                    
+               </div>
+          </aside>
+            <div class="content">
+                  <!-- start: page header -->
+               <header class="px-xl-5 px-lg-4 px-3 sticky-top top-0" data-bs-theme="none">
+                    <div
+                         class="d-flex flex-wrap justify-content-start justify-content-sm-between align-items-center py-2 w-100">
+                         <div>
+                              <a href="index.html" title="logo" class="brand-icon d-sm-none">
+                                   
+                                   <div class="ms-3 logo-name">
+                                        <h6 class="mb-0 title-font dark-rever-color">BankU</h6>
+                                   </div>
+                              </a>
+                              <h5 class="mb-0 text-sm-start text-center d-sm-block d-none">Welcome</h5>
+                              <span class="text-muted d-sm-block d-none d-sm-block d-none">
+                                  <asp:Label ID="Label1" runat="server"></asp:Label></span>
+                         </div>
+                         <hr class="border bs-border-color w-100 d-sm-none my-2">
+                         <ul class="header-menu flex-grow-1 justify-content-between justify-content-sm-end">
+                           
+                           
+                            
+                              <!--[ Start:: theme light/dark ]-->
+                              <li class="nav-item dropdown px-md-1">
+                                   <a class="dropdown-toggle gray-6" href="#" id="bd-theme-one"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"
+                                             class="theme-icon-active">
+                                             <use href="#sun-fill"></use>
+                                        </svg>
+                                   </a>
+                                   <ul class="dropdown-menu dropdown-menu-end p-2 p-xl-3 shadow rounded-4"
+                                        aria-labelledby="bd-theme-one">
+                                        <li class="mb-1">
+                                             <a class="dropdown-item rounded-pill" href="#" data-bs-theme-value="light">
+                                                  <svg class="avatar xs me-2 opacity-50 theme-icon" fill="currentColor">
+                                                       <use href="#sun-fill"></use>
+                                                  </svg>
+                                                  Light
+                                             </a>
+                                        </li>
+                                        <li class="mb-1">
+                                             <a class="dropdown-item rounded-pill active" href="#"
+                                                  data-bs-theme-value="dark">
+                                                  <svg class="avatar xs me-2 opacity-50 theme-icon" fill="currentColor">
+                                                       <use href="#moon-stars-fill"></use>
+                                                  </svg>
+                                                  Dark
+                                             </a>
+                                        </li>
+                                        <li class="mb-1">
+                                             <a class="dropdown-item rounded-pill" href="#" data-bs-theme-value="auto">
+                                                  <svg class="avatar xs me-2 opacity-50 theme-icon" fill="currentColor">
+                                                       <use href="#circle-half"></use>
+                                                  </svg>
+                                                  Auto
+                                             </a>
+                                        </li>
+                                   </ul>
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" style="display: none;">
+                                        <symbol id="sun-fill" viewBox="0 0 16 16">
+                                             <path
+                                                  d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
+                                             </path>
+                                        </symbol>
+                                        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+                                             <path
+                                                  d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
+                                             </path>
+                                             <path
+                                                  d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
+                                             </path>
+                                        </symbol>
+                                        <symbol id="circle-half" viewBox="0 0 16 16">
+                                             <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
+                                        </symbol>
+                                   </svg>
+                              </li>
+                              <!--[ Start:: theme setting ]-->
+                              <li class="nav-item dropdown px-md-1">
+                                   <a class="dropdown-toggle gray-6" href="#offcanvas_setting"
+                                        data-bs-toggle="offcanvas" aria-expanded="false" title="template setting">
+                                        <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="22"
+                                             height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                             <path
+                                                  d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                             </path>
+                                             <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                        </svg>
+                                   </a>
+                              </li>
+                              <li class="nav-item py-2 py-md-1 col-auto d-none d-sm-flex">
+                                   <div class="vr d-none d-sm-flex h-100 mx-sm-2"></div>
+                              </li>
+                              <li>
+                                   <a href="Dashboard.aspx" 
+                                        title="exchange" class="btn btn-grey-outline fw-medium">₹<asp:Label ID="lblmainwallet" runat="server"></asp:Label></a>
+                              </li>
+                              <li class="dropdown d-block d-lg-none">
+                                   <button class="btn btn-sm sidebar-toggle ms-3 border" type="button"><i
+                                             class="fa fa-bars"></i></button>
+                              </li>
+                         </ul>
+                    </div>
+               </header>
+               <!-- start: page header area -->
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+                </div>
+        </main>
+
+    </form>
+     <!--============== active class js =============-->
+     <script src="../assets/js/active-class.js"></script>
+     <!--[ FintechWeb template vender js ]-->
+     <script src="../assets/bundles/libscripts.bundle.js"></script>
+     <script src="../assets/bundles/dynamicselect.js"></script>
+      <script src="../assets/bundles/dataTables.bundle.js"></script>
+     <!-- Template page js -->
+     <script src="../assets/js/main.js" defer></script>
+
+     <script>
+          $(document).ready(function () {
+               // Initialize DataTable
+               function initializeDataTable() {
+                    $('.dataTable')
+                         .addClass('nowrap')
+                         .DataTable({
+                              responsive: true,
+                              destroy: true, // Allows reinitialization
+                              //columnDefs: [
+                              //     {
+                              //          targets: 4,
+                              //          render: DataTable.render.date(),
+                              //     },
+                              //     {
+                              //          targets: 5,
+                              //          render: DataTable.render.number(null, null, 0, '$'),
+                              //     }
+                              //]
+                         });
+               }
+
+               // Initial DataTable setup
+               initializeDataTable();
+
+               // Reinitialize DataTable on accordion show
+               $('.accordion').on('shown.bs.collapse', function () {
+                    initializeDataTable();
+               });
+          });
+     </script>
+     
+</body>
+</html>

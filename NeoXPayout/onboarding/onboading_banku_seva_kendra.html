@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Onboading outlet bankU Seva Kendra </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      margin-left: 15%;
+    }
+
+    .logo img {
+      height: 32px;
+    }
+
+    .nav {
+      margin-right: 15%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #555;
+      font-size: 14px;
+      border-bottom: 1px solid orange;
+    }
+
+    .dashboard-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      font-size: 14px;
+      border: 1px solid rgb(221, 206, 0);
+      color: rgb(136, 0, 163);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .dashboard-btn:hover {
+      background: #e6fafa;
+    }
+
+    .icon {
+      font-size: 16px;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .logo, .nav {
+        margin: 0 20px;
+      }
+
+      .nav {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: 10px 20px;
+        border-top: 1px solid #ddd;
+        display: none;
+      }
+
+      .nav.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+    .status-line {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 40px 0;
+      flex-wrap: wrap;
+    }
+    .status-item {
+      text-align: center;
+    }
+    .status-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .status-success {
+      background-color: #6f0091;
+    }
+    .status-fail {
+      background-color: #d63031;
+    }
+    .status-item p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .accordion-button::after {
+      background-image: none;
+      content: "▼";
+      transform: rotate(0deg);
+      transition: transform 0.2s;
+    }
+    .accordion-button.collapsed::after {
+      transform: rotate(-90deg);
+    }
+    .step-badge {
+      background-color: #dfe6e9;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      margin-right: 10px;
+      color: #0984e3;
+    }
+    .accordion-button {
+      background-color: #ffffff !important;
+    }
+    .header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      
+    }
+    .step-number {
+      background-color: #f5e9fd;
+      color: #6f42c1;
+      border-radius: 4px;
+      font-weight: bold;
+      padding: 2px 8px;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+    
+  </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+          <img src="bsk_logo.png" alt="BankU Logo" />
+        </div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <nav class="nav" id="navMenu">
+          <a href="#" class="nav-link"> <b> KYC TEAM:-</b> nodal.officer@banku.co.in</a>
+          <a href="#" class="nav-link"><b> SALES TEAM:-</b> sales@banku.co.in</a>
+          <a href="#" class="dashboard-btn">
+            <span class="icon"><img src="logout_icon.PNG" width="20px" alt="BankU Logo"/></span>
+            Log Out
+          </a>
+        </nav>
+      </header>
+      
+
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h2 class="step-header">Activate Your outlet </h2>
+    <p class="text-muted">Agent ID: <b> 00</b></p>
+    <div class="alert alert-warning">
+      <strong>Live Status:- </strong> Your signature is not there on your Udyam Registration Certificate, please sign and re-upload.
+    </div>
+  </div>
+
+  <!-- Status Row -->
+  <div class="status-line">
+    <div class="status-item">
+      <div class="status-circle status-success">✔</div>
+      <p>Create New Account</p>
+    </div>
+    <div class="status-item">
+      <div class="status-circle status-success">✔</div>
+      <p>Business Details</p>
+    </div>
+    <div class="status-item">
+      <div class="status-circle status-success">✔</div>
+      <p>Bank Account</p>
+    </div>
+    <div class="status-item">
+      <div class="status-circle status-fail">✘</div>
+      <p>App/ Website Details</p>
+      <small class="text-danger">Failure</small>
+    </div>
+    <div class="status-item">
+      <div class="status-circle status-success">✔</div>
+      <p>KYC Documents</p>
+    </div>
+  </div>
+
+
+  <div class="container mt-4">
+    <div class="accordion" id="kycAccordion">
+         <!-- Step 1 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+            <span class="step-number">STEP 1</span> <b> Create a new account </b>
+          </button>
+        </h2>
+        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#kycAccordion">
+          <div class="accordion-body">
+            <p class="text-muted">Enter your details to register</p>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label><i> Mobile number linked with Aadhaar </i></label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label><i> e-mail ID</i></label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label><i> Date of Birth </i></label>
+                <input type="date" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label><i> Pan Number</i></label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn btn-success">Proceed to Verify</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+      <!-- Step 2 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+            <span class="step-number">STEP 2</span> <b>Basic Details </b>
+          </button>
+        </h2>
+        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#kycAccordion">
+          <div class="accordion-body">
+            <p class="text-muted">Provide your business name, type, and registration details.</p>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label><i> Legal Business Name </i></label>
+                <input type="text" class="form-control" disabled />
+              </div>
+              <div class="col-md-6">
+                <label><i> Business Type</i></label>
+                <select class="form-select">
+                  <option selected>Unit Type</option>
+                  <option>Proprietorship</option>
+                  <option>Partnership</option>
+                  <option>Company</option>
+                  <option>Trust/NGO</option>
+                  <option>Others</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label><i> Date of Incorporation </i></label>
+                <input type="date" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label><i> Correspondence Address </i></label>
+                <input type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label><i> Udyam Registration Number </i></label>
+                <input type="text" class="form-control"/>
+              </div>
+              <div class="col-md-6">
+                <label><i> Business Type</i></label>
+                <select class="form-select">
+                  <option selected>Select Type</option>
+                  <option>Mobile Recharge Shop            </option>
+                  <option> Grocery Store</option>
+                  <option>Electronics Store</option>
+                  <option>Stationery Shop </option>
+                  <option>Printing and Xerox Shops</option>
+                  <option> Community Centers</option>
+                  <option>Petrol Pumps</option>
+                  <option>Travel Agencies </option>
+                  <option></option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label><i> Auth Signatory/Proprietor Pan Number </i></label>
+                <input type="text" class="form-control" />
+            </div>
+              <div class="col-12 text-end">
+                <button class="btn btn-success">Proceed to Verify</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  
+  <!-- Step 3 -->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading2">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+        <span class="step-number">STEP 4</span> <b>Personal Details </b>
+      </button>
+    </h2>
+    <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#kycAccordion">
+      <div class="accordion-body">
+        <p class="text-muted">Provide your personal Details.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label>Voter Id number</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>Aadhaar Number</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>Father's Name</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>Mother's Name</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>Gender</label>
+            <select class="form-select">
+              <option selected>Male</option>
+              <option>Female</option>
+              <option>Others</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label>User Position</label>
+            <select class="form-select">
+              <option selected>Proprietor</option>
+              <option>Authrized Signatory</option>
+              <option>Power of Autorny</option>
+         
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label><i> Permanent Address</i></label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>State</label>
+            <select class="form-select">
+                <option selected>Choice</option>
+                <option value="andhra-pradesh">Andhra Pradesh</option>
+                <option value="arunachal-pradesh">Arunachal Pradesh</option>
+                <option value="assam">Assam</option>
+                <option value="bihar">Bihar</option>
+                <option value="chhattisgarh">Chhattisgarh</option>
+                <option value="goa">Goa</option>
+                <option value="gujarat">Gujarat</option>
+                <option value="haryana">Haryana</option>
+                <option value="himachal-pradesh">Himachal Pradesh</option>
+                <option value="jharkhand">Jharkhand</option>
+                <option value="karnataka">Karnataka</option>
+                <option value="kerala">Kerala</option>
+                <option value="madhya-pradesh">Madhya Pradesh</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="manipur">Manipur</option>
+                <option value="meghalaya">Meghalaya</option>
+                <option value="mizoram">Mizoram</option>
+                <option value="nagaland">Nagaland</option>
+                <option value="odisha">Odisha</option>
+                <option value="punjab">Punjab</option>
+                <option value="rajasthan">Rajasthan</option>
+                <option value="sikkim">Sikkim</option>
+                <option value="tamil-nadu">Tamil Nadu</option>
+                <option value="telangana">Telangana</option>
+                <option value="tripura">Tripura</option>
+                <option value="uttar-pradesh">Uttar Pradesh</option>
+                <option value="uttarakhand">Uttarakhand</option>
+                <option value="west-bengal">West Bengal</option>
+                
+                <!-- केंद्र शासित प्रदेश -->
+                <option value="andaman-nicobar">Andaman and Nicobar Islands</option>
+                <option value="chandigarh">Chandigarh</option>
+                <option value="dadra-nagar-haveli-daman-diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                <option value="delhi">Delhi</option>
+                <option value="jammu-kashmir">Jammu and Kashmir</option>
+                <option value="ladakh">Ladakh</option>
+                <option value="lakshadweep">Lakshadweep</option>
+                <option value="puducherry">Puducherry</option>
+                
+         
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label>Education</label>
+            <select class="form-select">
+                <option value="illiterate">Illiterate</option>
+                <option value="below-10th">Below 10th</option>
+                <option value="10th-pass">10th Pass</option>
+                <option value="12th-pass">12th Pass</option>
+                <option value="diploma">Diploma</option>
+                <option value="graduate">Graduate</option>
+                <option value="postgraduate">Postgraduate</option>
+                <option value="doctorate">Doctorate</option>
+                <option value="professional">Professional Degree</option>
+                <option value="other">Other</option>
+                
+         
+            </select>
+          </div>
+          <div class="col-12 text-end">
+            <button class="btn btn-success">Proceed to Verify</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+ <!-- Step 2 -->
+ <div class="accordion-item">
+    <h2 class="accordion-header" id="heading2">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+        <span class="step-number">STEP 5</span> <b>Bank Account White Listing </b>
+      </button>
+    </h2>
+    <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#kycAccordion">
+      <div class="accordion-body">
+        <p class="text-muted">Provide your business name, type, and registration details.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label>Account Holder's</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>Bank Name</label>
+            <select class="form-select">
+              <option selected>Select Type</option>
+              <option value="bank-of-baroda">Bank of Baroda</option>
+              <option value="bank-of-india">Bank of India</option>
+              <option value="bank-of-maharashtra">Bank of Maharashtra</option>
+              <option value="canara-bank">Canara Bank</option>
+              <option value="central-bank-of-india">Central Bank of India</option>
+              <option value="indian-bank">Indian Bank</option>
+              <option value="indian-overseas-bank">Indian Overseas Bank</option>
+              <option value="punjab-and-sind-bank">Punjab and Sind Bank</option>
+              <option value="punjab-national-bank">Punjab National Bank</option>
+              <option value="state-bank-of-india">State Bank of India</option>
+              <option value="uco-bank">UCO Bank</option>
+              <option value="union-bank-of-india">Union Bank of India</option>
+              <option value="axis-bank">Axis Bank</option>
+              <option value="bandhan-bank">Bandhan Bank</option>
+              <option value="csb-bank">CSB Bank</option>
+              <option value="city-union-bank">City Union Bank</option>
+              <option value="dcb-bank">DCB Bank</option>
+              <option value="dhanlaxmi-bank">Dhanlaxmi Bank</option>
+              <option value="federal-bank">Federal Bank</option>
+              <option value="hdfc-bank">HDFC Bank</option>
+              <option value="icici-bank">ICICI Bank</option>
+              <option value="idbi-bank">IDBI Bank</option>
+              <option value="idfc-first-bank">IDFC First Bank</option>
+              <option value="indusind-bank">IndusInd Bank</option>
+              <option value="jammu-kashmir-bank">Jammu & Kashmir Bank</option>
+              <option value="karnataka-bank">Karnataka Bank</option>
+              <option value="karur-vysya-bank">Karur Vysya Bank</option>
+              <option value="kotak-mahindra-bank">Kotak Mahindra Bank</option>
+              <option value="nainital-bank">Nainital Bank</option>
+              <option value="rbl-bank">RBL Bank</option>
+              <option value="south-indian-bank">South Indian Bank</option>
+              <option value="tamilnad-mercantile-bank">Tamilnad Mercantile Bank</option>
+              <option value="yes-bank">Yes Bank</option>
+              <option value="andhra-pradesh-grameena-bank">Andhra Pradesh Grameena Bank</option>
+              <option value="arunachal-pradesh-rural-bank">Arunachal Pradesh Rural Bank</option>
+              <option value="assam-gramin-vikash-bank">Assam Gramin Vikash Bank</option>
+              <option value="bihar-gramin-bank">Bihar Gramin Bank</option>
+              <option value="chhattisgarh-rajya-gramin-bank">Chhattisgarh Rajya Gramin Bank</option>
+              <option value="gujarat-gramin-bank">Gujarat Gramin Bank</option>
+              <option value="sarva-haryana-gramin-bank">Sarva Haryana Gramin Bank</option>
+              <option value="himachal-pradesh-gramin-bank">Himachal Pradesh Gramin Bank</option>
+              <option value="jammu-kashmir-gramin-bank">Jammu and Kashmir Gramin Bank</option>
+              <option value="jharkhand-rajya-gramin-bank">Jharkhand Rajya Gramin Bank</option>
+              <option value="karnataka-grameena-bank">Karnataka Grameena Bank</option>
+              <option value="kerala-gramin-bank">Kerala Gramin Bank</option>
+              <option value="madhya-pradesh-gramin-bank">Madhya Pradesh Gramin Bank</option>
+              <option value="maharashtra-gramin-bank">Maharashtra Gramin Bank</option>
+              <option value="manipur-rural-bank">Manipur Rural Bank</option>
+              <option value="meghalaya-rural-bank">Meghalaya Rural Bank</option>
+              <option value="mizoram-rural-bank">Mizoram Rural Bank</option>
+              <option value="nagaland-rural-bank">Nagaland Rural Bank</option>
+              <option value="odisha-gramin-bank">Odisha Gramin Bank</option>
+              <option value="puduvai-bharathiar-grama-bank">Puduvai Bharathiar Grama Bank</option>
+              <option value="punjab-gramin-bank">Punjab Gramin Bank</option>
+              <option value="rajasthan-gramin-bank">Rajasthan Gramin Bank</option>
+              <option value="tamil-nadu-grama-bank">Tamil Nadu Grama Bank</option>
+              <option value="telangana-grameena-bank">Telangana Grameena Bank</option>
+              <option value="tripura-gramin-bank">Tripura Gramin Bank</option>
+              <option value="uttar-pradesh-gramin-bank">Uttar Pradesh Gramin Bank</option>
+              <option value="uttarakhand-gramin-bank">Uttarakhand Gramin Bank</option>
+              <option value="west-bengal-gramin-bank">West Bengal Gramin Bank</option>
+              <option value="au-small-finance-bank">AU Small Finance Bank</option>
+              <option value="capital-small-finance-bank">Capital Small Finance Bank</option>
+              <option value="equitas-small-finance-bank">Equitas Small Finance Bank</option>
+              <option value="esaf-small-finance-bank">ESAF Small Finance Bank</option>
+              <option value="jana-small-finance-bank">Jana Small Finance Bank</option>
+              <option value="north-east-small-finance-bank">North East Small Finance Bank</option>
+              <option value="shivalik-small-finance-bank">Shivalik Small Finance Bank</option>
+              <option value="suryoday-small-finance-bank">Suryoday Small Finance Bank</option>
+              <option value="ujjivan-small-finance-bank">Ujjivan Small Finance Bank</option>
+              <option value="unity-small-finance-bank">Unity Small Finance Bank</option>
+              <option value="utkarsh-small-finance-bank">Utkarsh Small Finance Bank</option>
+              <option value="airtel-payments-bank">Airtel Payments Bank</option>
+              <option value="fino-payments-bank">Fino Payments Bank</option>
+              <option value="india-post-payments-bank">India Post Payments Bank</option>
+              <option value="nsdl-payments-bank">NSDL Payments Bank</option>
+              <option value="jio-payments-bank">Jio Payments Bank</option>
+              <option value="paytm-payments-bank">Paytm Payments Bank</option>
+                                                                      
+            </select>
+          </div>
+
+       
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label>Account Number</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>User Position</label>
+                <select class="form-select">
+                    <option value="savings">Savings Account</option>
+                    <option value="current">Current Account</option>
+                    <option value="joint">Joint Account</option>
+                    <option value="minor">Minor Account</option>
+                    <option value="other">Other</option>
+             
+                </select>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label>IFSC Code</label>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="col-12 text-end">
+                    <button class="btn btn-success">Proceed to Verify</button>
+                  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
