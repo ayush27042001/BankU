@@ -490,6 +490,7 @@
     <Content Include="ckeditor\lang\vi.js" />
     <Content Include="ckeditor\lang\zh-cn.js" />
     <Content Include="ckeditor\lang\zh.js" />
+	<Content Include="CustomJS\AEPSBalanceEnquiry.js" />
     <Content Include="ckeditor\lang\_languages.js" />
     <Content Include="ckeditor\lang\_translationstatus.txt" />
     <Content Include="ckeditor\LICENSE.html" />
