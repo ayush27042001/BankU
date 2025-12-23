@@ -637,8 +637,12 @@ table th {
       </div>
     </div>
 </asp:Panel>
+
+    <!--hidden Fields-->
 <asp:HiddenField ID="hdLatitude" runat="server" />
 <asp:HiddenField ID="hdLongitude" runat="server" />
+<asp:HiddenField ID="hdnUserId" runat="server" />
+    <!--END-->
 
 <asp:Panel ID="pnlError" runat="server" Visible="false" CssClass="text-center mt-5">
 <div class="d-flex justify-content-center mt-5">
@@ -699,6 +703,8 @@ table th {
         new bootstrap.Modal(document.getElementById("failedModal")).show();
     }
 </script>
+
+<script src="CustomJS/AEPSBalanceEnquiry.js"></script>
 
 <script>
    let selectedDevice = '';
