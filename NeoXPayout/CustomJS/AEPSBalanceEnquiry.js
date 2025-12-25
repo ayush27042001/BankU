@@ -126,9 +126,19 @@ async function captureFingerprint() {
         const pidXml = await captureRdData(selectedDevice);
         if (selectedOperator === 'Balance') {
             callBalanceEnquiry(pidXml);
-        } else {
-            alert("Operator not implemented yet");
-            //call here for Cash Withdrawal or Mini Statement or Aadhar Pay //Todo
+        }
+        else if (selectedOperator === 'Statement') {
+            callMinistatement(pidXml);
+        }
+        else if (selectedOperator === 'Withdraw') {
+            callCashWidhrawal(pidXml);
+        }
+        else if (selectedOperator === 'AadharPay') {
+            callAadharPay(pidXml);
+        }
+
+        else {
+            alert("Operator not implemented yet");         
         }
     } catch (err) {
         alert("Capture failed: " + err.message);
@@ -140,8 +150,8 @@ function callBalanceEnquiry(pidXml) {
     const payload = buildBalanceEnquiryPayload(pidXml);
     if (!payload) return;
     $.ajax({
-        //url: "https://partner.banku.co.in/api/AEPSTXN",
-        url: "http://localhost:54956/api/AEPSTXN",
+        url: "https://partner.banku.co.in/api/AEPSTXN",
+        //url: "http://localhost:54956/api/AEPSTXN",
         type: "POST",
         contentType: "application/json",
         dataType: "json",
@@ -161,6 +171,120 @@ function callBalanceEnquiry(pidXml) {
         }
     });
 }
+function callMinistatement(pidXml) {
+    const payload = buildBalanceEnquiryPayload(pidXml);
+    if (!payload) return;
+    $.ajax({
+        url: "https://partner.banku.co.in/api/AEPSTXN",
+        //url: "http://localhost:54956/api/AEPSTXN",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 30000,
+        data: JSON.stringify(payload),
+        success: function (res) {
+            console.log("AEPS Response:", res);
+            if (res.Status === "SUCCESS") {
+            
+                var txnType = res.Data[0].txntype;
+                var balance = res.Data[0].acamount;
+                var bankRefNo = res.Data[0].bankrefno;
+                var status = res.Data[0].status;
+
+                showSuccess(`
+                    <b>Status:</b> ${status}<br>
+                    <b>Transaction Type:</b> ${txnType}<br>
+                    <b>Balance:</b> ${balance}<br>
+                    <b>Bank Ref No:</b> ${bankRefNo}
+                `);
+            } else {
+                showFailed(res.Message || "Transaction Failed");
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            showFailed("Network / CORS Error");
+        }
+    });
+}
+function callCashWidhrawal(pidXml) {
+    const payload = buildBalanceEnquiryPayload(pidXml);
+    if (!payload) return;
+    $.ajax({
+        url: "https://partner.banku.co.in/api/AEPSTXN",
+        //url: "http://localhost:54956/api/AEPSTXN",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 30000,
+        data: JSON.stringify(payload),
+        success: function (res) {
+            console.log("AEPS Response:", res);
+            if (res.Status === "SUCCESS") {
+                var txnType = res.Data[0].txntype;
+                var OrderAmount = res.Data[0].orderamount;
+                var Oldbalance = res.Data[0].oldbalance;
+                var Newbalance = res.Data[0].NewBalance;
+                var bankRefNo = res.Data[0].bankrefno;
+                var status = res.Data[0].status;
+
+                showSuccess(`
+                    <b>Status:</b> ${status}<br>
+                    <b>Transaction Type:</b> ${txnType}<br>
+                    <b>Order Amount:</b> ${OrderAmount}<br>
+                    <b>Old Balance:</b> ${Oldbalance}<br>
+                    <b>New Balance:</b> ${Newbalance}<br>
+                    <b>Bank Ref No:</b> ${bankRefNo}
+                `);
+            } else {
+                showFailed(res.Message || "Transaction Failed");
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            showFailed("Network / CORS Error");
+        }
+    });
+}
+function callAadharPay(pidXml) {
+    const payload = buildBalanceEnquiryPayload(pidXml);
+    if (!payload) return;
+    $.ajax({
+        url: "https://partner.banku.co.in/api/AEPSTXN",
+        //url: "http://localhost:54956/api/AEPSTXN",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 30000,
+        data: JSON.stringify(payload),
+        success: function (res) {
+            console.log("AEPS Response:", res);
+            if (res.Status === "SUCCESS") {
+                var txnType = res.Data[0].txntype;
+                var OrderAmount = res.Data[0].orderamount;
+                var Oldbalance = res.Data[0].oldbalance;
+                var Newbalance = res.Data[0].NewBalance;
+                var bankRefNo = res.Data[0].bankrefno;
+                var status = res.Data[0].status;
+
+                showSuccess(`
+                    <b>Status:</b> ${status}<br>
+                    <b>Transaction Type:</b> ${txnType}<br>
+                    <b>Order Amount:</b> ${OrderAmount}<br>
+                    <b>Old Balance:</b> ${Oldbalance}<br>
+                    <b>New Balance:</b> ${Newbalance}<br>
+                    <b>Bank Ref No:</b> ${bankRefNo}
+                `);
+            } else {
+                showFailed(res.Message || "Transaction Failed");
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            showFailed("Network / CORS Error");
+        }
+    });
+}
 
 function buildBalanceEnquiryPayload(pidXml) {
 
@@ -170,6 +294,9 @@ function buildBalanceEnquiryPayload(pidXml) {
         return null;
     }
     const pid = parsePidXml(pidXml);
+
+    var Amount = $("#ContentPlaceHolder1_txtAmount").val();
+
     return {
         mobileNo: $("#ContentPlaceHolder1_txtMobile").val(),
         userid: $("#ContentPlaceHolder1_hdnUserId").val(),
@@ -178,12 +305,12 @@ function buildBalanceEnquiryPayload(pidXml) {
         request: {
             aadhaar_uid: $("#ContentPlaceHolder1_txtAadhar").val(),
             agent_id: navigator.userAgent,
-            amount: "0",
+            amount: selectedOperator === "Balance" ? "0" : selectedOperator === "Statement" ? "0" : selectedOperator == "Withdraw" ? Amount : selectedOperator === "AadharPay" ? Amount : "0",
             bankiin: $("#ContentPlaceHolder1_ddlCircle").val(),
-            latitude: "28.600883", //Need to pick dynamic i added for now just for testing
-            longitude: "76.9709669",////Need to pick dynamic i added for now just for testing
+            latitude: $("#ContentPlaceHolder1_hdLatitude").val(), //Need to pick dynamic i added for now just for testing
+            longitude: $("#ContentPlaceHolder1_hdLongitude").val(),//Need to pick dynamic i added for now just for testing
             mobile: $("#ContentPlaceHolder1_txtMobile").val(),
-            sp_key: "BAP",
+            sp_key: selectedOperator === "Balance" ? "BAP" : selectedOperator === "Statement" ? "SAP" : selectedOperator == "Withdraw" ? "WAP" : selectedOperator === "AadharPay" ?"MZZ":"",
             pidDataType: "X",
             pidData: pid.pidData,
             ci: pid.ci,
