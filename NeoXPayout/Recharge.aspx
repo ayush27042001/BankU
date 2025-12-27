@@ -732,7 +732,7 @@ table th {
 
             <!-- Modal Header -->
             <div class="modal-header border-bottom-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close no-print" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Top Logo and Title -->

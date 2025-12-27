@@ -323,12 +323,21 @@ table th {
         gap: 8px;
     }
 }
+.offcanvas {
+    box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+}
 
 </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <hr /> 
 <asp:Panel runat="server" ID="pnlMain">
+    <button  type="button" class="btn btn-receipt btn-primary"> Test</button>
+    <button  type="button" class="btn btnTxn btn-primary"> Testtxn</button>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsLoginSidebar">
+    Open AEPS Login
+</button>
+
 <div class="container py-4">
      
 
@@ -690,6 +699,335 @@ table th {
   </div>
 </div>
 
+<!-- Mini statement Invoice Model -->
+
+<div class="modal fade" id="InvoiceMiniState" tabindex="-1" aria-labelledby="InvoiceModel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content mt-2 mb-2 p-4" id="printArea">
+
+            <!-- Modal Header -->
+            <div class="modal-header border-bottom-0">
+                <button type="button" class="btn-close no-print" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Top Logo and Title -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <img src="BankULogo1.png" alt="Company Logo" style="height:30px; margin-right: 10px;" />
+                </div>
+                <asp:Label ID="editModalLabel" runat="server" CssClass="modal-title fw-bold fs-4 text-uppercase text-dark">Mini Statement Invoice</asp:Label>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <!-- Bill To & Transaction Info -->
+                <div class="d-flex justify-content-between mb-4 border-bottom pb-3">
+                    <div>
+                        <h6 class="fw-bold mb-1">Mini Statement Invoice</h6>
+                         <div><strong>Current Balance:</strong>&nbsp ₹<asp:Label ID="Label1" runat="server"></asp:Label></div>
+                   
+                    </div>
+                    <div class="text-end">
+                        <div><strong>Transaction ID:</strong> <asp:Label ID="lblTranID" runat="server"></asp:Label></div>
+                        <div><strong>Date:</strong> <span id="lblTranDate"></span></div>
+                    </div>
+                </div>
+
+                <!-- Summary Table -->
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered w-100">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Type</th>
+                                <th>Time</th>
+                                <th>Amount(₹)</th>
+                                 <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>D</td>
+                                <td>25/12</td>
+                               <td>₹ 0.00</td>
+                                <td>FIGD/test</td>
+                            </tr>
+                          
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Signature -->
+                <div class="mt-5 d-flex justify-content-end">
+                    <div class="text-end">
+                        <div class="border-top pt-2">Authorized Sign</div>
+                    </div>
+                </div>
+
+                <!-- Final Note -->
+                <div class="text-center mt-4">
+                    <asp:Label ID="Label3" runat="server" CssClass="fw-bold fs-6 text-success"></asp:Label>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer no-print">
+                <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-success" OnClientClick="printReceipt(); return false;">Print</asp:LinkButton>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Transaction Invoice for balance enquiry and txn and aadhar pay Model -->
+<div class="modal fade" id="InvoiceTrnx" tabindex="-1" aria-labelledby="InvoiceTrnxModel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content mt-2 mb-2 p-4" id="printAreaTxn">
+
+            <!-- Modal Header -->
+            <div class="modal-header border-bottom-0">
+                <button type="button" class="btn-close no-print" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Top Logo and Title -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <img src="BankULogo1.png" alt="Company Logo" style="height:30px; margin-right: 10px;" />
+                </div>
+                <asp:Label ID="Label2" runat="server" CssClass="modal-title fw-bold fs-4 text-uppercase text-dark">Transaction Invoice</asp:Label>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <!-- Bill To & Transaction Info -->
+                <div class="d-flex justify-content-between mb-4 border-bottom pb-3">
+                    <div>
+                        <h6 class="fw-bold mb-1">Transaction Invoice</h6>
+                         <div><strong>Current Balance:</strong>&nbsp ₹<asp:Label ID="Label4" runat="server"></asp:Label></div>
+                       <%-- <div><asp:Label ID="lblNumber" runat="server" CssClass="text-dark fw-semibold"></asp:Label></div>
+                        <div><asp:Label ID="lblOpe" runat="server" CssClass="text-muted"></asp:Label></div>--%>
+                    </div>
+                    <div class="text-end">
+                        <div><strong>Transaction ID:</strong> <asp:Label ID="Label5" runat="server"></asp:Label></div>
+                        <div><strong>Date:</strong> <span id="lblTxnDate"></span></div>
+                    </div>
+                </div>
+
+                <!-- Summary Table -->
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered w-100">
+                       
+                        <tbody>
+                            <tr>
+                                <td>Transaction Type</td>
+                                <td>Balance Enquiry </td>                           
+                            </tr>
+                            <tr>
+                                <td>Aadhar</td>
+                                <td>223423424</td>                           
+                            </tr>
+                            <tr>
+                                <td>Bank Name</td>
+                                <td>25/12</td>                           
+                            </tr>
+                            <tr>
+                                <td>Available Balance</td>
+                                <td>₹0.0</td>                           
+                            </tr>
+                            <tr>
+                                <td>RRN</td>
+                                <td>1111111</td>                           
+                            </tr>
+                            <tr>
+                                <td>Transaction Time</td>
+                                <td>1111111</td>                           
+                            </tr>
+                         
+                        </tbody>
+                    </table>
+                </div>
+
+               
+
+                <!-- Signature -->
+                <div class="mt-5 d-flex justify-content-end">
+                    <div class="text-end">
+                        <div class="border-top pt-2">Authorized Sign</div>
+                    </div>
+                </div>
+
+                <!-- Final Note -->
+                <div class="text-center mt-4">
+                    <asp:Label ID="Label6" runat="server" CssClass="fw-bold fs-6 text-success"></asp:Label>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer no-print">
+                <asp:LinkButton ID="LinkButton3" runat="server" CssClass="btn btn-success" OnClientClick="printReceipt(); return false;">Print</asp:LinkButton>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- AEPS Login Sidebar -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="aepsLoginSidebar"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="offcanvas-header text-white"
+         style="background-color:purple;">
+        <div>
+            <h5 class="mb-0 fw-bold">BankU</h5>
+            <small>AEPS Daily Login</small>
+        </div>
+
+         <div class="ms-auto">
+        <button type="button"
+                class="btn btn-light btn-sm fw-semibold"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#aepsRegisterModal">
+            Register
+        </button>
+    </div>
+    </div>
+
+    <div class="offcanvas-body p-4">
+
+     <div class="mb-3">
+            <label class="form-label fw-semibold">Agent Ref No</label>
+            <input type="text" id="agentRef" class="form-control">
+            <small class="text-danger d-none" id="errAgent">Agent Ref is required</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Aadhar Number</label>
+            <input type="text" id="aadhaar" class="form-control" maxlength="12">
+            <small class="text-danger d-none" id="errAadhaar">Enter valid 12-digit Aadhaar</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Mobile Number</label>
+            <input type="text" id="mobileNo" class="form-control" maxlength="10">
+            <small class="text-danger d-none" id="errMobile">Enter valid 10-digit mobile number</small>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button class="btn text-white px-4" type="button" style="background:purple;" onclick="validateAEPS()">
+                ✔ Proceed
+            </button>
+
+          <button class="btn btn-outline-secondary px-4"
+        type="button"
+        data-bs-dismiss="offcanvas">
+    Cancel
+</button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- AEPS Registration Modal -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="aepsRegisterModal"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="offcanvas-header text-white" style="background:purple;">
+        <div>
+            <h5 class="mb-0 fw-bold">BankU</h5>
+            <small>AEPS Registration</small>
+        </div>
+
+        <div class="ms-auto">
+            <button type="button"
+                    class="btn btn-light btn-sm fw-semibold"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#aepsLoginSidebar">
+                Login
+            </button>
+        </div>
+    </div>
+
+    <div class="offcanvas-body p-4">
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">External Ref No</label>
+            <input type="text" id="extRef" class="form-control">
+            <small class="text-danger d-none" id="errExtRef">Required field</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">PAN Number</label>
+            <input type="text" id="pan" class="form-control">
+            <small class="text-danger d-none" id="errPan">Invalid PAN format</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Mobile Number</label>
+            <input type="text" id="regMobile" class="form-control">
+            <small class="text-danger d-none" id="errMobileNo">Invalid mobile number</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Email ID</label>
+            <input type="email" id="email" class="form-control">
+            <small class="text-danger d-none" id="errEmail">Invalid email address</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Address</label>
+            <input type="text" id="address" class="form-control">
+            <small class="text-danger d-none" id="errAddress">Required field</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">City</label>
+            <input type="text" id="city" class="form-control">
+            <small class="text-danger d-none" id="errCity">Required field</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">State</label>
+            <select id="state" class="form-select">
+                <option value="">Select State</option>
+                <option>Delhi</option>
+                <option>Maharashtra</option>
+                <option>UP</option>
+            </select>
+            <small class="text-danger d-none" id="errState">Select a state</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Pincode</label>
+            <input type="text" id="pincode" class="form-control">
+            <small class="text-danger d-none" id="errPincode">Invalid pincode</small>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button class="btn text-white px-4"
+                    style="background:purple;"
+                    type="button"
+                    onclick="validateRegister()">
+                ✔ Create Agent
+            </button>
+
+            <button class="btn btn-outline-secondary px-4"
+                    data-bs-dismiss="offcanvas"
+                    type="button">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -859,6 +1197,78 @@ async function captureFingerprint() {
 </script>
 
 <script>
+    function validateAEPS() {
+        let isValid = true;
+
+        const agent = document.getElementById("agentRef");
+        const aadhaar = document.getElementById("aadhaar");
+        const mobile = document.getElementById("mobileNo");
+
+        const errAgent = document.getElementById("errAgent");
+        const errAadhaar = document.getElementById("errAadhaar");
+        const errMobile = document.getElementById("errMobile");
+
+        const aadhaarRegex = /^[0-9]{12}$/;
+        const mobileRegex = /^[6-9][0-9]{9}$/;
+
+        errAgent.classList.add("d-none");
+        errAadhaar.classList.add("d-none");
+        errMobile.classList.add("d-none");
+
+        if (agent.value.trim() === "") {
+            errAgent.classList.remove("d-none");
+            isValid = false;
+        }
+
+        if (!aadhaarRegex.test(aadhaar.value)) {
+            errAadhaar.classList.remove("d-none");
+            isValid = false;
+        }
+
+        if (!mobileRegex.test(mobile.value)) {
+            errMobile.classList.remove("d-none");
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        alert("Validation Successful! Proceeding...");
+
+        //  call API / submit form
+    }
+
+    function validateRegister() {
+
+        let isValid = true;
+
+        const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        const mobileRegex = /^[6-9][0-9]{9}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const pincodeRegex = /^[1-9][0-9]{5}$/;
+
+        function showError(id, show) {
+            document.getElementById(id).classList.toggle("d-none", !show);
+            if (show) isValid = false;
+        }
+
+        showError("errExtRef", document.getElementById("extRef").value.trim() === "");
+        showError("errPan", !panRegex.test(document.getElementById("pan").value));
+        showError("errMobileNo", !mobileRegex.test(document.getElementById("regMobile").value));
+        showError("errEmail", !emailRegex.test(document.getElementById("email").value));
+        showError("errAddress", document.getElementById("address").value.trim() === "");
+        showError("errCity", document.getElementById("city").value.trim() === "");
+        showError("errState", document.getElementById("state").value === "");
+        showError("errPincode", !pincodeRegex.test(document.getElementById("pincode").value));
+
+        if (!isValid) return;
+
+       
+        alert("Registration Successful!");
+        //API call
+    }
+</script>
+
+<script>
     function callAepsTxn(pidXml) {
 
         var data = {
@@ -935,7 +1345,6 @@ async function captureFingerprint() {
     }
 
 </script>
-
 
 <script>
     function getLocation() {
@@ -1193,6 +1602,92 @@ async function captureFingerprint() {
         a.click();
         document.body.removeChild(a);
     }
+</script>
+
+<script>
+        $(document).ready(function () {
+          
+            document.getElementById("lblTranDate").innerText =
+                new Date().toLocaleDateString("en-GB");
+
+            $(document).on("click", ".btn-receipt", function () {
+                
+            // Show modal
+                var receiptModal = new bootstrap.Modal(document.getElementById('InvoiceMiniState'));
+            receiptModal.show();
+        });
+    });
+
+        // ✅ Print function
+        function printReceipt() {
+            var printContent = document.getElementById('printArea').innerHTML;
+            var win = window.open('', '_blank');
+            win.document.write(`
+            <html>
+                <head>
+                    <title>Print Receipt</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .fw-bold { font-weight: bold; }
+                        .text-dark { color: #000; }
+                        .text-success { color: green; }
+                        .text-danger { color: red; }
+                        .text-center { text-align: center; }
+                        .border-bottom { border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; }
+                        .no-print { display: none; }
+                    </style>
+                </head>
+                <body onload="window.print(); window.close();">
+                    ${printContent}
+                </body>
+            </html>
+        `);
+            win.document.close();
+        }
+</script>
+
+<script>
+        $(document).ready(function () {
+
+            document.getElementById("lblTxnDate").innerText =
+                new Date().toLocaleDateString("en-GB");
+
+            $(document).on("click", ".btnTxn", function () {
+
+                // Show modal
+                var receiptModal = new bootstrap.Modal(document.getElementById('InvoiceTrnx'));
+                receiptModal.show();
+            });
+        });
+
+        // ✅ Print function
+        function printReceipt() {
+            var printContent = document.getElementById('printAreaTxn').innerHTML;
+            var win = window.open('', '_blank');
+            win.document.write(`
+            <html>
+                <head>
+                    <title>Print Receipt</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .fw-bold { font-weight: bold; }
+                        .text-dark { color: #000; }
+                        .text-success { color: green; }
+                        .text-danger { color: red; }
+                        .text-center { text-align: center; }
+                        .border-bottom { border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; }
+                        .no-print { display: none; }
+                    </style>
+                </head>
+                <body onload="window.print(); window.close();">
+                    ${printContent}
+                </body>
+            </html>
+        `);
+            win.document.close();
+        }
 </script>
 
 </asp:Content>
