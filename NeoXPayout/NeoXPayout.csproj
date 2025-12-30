@@ -180,6 +180,8 @@
     <Content Include="assets\images\lg\f1.png" />
     <Content Include="assets\images\lg\gift_bank.png" />
     <Content Include="assets\images\lg\scan.png" />
+    <Content Include="assets\images\mantra.png" />
+    <Content Include="assets\images\morpho.png" />
     <Content Include="assets\images\OvalImage.png" />
     <Content Include="assets\images\overlayimage.png" />
     <Content Include="assets\images\payment\academic.png" />
@@ -211,6 +213,7 @@
     <Content Include="assets\images\payment\train.png" />
     <Content Include="assets\images\payment\water-tap.png" />
     <Content Include="assets\images\payment\wifi-router.png" />
+    <Content Include="assets\images\secugen.png" />
     <Content Include="assets\images\upi.png" />
     <Content Include="assets\images\user.png" />
     <Content Include="assets\images\xs\Adani_Power.png" />
@@ -490,7 +493,7 @@
     <Content Include="ckeditor\lang\vi.js" />
     <Content Include="ckeditor\lang\zh-cn.js" />
     <Content Include="ckeditor\lang\zh.js" />
-	<Content Include="CustomJS\AEPSBalanceEnquiry.js" />
+    <Content Include="CustomJS\AEPSBalanceEnquiry.js" />
     <Content Include="ckeditor\lang\_languages.js" />
     <Content Include="ckeditor\lang\_translationstatus.txt" />
     <Content Include="ckeditor\LICENSE.html" />
