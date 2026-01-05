@@ -63,12 +63,16 @@ namespace NeoXPayout
                     Session["RegistrationStatus"] = dr["RegistrationStatus"].ToString();
                     Session["AccountHolderType"] = dr["AccountType"].ToString();
                     Session["UserMPIN"] = dr["MPIN"].ToString();
+                    Session["AadharNo"] = dr["AadharNo"].ToString();
+                    Session["PANNo"] = dr["PANNo"].ToString();
+                    Session["BankAccount"] = dr["BankAccount"].ToString();
+                    Session["IFSC"] = dr["IFSC"].ToString();
                 }
             }
         }
 
         protected void LinkButton1_Click(object sender, EventArgs e)
-        {          
+        {
             if (!pnlOTP.Visible)
             {
                 SendOTPFlow();
@@ -105,9 +109,9 @@ namespace NeoXPayout
 
             if (HasActiveLoginSession(number))
             {
-              
+
                 LoadUserSessionFromRegistration(number);
-                Session["LastPage"] = "Dashboard.aspx"; 
+                Session["LastPage"] = "Dashboard.aspx";
                 Response.Redirect("MPIN.aspx");
                 return;
             }
@@ -119,8 +123,8 @@ namespace NeoXPayout
             string mobile = TextBox1.Text.Trim();
             string last4 = mobile.Substring(mobile.Length - 4);
             lblConfirm.Text = $"(xxxxxx{last4}) <a href='LoginBankU.aspx' style='color: red;'>Change mobile Number</a>";
-        
-        SendOTP(number);
+
+            SendOTP(number);
         }
         private void InsertLoginAttempt(string mobile)
         {
@@ -191,7 +195,7 @@ namespace NeoXPayout
                         conn.Open();
                         cmd.ExecuteNonQuery();
                     }
-                   
+
                     Response.Redirect("Dashboard.aspx");
                     return;
                 }
@@ -217,7 +221,7 @@ namespace NeoXPayout
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Mobile", mobile);
-                  
+
                     conn.Open();
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
@@ -228,7 +232,7 @@ namespace NeoXPayout
                         Session["RegistrationStatus"] = "Pending";
                         return false; // Not onboarded
                     }
-                    else if (dt.Rows[0]["RegistrationStatus"].ToString()=="Done") 
+                    else if (dt.Rows[0]["RegistrationStatus"].ToString() == "Done")
                     {
                         Session["mobileno"] = mobile;
                         Session["BankURTName"] = dt.Rows[0]["FullName"].ToString();
@@ -239,21 +243,30 @@ namespace NeoXPayout
                         Session["IsMPINVerified"] = true;
                         Session["AccountHolderType"] = dt.Rows[0]["AccountType"].ToString();
                         Session["UserMPIN"] = dt.Rows[0]["MPIN"].ToString();
-                        
+                        Session["AadharNo"] = dt.Rows[0]["AadharNo"].ToString();
+                        Session["PANNo"] = dt.Rows[0]["PANNo"].ToString();
+                        Session["BankAccount"] = dt.Rows[0]["BankAccount"].ToString();
+                        Session["IFSC"] = dt.Rows[0]["IFSC"].ToString();
+
 
                         return true;// User is onboarded
                     }
-                    else 
+                    else
                     {
                         Session["mobileno"] = mobile;
                         Session["BankURTName"] = dt.Rows[0]["FullName"].ToString();
                         Session["BankURTMobileno"] = dt.Rows[0]["MobileNo"].ToString();
+                        Session["BankURTEmail"] = dt.Rows[0]["Email"].ToString();
                         Session["BankURTUID"] = dt.Rows[0]["RegistrationId"].ToString();
                         Session["RegistrationStatus"] = dt.Rows[0]["RegistrationStatus"].ToString();
-                        Session["PanName"]= dt.Rows[0]["FULLNAME"].ToString();
+                        Session["PanName"] = dt.Rows[0]["FULLNAME"].ToString();
+                        Session["AadharNo"] = dt.Rows[0]["AadharNo"].ToString();
+                        Session["PANNo"] = dt.Rows[0]["PANNo"].ToString();
+                        Session["BankAccount"] = dt.Rows[0]["BankAccount"].ToString();
+                        Session["IFSC"] = dt.Rows[0]["IFSC"].ToString();
                         return false; // User is Registered but not completed
                     }
-                   
+
                 }
             }
         }
@@ -265,11 +278,11 @@ namespace NeoXPayout
 
             if (number == "6200361373" || number == "9117750580" || number == "8969140992")
             {
-                otp = "1234"; 
+                otp = "1234";
             }
             else
             {
-                otp = Um.signupotp(number); 
+                otp = Um.signupotp(number);
             }
 
             if (otp != "-1")
@@ -283,6 +296,7 @@ namespace NeoXPayout
                 lblOTPStatus.CssClass = "text-danger";
                 lblOTPStatus.Text = "Failed to send OTP. Please try again.";
             }
+            //
         }
 
     }

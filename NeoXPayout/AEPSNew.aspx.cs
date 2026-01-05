@@ -44,12 +44,23 @@ namespace NeoXPayout
 
             if (!IsPostBack)
             {
-                HttpContext context = HttpContext.Current;
-                string UserId = context.Session["BankURTUID"].ToString();
+                string UserId = Session["BankURTUID"].ToString();
+                string AadharNo = Session["AadharNo"].ToString();
+                string UserMobNo = Session["BankURTMobileno"].ToString();
+                string PANNumber = Session["PANNo"].ToString();
+                string BankAccount = Session["BankAccount"].ToString();
+                string IFSC = Session["IFSC"].ToString();
+                string EmailId = Session["BankURTEmail"].ToString();
                 hdnUserId.Value = UserId;
+                hdnAadharNO.Value = AadharNo;
+                hdnUserMobile.Value = UserMobNo;
+                hdnUserPAN.Value = PANNumber;
+                hdnUserBankAccount.Value = BankAccount;
+                hdnUserBankIFSC.Value = IFSC;
+                hdnUserEmail.Value = EmailId;
                 getbanklist();
                 lblMessage1.Text = "No request available";
-                    lblMessage1.ForeColor = System.Drawing.Color.Red;// remove this after report active
+                lblMessage1.ForeColor = System.Drawing.Color.Red;// remove this after report active
                 //getReport();
             }
         }
@@ -58,7 +69,7 @@ namespace NeoXPayout
         {
             public string Status { get; set; }
             public string Message { get; set; }
-            public string Data { get; set; }   
+            public string Data { get; set; }
         }
 
         public class BankItem
@@ -91,18 +102,18 @@ namespace NeoXPayout
                 if (!response.IsSuccessful || string.IsNullOrEmpty(response.Content))
                     throw new Exception("API call failed");
 
-              
+
                 BankApiResponse apiResponse =
                     JsonConvert.DeserializeObject<BankApiResponse>(response.Content);
 
                 if (apiResponse == null || apiResponse.Status != "SUCCESS")
                     throw new Exception(apiResponse?.Message ?? "Invalid API response");
 
-               
+
                 List<BankItem> banks =
                     JsonConvert.DeserializeObject<List<BankItem>>(apiResponse.Data);
 
-             
+
                 ddlCircle.DataSource = banks;
                 ddlCircle.DataTextField = "name";   // Bank Name
                 ddlCircle.DataValueField = "iin";   // Bank IIN
@@ -112,7 +123,7 @@ namespace NeoXPayout
             }
             catch (Exception ex)
             {
-               
+
                 lblError1.Text = ex.Message;
 
             }
@@ -122,7 +133,7 @@ namespace NeoXPayout
         {
             using (SqlConnection con = new SqlConnection(connStr))
             {
-               
+
                 string query = "SELECT Status FROM BankUServices WHERE ServiceName = @ServiceName";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -131,10 +142,10 @@ namespace NeoXPayout
 
                     object statusObj = cmd.ExecuteScalar();
                     if (statusObj == null || statusObj == DBNull.Value)
-                        return false; 
+                        return false;
 
                     string status = statusObj.ToString();
-                    
+
                     return (status.Equals("Active", StringComparison.OrdinalIgnoreCase) || status == "1");
                 }
             }
@@ -274,8 +285,8 @@ namespace NeoXPayout
                     case "login": txnType = "login"; break;
                 }
 
-             
-                string Agentid = "BANKU"+ DateTime.Now.ToString("yyyyMMdd") + new Random().Next(100000, 999999).ToString();
+
+                string Agentid = "BANKU" + DateTime.Now.ToString("yyyyMMdd") + new Random().Next(100000, 999999).ToString();
 
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(model.pidXml);
@@ -365,7 +376,7 @@ namespace NeoXPayout
                 };
             }
         }
-      
+
         //private void AepsTxn(string pidXml)
         //{
         //    string UserId = Session["BankURTUID"].ToString();
