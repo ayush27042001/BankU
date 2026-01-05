@@ -258,6 +258,60 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.HiddenField hdnUserId;
 
         /// <summary>
+        /// hdnAadharNO control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnAadharNO;
+
+        /// <summary>
+        /// hdnUserMobile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserMobile;
+
+        /// <summary>
+        /// hdnUserPAN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserPAN;
+
+        /// <summary>
+        /// hdnUserBankAccount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserBankAccount;
+
+        /// <summary>
+        /// hdnUserBankIFSC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserBankIFSC;
+
+        /// <summary>
+        /// hdnUserEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserEmail;
+
+        /// <summary>
         /// pnlError control.
         /// </summary>
         /// <remarks>

@@ -44,9 +44,20 @@ namespace NeoXPayout
 
             if (!IsPostBack)
             {
-                HttpContext context = HttpContext.Current;
-                string UserId = context.Session["BankURTUID"].ToString();
+                string UserId = Session["BankURTUID"].ToString();
+                string AadharNo = Session["AadharNo"].ToString();
+                string UserMobNo = Session["BankURTMobileno"].ToString();
+                string PANNumber= Session["PANNo"].ToString();
+                string BankAccount= Session["BankAccount"].ToString();
+                string IFSC= Session["IFSC"].ToString();
+                string EmailId= Session["BankURTEmail"].ToString();
                 hdnUserId.Value = UserId;
+                hdnAadharNO.Value = AadharNo;
+                hdnUserMobile.Value = UserMobNo;
+                hdnUserPAN.Value = PANNumber;
+                hdnUserBankAccount.Value = BankAccount;
+                hdnUserBankIFSC.Value = IFSC;
+                hdnUserEmail.Value = EmailId;
                 getbanklist();
                 lblMessage1.Text = "No request available";
                     lblMessage1.ForeColor = System.Drawing.Color.Red;// remove this after report active

@@ -63,6 +63,10 @@ namespace NeoXPayout
                     Session["RegistrationStatus"] = dr["RegistrationStatus"].ToString();
                     Session["AccountHolderType"] = dr["AccountType"].ToString();
                     Session["UserMPIN"] = dr["MPIN"].ToString();
+                    Session["AadharNo"] = dr["AadharNo"].ToString();
+                    Session["PANNo"] = dr["PANNo"].ToString();
+                    Session["BankAccount"] = dr["BankAccount"].ToString();
+                    Session["IFSC"] = dr["IFSC"].ToString();
                 }
             }
         }
@@ -239,7 +243,11 @@ namespace NeoXPayout
                         Session["IsMPINVerified"] = true;
                         Session["AccountHolderType"] = dt.Rows[0]["AccountType"].ToString();
                         Session["UserMPIN"] = dt.Rows[0]["MPIN"].ToString();
-                        
+                        Session["AadharNo"] = dt.Rows[0]["AadharNo"].ToString();
+                        Session["PANNo"] = dt.Rows[0]["PANNo"].ToString();
+                        Session["BankAccount"] = dt.Rows[0]["BankAccount"].ToString();
+                        Session["IFSC"] = dt.Rows[0]["IFSC"].ToString();
+
 
                         return true;// User is onboarded
                     }
@@ -248,9 +256,14 @@ namespace NeoXPayout
                         Session["mobileno"] = mobile;
                         Session["BankURTName"] = dt.Rows[0]["FullName"].ToString();
                         Session["BankURTMobileno"] = dt.Rows[0]["MobileNo"].ToString();
+                        Session["BankURTEmail"] = dt.Rows[0]["Email"].ToString();
                         Session["BankURTUID"] = dt.Rows[0]["RegistrationId"].ToString();
                         Session["RegistrationStatus"] = dt.Rows[0]["RegistrationStatus"].ToString();
                         Session["PanName"]= dt.Rows[0]["FULLNAME"].ToString();
+                        Session["AadharNo"] = dt.Rows[0]["AadharNo"].ToString();
+                        Session["PANNo"] = dt.Rows[0]["PANNo"].ToString();
+                        Session["BankAccount"] = dt.Rows[0]["BankAccount"].ToString();
+                        Session["IFSC"] = dt.Rows[0]["IFSC"].ToString();
                         return false; // User is Registered but not completed
                     }
                    
