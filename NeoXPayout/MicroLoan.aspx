@@ -268,7 +268,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <br> 
- 
+ <asp:Label runat="server" ID="lblError" style="margin-left:10px"></asp:Label>
 <div class="bnk-card-grid" style="margin:10px">
 
   <div class="bnk-card">
@@ -306,7 +306,7 @@
 
   <div class="bnk-alert-box">
     <strong>⚠️ Attention!</strong><br>
-    ₹ 15,000 + 18% GST <br /> <b> Sub Total:- </b> 17,700.00 <span style="font-size: x-small;"> non-refundable fee</span>
+    ₹ 2,100 + 18% GST <br /> <b> Sub Total:- </b> 2,478.00 <span style="font-size: x-small;"> non-refundable fee</span>
   </div>
 
   <label for="website-url">Enter Message</label>
