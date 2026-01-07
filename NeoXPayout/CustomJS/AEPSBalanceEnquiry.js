@@ -509,7 +509,7 @@ function callBalanceEnquiry(pidXml) {
         success: function (res) {
             console.log("AEPS Response:", res);
             if (res.Status === "SUCCESS") {
-                showSuccess("Balance: " + res.Data[0].acamount);
+                ManageInvoicePay("BALANCE", res);
                 $(".loader-overlay").css("display", "none");
             } else {
                 showFailed(res.Message || "Transaction Failed");
@@ -1011,6 +1011,32 @@ function buildSignUpValidatePayload() {
             tType: "null"
         }
     };
+}
+
+function ManageInvoicePay(Mode, response)
+{
+    if (Mode == "BALANCE") {
+
+        $(".balancerrn").text(response.Data[0].agentid);
+        $(".balanceTxnType").text("Balance Inquiry Invoice");
+        $(".balanceac").text(response.Data[0].acamount);
+        $(".balanceBankName").text($("#ContentPlaceHolder1_ddlCircle option:selected").text());
+        $(".balanceAadhar").text($("#ContentPlaceHolder1_txtAadhar").val());
+
+        var now = new Date();
+        var formattedDateTime =
+            String(now.getDate()).padStart(2, '0') + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            now.getFullYear() + " " +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0') + ":" +
+            String(now.getSeconds()).padStart(2, '0');
+
+        console.log(formattedDateTime);
+        $(".lblTxnDate").text(formattedDateTime);
+        var modal = new bootstrap.Modal(document.getElementById('InvoiceTrnx'));
+        modal.show();
+    }
 }
 
 function parsePidXml(pidXml) {
