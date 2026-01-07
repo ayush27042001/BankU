@@ -39,10 +39,9 @@
   background-color: rgba(0, 0, 0, 0.55) !important;
 }
 #mpinModal.modal {
-    z-index: 9999 !important; /* very high to stay on top */
+    z-index: 9999 !important; 
 }
 
-/* Make sure the backdrop is also above other content */
 #mpinModal + .modal-backdrop {
     z-index: 9998 !important;
 }
@@ -996,6 +995,17 @@
                                           </a>
                                         </li>
 
+                                          <!-- User Ticket -->
+                                           <li>
+                                          <a href="Ticket.aspx" aria-label="Ticket" data-bs-toggle="tooltip" data-bs-title="Tickets" data-bs-placement="right">
+                                            <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                              <path d="M9 12l2 2 4-4" />
+                                              <path d="M14 3H6a2 2 0 0 0-2 2v16l4-4h10a2 2 0 0 0 2-2V7z" />
+                                            </svg>
+                                            <span class="ms-2">Ticket</span>
+                                          </a>
+                                        </li>
                                         <!-- EMP User -->
                                         <li>
                                           <a href="EMPuser.aspx" aria-label="EMP User" data-bs-toggle="tooltip" data-bs-title="EMP User" data-bs-placement="right">

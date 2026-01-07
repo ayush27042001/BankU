@@ -1,7 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/APIDocument/developer.Master" AutoEventWireup="true" CodeBehind="Document.aspx.cs" Inherits="NeoXPayout.APIDocument.Document" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <style>
-.col-md-4 {
+.col-md-4 
+{
   display: flex;            
   flex-direction: column;  
 }

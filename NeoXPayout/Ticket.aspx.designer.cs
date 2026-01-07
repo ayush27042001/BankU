@@ -11,61 +11,52 @@ namespace NeoXPayout
 {
 
 
-    public partial class MicroLoan
+    public partial class Ticket
     {
 
         /// <summary>
-        /// lblError control.
+        /// rptProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected global::System.Web.UI.WebControls.Repeater rptProduct;
 
         /// <summary>
-        /// btnActivate control.
+        /// txtTxn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnActivate;
+        protected global::System.Web.UI.WebControls.TextBox txtTxn;
 
         /// <summary>
-        /// txtUseCase control.
+        /// ddlService control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUseCase;
+        protected global::System.Web.UI.WebControls.DropDownList ddlService;
 
         /// <summary>
-        /// rfvUseCase control.
+        /// txtDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUseCase;
+        protected global::System.Web.UI.WebControls.TextBox txtDescription;
 
         /// <summary>
-        /// btnRequestActivation control.
+        /// btnSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRequestActivation;
-
-        /// <summary>
-        /// btnSaveActivation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSaveActivation;
+        protected global::System.Web.UI.WebControls.LinkButton btnSave;
     }
 }
