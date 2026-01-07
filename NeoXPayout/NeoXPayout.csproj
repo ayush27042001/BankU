@@ -125,6 +125,7 @@
     <Content Include="Admin\AddMargin.aspx" />
     <Content Include="Admin\AddProduct.aspx" />
     <Content Include="Admin\APICat.aspx" />
+    <Content Include="Admin\Complain.aspx" />
     <Content Include="Admin\DistUser.aspx" />
     <Content Include="Admin\EditAPIDocument.aspx" />
     <Content Include="Admin\EditBlogs.aspx" />
@@ -1733,6 +1734,7 @@
     <Content Include="team\TodayAttandance.aspx" />
     <Content Include="team\ViewNewUser.aspx" />
     <Content Include="Test.aspx" />
+    <Content Include="Ticket.aspx" />
     <Content Include="TrainTicket.aspx" />
     <Content Include="Transaction.aspx" />
     <Content Include="TransactionDone.aspx" />
@@ -2141,6 +2143,13 @@
     </Compile>
     <Compile Include="Admin\APICat.aspx.designer.cs">
       <DependentUpon>APICat.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Complain.aspx.cs">
+      <DependentUpon>Complain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Complain.aspx.designer.cs">
+      <DependentUpon>Complain.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\DashboardAdmin.aspx.cs">
       <DependentUpon>DashboardAdmin.aspx</DependentUpon>
@@ -3077,6 +3086,13 @@
     </Compile>
     <Compile Include="Test.aspx.designer.cs">
       <DependentUpon>Test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Ticket.aspx.cs">
+      <DependentUpon>Ticket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Ticket.aspx.designer.cs">
+      <DependentUpon>Ticket.aspx</DependentUpon>
     </Compile>
     <Compile Include="TrainTicket.aspx.cs">
       <DependentUpon>TrainTicket.aspx</DependentUpon>
