@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="AEPSNew.aspx.cs" Inherits="NeoXPayout.AEPSNew" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="AEPSNew.aspx.cs" Inherits="NeoXPayout.AEPSNew" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -430,22 +430,29 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <hr />
+        <asp:ScriptManager
+        ID="ScriptManager1"
+        runat="server"
+        EnableCdn="true"
+        EnableScriptGlobalization="false"
+        EnableScriptLocalization="false">
+    </asp:ScriptManager>
     <div class="loader-overlay">
         <div class="spinner-border text-purple" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
     <asp:Panel runat="server" ID="pnlMain">
-        <button type="button" class="btn btn-receipt btn-primary">Test</button>
-        <button type="button" class="btn btnTxn btn-primary">Testtxn</button>
-        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsLoginSidebar">
+        <button type="button" class="btn btn-receipt btn-primary hidden">Test</button>
+        <button type="button" class="btn btnTxn btn-primary hidden">Testtxn</button>
+        <button class="btn btn-primary hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsLoginSidebar">
             Open AEPS Login
         </button>
-        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsKYCModal">
+        <button class="btn btn-primary hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsKYCModal">
             EKyc
         </button>
 
-        <div class="container py-4">
+        <div class="container">
 
 
             <!-- Tabs -->
@@ -490,11 +497,11 @@
                         </div>
                         <label runat="server" id="lblMessage" class="col text-end text-success"></label>
                         <label runat="server" id="lblerror" class="col text-end text-danger"></label>
-                        <div class="col text-end">
+                        <div class="col-md-3 text-end">
                             <button type="button" class="btn btn-primary"
                                 data-bs-toggle="offcanvas" data-bs-target="#TransactionSidebar"
                                 style="background-color: #6e007c">
-                                Scan</button>
+                                Initiate AEPS Transaction</button>
                             <div class="sender-profile d-flex align-items-center ms-3" style="display: none !important">
                                 <img id="SenderProfile"
                                     class="sender-avatar"
@@ -665,8 +672,14 @@
                     </div>
                     <div class="mb-3">
                         <asp:TextBox ID="txtamount" runat="server" CssClass="form-control" placeholder="Amount" TextMode="Number"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtamount"
-                            ErrorMessage="Amount is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+                        <asp:RequiredFieldValidator
+                            ID="RequiredFieldValidator2"
+                            runat="server"
+                            ControlToValidate="txtamount"
+                            ErrorMessage="Amount is required"
+                            CssClass="text-danger"
+                            Display="Dynamic"
+                            ValidationGroup="BankPayoutGroup" />
                     </div>
 
                     <div class="mb-3">
@@ -682,6 +695,8 @@
                     Scan
                         </asp:LinkButton>
                     </div>
+                    <asp:HiddenField ID="hfOperationType" runat="server" />
+
                 </div>
 
             </div>
@@ -932,17 +947,15 @@
                     <!-- Bill To & Transaction Info -->
                     <div class="d-flex justify-content-between mb-4 border-bottom pb-3">
                         <div>
-                            <h6 class="fw-bold mb-1">Transaction Invoice</h6>
-                            <div><strong>Current Balance:</strong>&nbsp ₹<asp:Label ID="Label4" runat="server"></asp:Label></div>
-                            <%-- <div><asp:Label ID="lblNumber" runat="server" CssClass="text-dark fw-semibold"></asp:Label></div>
-                        <div><asp:Label ID="lblOpe" runat="server" CssClass="text-muted"></asp:Label></div>--%>
+                            <h6 class="fw-bold mb-1 balanceTxnType"></h6>
+
                         </div>
                         <div class="text-end">
                             <div>
                                 <strong>Transaction ID:</strong>
-                                <asp:Label ID="Label5" runat="server"></asp:Label>
+                                <asp:Label ID="Label5" CssClass="balancerrn" runat="server"></asp:Label>
                             </div>
-                            <div><strong>Date:</strong> <span id="lblTxnDate"></span></div>
+                            <div><strong>Date:</strong> <span class="lblTxnDate"></span></div>
                         </div>
                     </div>
 
@@ -953,29 +966,24 @@
                             <tbody>
                                 <tr>
                                     <td>Transaction Type</td>
-                                    <td>Balance Enquiry </td>
+                                    <td class="balanceTxnType"></td>
                                 </tr>
                                 <tr>
                                     <td>Aadhar</td>
-                                    <td>223423424</td>
+                                    <td class="balanceAadhar"></td>
                                 </tr>
                                 <tr>
                                     <td>Bank Name</td>
-                                    <td>25/12</td>
+                                    <td class="balanceBankName"></td>
                                 </tr>
                                 <tr>
                                     <td>Available Balance</td>
-                                    <td>₹0.0</td>
+                                    <td class="balanceac"></td>
                                 </tr>
                                 <tr>
                                     <td>RRN</td>
-                                    <td>1111111</td>
+                                    <td class="balancerrn"></td>
                                 </tr>
-                                <tr>
-                                    <td>Transaction Time</td>
-                                    <td>1111111</td>
-                                </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -1273,13 +1281,8 @@
     </div>
 
 
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-
     <script>
+
 
         $(document).ajaxStart(function () {
             $(".loader-overlay").fadeIn(100).css("display", "flex");
@@ -1589,7 +1592,7 @@
 
     <script>
 
-</script>
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -1605,6 +1608,18 @@
                         document.getElementById("step2").classList.remove("d-none");
                         document.getElementById("selectedOperator").innerText = "Operator: " + operator;
                         document.getElementById('<%= hfOperator.ClientID %>').value = operator;
+                        document.getElementById('<%= hfOperationType.ClientID %>').value = operator;
+
+                        if(operator=="Balance" || operator =="Statement")
+                        {
+                            $("#ContentPlaceHolder1_txtamount").css("display","none");
+                            $("#ContentPlaceHolder1_RequiredFieldValidator2").css("display","none");
+                        }
+                        else
+                        {
+                            $("#ContentPlaceHolder1_txtamount").css("display","block");
+                            
+                        }
 
                         let mobileBox = document.getElementById("<%= txtMobile.ClientID %>");
                         let amountBox = document.getElementById("<%= txtAadhar.ClientID %>");
@@ -1724,6 +1739,18 @@
         }
 
         function validateAndOpenPlansSidebarTransaction() {
+
+             var operationType = document.getElementById('<%= hfOperationType.ClientID %>').value;
+             var amountValidator = document.getElementById('<%= RequiredFieldValidator2.ClientID %>');
+
+            if(operationType=="Balance" || operationType =="Statement")
+            {
+                amountValidator.enabled = false;
+            }
+            else
+            {
+                amountValidator.enabled = true;
+            }
 
             if (typeof (Page_ClientValidate) == 'function') {
                 if (!Page_ClientValidate('BankPayoutGroup')) {
