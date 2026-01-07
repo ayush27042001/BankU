@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -61,7 +62,7 @@ namespace NeoXPayout
                 getbanklist();
                 lblMessage1.Text = "No request available";
                     lblMessage1.ForeColor = System.Drawing.Color.Red;// remove this after report active
-                //getReport();
+                getReport();
             }
         }
 
@@ -150,32 +151,76 @@ namespace NeoXPayout
                 }
             }
         }
-        //protected void getReport()
-        //{
-        //    using (SqlConnection con = new SqlConnection(connStr))
-        //    {
-        //        string query = "SELECT * FROM BankPayouts Order By Id Asc";
-        //        using (SqlCommand cmd = new SqlCommand(query, con))
-        //        {
-        //            con.Open();
-        //            SqlDataReader reader = cmd.ExecuteReader();
+        protected void getReport()
+        {
+            string UserId = Session["BankURTUID"].ToString();
 
-        //            if (!reader.HasRows)
-        //            {
-        //                gvRequests.Visible = false;
-        //                lblMessage1.Text = "No request available";
-        //                lblMessage1.ForeColor = System.Drawing.Color.Red;
-        //            }
-        //            else
-        //            {
-        //                gvRequests.Visible = true;
-        //                gvRequests.DataSource = reader;
-        //                gvRequests.DataBind();
-        //                lblMessage1.Text = "";
-        //            }
-        //        }
-        //    }
-        //}
+            int txnToday = 0;
+            decimal totalAmount = 0;
+            int totalCount = 0;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                string query = @"SELECT *, CAST(TxnDate AS DATE) AS TxnOnlyDate FROM TxnReport  WHERE UserId = @UserId AND ServiceName = @ServiceName ORDER BY TransID DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", UserId);
+                    cmd.Parameters.AddWithValue("@ServiceName", "AEPS");
+                    con.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (!reader.HasRows)
+                    {
+                        gvRequests.Visible = false;
+                        lblMessage1.Text = "No request available";
+                        lblMessage1.ForeColor = System.Drawing.Color.Red;
+
+                       
+                        lblTxnToday.Text = "0";
+                        lblTotalValue.Text = "0";
+                        lblAvgValue.Text = "0";
+                        return;
+                    }
+          
+                    DataTable dt = new DataTable();
+                    dt.Load(reader);
+
+                    gvRequests.Visible = true;
+                    gvRequests.DataSource = dt;
+                    gvRequests.DataBind();
+                    lblMessage1.Text = "";
+
+                    DateTime today = DateTime.Today;
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        totalCount++;
+
+                   
+                        if (row["Amount"] != DBNull.Value)
+                        {
+                            totalAmount += Convert.ToDecimal(row["Amount"]);
+                        }
+
+                      
+                        if (row["TxnDate"] != DBNull.Value &&
+                            Convert.ToDateTime(row["TxnDate"]).Date == today)
+                        {
+                            txnToday++;
+                        }
+                    }
+                }
+            }
+
+            lblTxnToday.Text = txnToday.ToString();
+            lblTotalValue.Text = totalAmount.ToString("N2");
+            lblAvgValue.Text = totalCount > 0
+                ? (totalAmount / totalCount).ToString("N2")
+                : "0";
+        }
+
         protected void lnkSaveFingerprint_Click(object sender, EventArgs e)
         {
             try

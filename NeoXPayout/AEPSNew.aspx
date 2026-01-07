@@ -466,13 +466,7 @@
                                 AEPS Transaction
                             </button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="dth-tab" data-bs-toggle="tab"
-                                data-bs-target="#dth" type="button" role="tab"
-                                aria-controls="dth" aria-selected="false" style="color: #6e007c;">
-                                AEPS Authentication
-                            </button>
-                        </li>
+                      
                     </ul>
                 </div>
             </div>
@@ -485,15 +479,15 @@
                     <div class="row mb-4 align-items-center summary-row">
                         <div class="col-md-auto summary-item">
                             <small class="text-muted">TRANSACTION TODAY</small>
-                            <h5 class="mb-0">0</h5>
+                            <h5 class="mb-0"> <asp:Label ID="lblTxnToday" runat="server" Text="0"></asp:Label></h5>
                         </div>
                         <div class="col-md-auto summary-item">
                             <small class="text-muted">TOTAL VALUE</small>
-                            <h5 class="mb-0">₹0</h5>
+                            <h5 class="mb-0">₹<asp:Label ID="lblTotalValue" runat="server" Text="0"></asp:Label></h5>
                         </div>
                         <div class="col-md-auto summary-item">
                             <small class="text-muted">AVG VALUE</small>
-                            <h5 class="mb-0">₹0</h5>
+                            <h5 class="mb-0"> ₹<asp:Label ID="lblAvgValue" runat="server" Text="0"></asp:Label></h5>
                         </div>
                         <label runat="server" id="lblMessage" class="col text-end text-success"></label>
                         <label runat="server" id="lblerror" class="col text-end text-danger"></label>
@@ -516,25 +510,7 @@
                     </div>
                 </div>
 
-                <!-- DTH Recharge Tab -->
-                <div class="tab-pane fade" id="dth" role="tabpanel" aria-labelledby="dth-tab">
-                    <div class="row mb-4 align-items-center summary-row">
-                        <div class="col-md-auto summary-item">
-                            <small class="text-muted">TRANSACTION TODAY</small>
-                            <h5 class="mb-0">0</h5>
-                        </div>
-                        <div class="col-md-auto summary-item">
-                            <small class="text-muted">TOTAL VALUE</small>
-                            <h5 class="mb-0">₹0</h5>
-                        </div>
-                        <div class="col text-end">
-                            <button type="button" class="btn btn-primary"
-                                data-bs-toggle="offcanvas" data-bs-target="#AuthenticationSidebar"
-                                style="background-color: #6e007c">
-                                Scan</button>
-                        </div>
-                    </div>
-                </div>
+             
             </div>
 
             <!-- Filter Row -->
@@ -557,9 +533,9 @@
                     <select id="columnFilter" class="form-select form-select-sm" style="max-width: 150px;">
                         <option value="">Select Filter</option>
                         <option value="orderid">Order ID</option>
-                        <option value="beneficiary">Beneficiary</option>
+                        <option value="MobileNo">Mobile</option>
                         <option value="amount">Amount</option>
-                        <option value="status">Status</option>
+                        <option value="status-cell">Status</option>
                     </select>
 
                     <!-- Search Box -->
@@ -580,11 +556,10 @@
                             <th>#</th>
                             <th>Status</th>
                             <th>Order ID</th>
-                            <th>From</th>
-                            <th>Beneficiary</th>
-                            <th>Bank Name</th>
+                            <th>Type</th>
+                            <th>Mobile</th>
+                            <th>Account No.</th>
                             <th>Date</th>
-                            <th>Mode</th>
                             <th>Amount (₹)</th>
                             <%--<th>Action</th>--%>
                         </tr>
@@ -593,26 +568,26 @@
                         <asp:Repeater runat="server" ID="gvRequests">
                             <ItemTemplate>
                                 <tr>
-                                    <td class="toggle-btn" style="cursor: pointer;">+</td>
+                                    <td>  <%# Container.ItemIndex + 1 %></td>
                                     <td class="status-cell"><span class="status-success"><%# Eval("Status") %></span></td>
-                                    <td class="orderid"><%# Eval("OrderId") %></td>
-                                    <td>🏦</td>
-                                    <td class="beneficiary">A/C: <%# Eval("AccountNumber") %><br>
-                                        IFSC: <%# Eval("IFSC") %></td>
-                                    <td><%# Eval("BankName") %></td>
-                                    <td class="date-cell"><%# Eval("CreatedAt") %></td>
-                                    <td><%# Eval("Mode") %></td>
+                                    <td class="orderid"><%# Eval("TransactionID") %></td>
+                                    <td class="Type"><%# Eval("OperatorName") %></td>
+                                    <td class="MobileNo"><%# Eval("MobileNo") %></td>           
+                                    <td class="AccountNo"><%# Eval("AccountNo") %></td>
+                                    <td class="date-cell"><%# Eval("TxnDate") %></td>
                                     <td class="amount"><%# Eval("Amount") %></td>
                                 </tr>
-                                <tr class="details-row">
-                                    <td colspan="10"><%# Eval("BeneficiaryName") %></td>
-                                </tr>
+                               
                             </ItemTemplate>
                         </asp:Repeater>
 
                     </tbody>
 
                 </table>
+                <nav class="mt-3">
+    <ul class="pagination justify-content-end" id="payoutPagination"></ul>
+</nav>
+
             </div>
 
         </div>
@@ -705,30 +680,7 @@
         <asp:HiddenField ID="hfLastSidebar" runat="server" />
         <asp:HiddenField ID="hfTxnType" runat="server" />
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="AuthenticationSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
-            <asp:HiddenField ID="HiddenField2" runat="server" />
-            <div class="offcanvas-header" style="background-color: whitesmoke">
-                <h5 class="offcanvas-title">AEPS Authentication</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-            </div>
-            <div class="offcanvas-body">
-
-                <div class="mb-3">
-                    <asp:TextBox ID="TextBox1" runat="server" CssClass="form-control" placeholder="Aadhar Number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1"
-                        ErrorMessage="Aadhar number is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup1" />
-                </div>
-
-                <div class="d-flex justify-content-between mt-2">
-
-                    <asp:LinkButton runat="server" CssClass="btn btn-primary" Style="background-color: #6e007c"
-                        ID="LinkButton1" ValidationGroup="BankPayoutGroup1" OnClientClick="return validateAndOpenPlansSidebar();">
-                    Scan
-                    </asp:LinkButton>
-                </div>
-
-            </div>
-        </div>
+        
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="plansSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="offcanvas-header" style="background-color: whitesmoke">
@@ -1280,6 +1232,55 @@
         </div>
     </div>
 
+<script>
+    const rowsPerPage = 10;
+    const table = document.getElementById("payoutTable");
+    const tbody = table.querySelector("tbody");
+    const rows = tbody.querySelectorAll("tr");
+    const pagination = document.getElementById("payoutPagination");
+
+    let currentPage = 1;
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    function showPage(page) {
+        currentPage = page;
+
+        rows.forEach((row, index) => {
+            row.style.display =
+                (index >= (page - 1) * rowsPerPage &&
+                    index < page * rowsPerPage)
+                    ? ""
+                    : "none";
+        });
+
+        updatePagination();
+    }
+
+    function updatePagination() {
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement("li");
+            li.className = "page-item " + (i === currentPage ? "active" : "");
+
+            const a = document.createElement("a");
+            a.className = "page-link";
+            a.href = "#";
+            a.innerText = i;
+
+            a.onclick = function (e) {
+                e.preventDefault();
+                showPage(i);
+            };
+
+            li.appendChild(a);
+            pagination.appendChild(li);
+        }
+    }
+
+    // Init
+    showPage(1);
+</script>
 
     <script>
 
@@ -1590,9 +1591,6 @@
 
     </script>
 
-    <script>
-
-    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -1633,7 +1631,7 @@
             });
 
 
-            ["TransactionSidebar", "AuthenticationSidebar"].forEach(id => {
+            ["TransactionSidebar"].forEach(id => {
                 let el = document.getElementById(id);
                 if (el) {
                     el.addEventListener("show.bs.offcanvas", function () {
@@ -1644,12 +1642,7 @@
                             document.getElementById("<%= hfTxnType.ClientID %>").value = "Transaction";
 
                         }
-                        else if (id === "AuthenticationSidebar") {
-                            document.getElementById("<%= hfTxnType.ClientID %>").value = "Authentication";
-
-
-                            document.getElementById("<%= hfOperator.ClientID %>").value = "login";
-                        }
+                        
                     });
                 }
             });
@@ -1782,13 +1775,36 @@
             });
         });
 
-        // --- Filters ---
+        function parseDate(dateTimeStr) {
+            if (!dateTimeStr) return null;
+
+            // Expected: dd-MM-yyyy HH:mm:ss
+            const parts = dateTimeStr.trim().split(" ");
+            if (parts.length < 1) return null;
+
+            const datePart = parts[0]; // dd-MM-yyyy
+            const dateArr = datePart.split("-");
+            if (dateArr.length !== 3) return null;
+
+            const day = parseInt(dateArr[0], 10);
+            const month = parseInt(dateArr[1], 10) - 1;
+            const year = parseInt(dateArr[2], 10);
+
+            return new Date(year, month, day);
+        }
+
+
+
         function checkDate(dateString, type) {
-            let rowDate = new Date(dateString);
-            let today = new Date();
+            const rowDate = parseDate(dateString);
+            if (!rowDate) return false;
+
+            const today = new Date();
             today.setHours(0, 0, 0, 0);
-            let yesterday = new Date(today);
+
+            const yesterday = new Date(today);
             yesterday.setDate(today.getDate() - 1);
+
             rowDate.setHours(0, 0, 0, 0);
 
             if (type === "today") return rowDate.getTime() === today.getTime();
@@ -1796,26 +1812,46 @@
             return true;
         }
 
-        function applyFilters() {
-            let dateFilter = document.getElementById("dateFilter").value;
-            let statusFilter = document.getElementById("statusFilter").value.toLowerCase();
-            let colFilter = document.getElementById("columnFilter").value;
-            let searchValue = document.getElementById("searchBox").value.toLowerCase();
 
-            let rows = document.querySelectorAll("#payoutTable tbody tr:not(.details-row)");
+        function applyFilters() {
+
+            const dateFilter = document.getElementById("dateFilter").value;
+            const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
+            const colFilter = document.getElementById("columnFilter").value;
+            const searchValue = document.getElementById("searchBox")?.value.toLowerCase() || "";
+
+            const rows = document.querySelectorAll("#payoutTable tbody tr");
 
             rows.forEach(row => {
-                let statusCell = row.querySelector(".status-cell")?.innerText.toLowerCase() || "";
-                let dateCell = row.querySelector(".date-cell")?.innerText || "";
-                let searchCellText = colFilter ? (row.querySelector("." + colFilter)?.innerText.toLowerCase() || "") : row.innerText.toLowerCase();
 
-                let matchesDate = dateFilter ? checkDate(dateCell, dateFilter) : true;
-                let matchesStatus = statusFilter ? statusCell.includes(statusFilter) : true;
-                let matchesSearch = searchValue ? searchCellText.includes(searchValue) : true;
+                const statusText =
+                    row.querySelector(".status-cell")?.innerText.toLowerCase() || "";
 
-                row.style.display = (matchesDate && matchesStatus && matchesSearch) ? "" : "none";
+                const dateText =
+                    row.querySelector(".date-cell")?.innerText || "";
+
+                let searchText = "";
+                if (colFilter) {
+                    searchText =
+                        row.querySelector("." + colFilter)?.innerText.toLowerCase() || "";
+                } else {
+                    searchText = row.innerText.toLowerCase();
+                }
+
+                const matchesDate =
+                    dateFilter ? checkDate(dateText, dateFilter) : true;
+
+                const matchesStatus =
+                    statusFilter ? statusText.includes(statusFilter) : true;
+
+                const matchesSearch =
+                    searchValue ? searchText.includes(searchValue) : true;
+
+                row.style.display =
+                    (matchesDate && matchesStatus && matchesSearch) ? "" : "none";
             });
         }
+
 
         document.getElementById("dateFilter").addEventListener("change", applyFilters);
         document.getElementById("statusFilter").addEventListener("change", applyFilters);
@@ -1845,7 +1881,7 @@
             let csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(csv.join("\n"));
             let a = document.createElement("a");
             a.href = csvContent;
-            a.download = "Recharge.csv";
+            a.download = "BankUAeps.csv";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
