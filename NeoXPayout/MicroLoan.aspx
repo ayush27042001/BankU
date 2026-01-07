@@ -273,29 +273,75 @@
 
   <div class="bnk-card">
     <div class="bnk-card-icon">💰</div>
-    <div class="bnk-card-title">Micro Loan Service Activation</div>
+
+    <div class="bnk-card-title">Loan Services Activation Request</div>
+
     <div class="bnk-card-desc">
-      Enable Micro Loan services at your outlet to help customers access small, short-term loans quickly.  
-      With BankU Micro Loan Services, you can provide affordable credit options and build trust with your customers.
+      BankU Seva Kendra retailers can submit this request to activate Loan Services on their portal.
+      Once activated, retailers will be able to access loan products offered by BankU Seva Kendra’s
+      authorized Bank / NBFC / Lending Partners.
     </div>
 
-    <ul style="font-size: 0.9rem; color: var(--text-light); padding-left: 18px; margin-top: -6px;">
-      <li>Provide Instant Micro Loans to Customers</li>
+    <ul style="font-size: 0.9rem; color: var(--text-light); padding-left: 18px;">
+      <li><strong>Unsecured Laghu Loan:</strong> ₹1,000 – ₹50,000</li>
+      <li><strong>Unsecured Business Loan:</strong> ₹50,000 & above</li>
       <li>Quick & Paperless Loan Processing</li>
       <li>Secure & Transparent Lending Process</li>
-      <li>Support for Repayments & EMI Tracking</li>
-      <li>Boost Your Outlet’s Customer Engagement</li>
+      <li>Access to Loan Dashboard & Tools</li>
     </ul>
+
+    <div class="bnk-card-desc mt-2">
+      <strong>Commission:</strong><br />
+      Commission ranges between <strong>1% to 2%</strong> of the disbursed loan amount.
+      The exact commission will be determined by the respective Bank / NBFC / Lending Partner.
+      Earnings are credited <strong>every Saturday</strong> after successful loan disbursement.
+    </div>
+
+    <hr />
+
+    <div class="bnk-card-desc">
+      <strong>Activation Charges (One-Time, Non-Refundable):</strong><br />
+      Activation Fee: ₹2,100.00<br />
+      GST (18%): ₹378.00<br />
+      <strong>Total Payable: ₹2,478.00</strong>
+    </div>
+
+    <div class="bnk-card-desc mt-2">
+      <strong>Important Notice:</strong>
+      <ul style="padding-left: 18px; margin-top: 6px;">
+        <li>This is a one-time, non-refundable setup fee</li>
+        <li>Fee is charged only for loan service activation & processing</li>
+        <li>Payment does not guarantee loan approval or disbursement</li>
+      </ul>
+    </div>
+
+    <div class="bnk-card-desc">
+      <strong>Purpose of Activation Fee:</strong>
+      <ul style="padding-left: 18px; margin-top: 6px;">
+        <li>Retailer profile verification</li>
+        <li>KYC & compliance checks</li>
+        <li>Onboarding with lending partners</li>
+        <li>Technical setup & system enablement</li>
+      </ul>
+    </div>
+
+    <div class="bnk-card-desc">
+      <strong>Processing Timeline:</strong><br />
+      🕒 Loan services activation is usually completed within
+      <strong>3–7 working days</strong> after successful payment and verification.
+    </div>
+
 
     <asp:Button 
       ID="btnActivate" 
       runat="server" 
       CssClass="bnk-activate-btn" 
-      Text="Activate" 
-      OnClientClick="openSidebar('Micro Loan Service Activation'); return false;" />
+      Text="Proceed to Payment" 
+      OnClientClick="openSidebar('Loan Services Activation'); return false;" />
   </div>
 
 </div>
+
 
 <div class="bnk-sidebar" id="sidebar1" >
   <button class="bnk-close-btn" type="button" onclick="closeSidebar()">&times;</button>

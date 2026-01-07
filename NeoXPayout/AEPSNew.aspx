@@ -521,11 +521,15 @@
                         <option value="today">Today</option>
                         <option value="yesterday">Yesterday</option>
                     </select>
+                    
+                  
                     <select id="statusFilter" class="form-select form-select-sm" style="max-width: 150px;">
                         <option value="">All Status</option>
                         <option value="success">Success</option>
+                        <option value="pending">Pending</option>
                         <option value="failed">Failed</option>
                     </select>
+                 
                 </div>
 
                 <div class="col-md-6 d-flex justify-content-end gap-2">
@@ -545,7 +549,22 @@
                     <button class="btn btn-outline-secondary btn-sm" onclick="downloadTable()">Download</button>
                 </div>
             </div>
+              <div class="row mb-3">
+                <div class="col-md-6 d-flex gap-2">
+               <div class="d-flex gap-2">
+                        <input type="date" id="fromDate" class="form-control form-control-sm" style="max-width: 150px;" />
+                        <input type="date" id="toDate" class="form-control form-control-sm" style="max-width: 150px;" />
 
+                        <button class="btn btn-sm btn-primary" type="button" style="background-color:purple" onclick="applyFilters()">
+                            Search
+                        </button>
+
+                        <button class="btn btn-sm btn-outline-secondary" type="button" onclick="resetFilters()">
+                            Reset
+                        </button>
+                    </div>
+                    </div>
+                  </div>
             <asp:Label runat="server" ID="lblMessage1"></asp:Label>
 
             <!-- Table -->
@@ -569,7 +588,11 @@
                             <ItemTemplate>
                                 <tr>
                                     <td>  <%# Container.ItemIndex + 1 %></td>
-                                    <td class="status-cell"><span class="status-success"><%# Eval("Status") %></span></td>
+                                    <td class="status-cell"><span class="badge
+                        <%# Eval("Status").ToString() == "SUCCESS" ? "bg-success" : 
+                            Eval("Status").ToString() == "Pending" ? "bg-warning text-dark" : "bg-danger" %>">
+                        <%# Eval("Status") %>
+                    </span></td>
                                     <td class="orderid"><%# Eval("TransactionID") %></td>
                                     <td class="Type"><%# Eval("OperatorName") %></td>
                                     <td class="MobileNo"><%# Eval("MobileNo") %></td>           
@@ -1232,23 +1255,26 @@
         </div>
     </div>
 
-<script>
+   <script>
     const rowsPerPage = 10;
     const table = document.getElementById("payoutTable");
     const tbody = table.querySelector("tbody");
-    const rows = tbody.querySelectorAll("tr");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
     const pagination = document.getElementById("payoutPagination");
 
     let currentPage = 1;
     const totalPages = Math.ceil(rows.length / rowsPerPage);
+    const maxVisiblePages = 3;
 
     function showPage(page) {
+        if (page < 1 || page > totalPages) return;
+
         currentPage = page;
 
         rows.forEach((row, index) => {
             row.style.display =
-                (index >= (page - 1) * rowsPerPage &&
-                    index < page * rowsPerPage)
+                index >= (page - 1) * rowsPerPage &&
+                index < page * rowsPerPage
                     ? ""
                     : "none";
         });
@@ -1256,31 +1282,66 @@
         updatePagination();
     }
 
+    function createPageItem(text, page, isActive = false, isDisabled = false) {
+        const li = document.createElement("li");
+        li.className = "page-item";
+        if (isActive) li.classList.add("active");
+        if (isDisabled) li.classList.add("disabled");
+
+        const a = document.createElement("a");
+        a.className = "page-link";
+        a.href = "#";
+        a.innerText = text;
+
+        if (!isDisabled) {
+            a.onclick = function (e) {
+                e.preventDefault();
+                showPage(page);
+            };
+        }
+
+        li.appendChild(a);
+        return li;
+    }
+
     function updatePagination() {
         pagination.innerHTML = "";
 
-        for (let i = 1; i <= totalPages; i++) {
-            const li = document.createElement("li");
-            li.className = "page-item " + (i === currentPage ? "active" : "");
+        pagination.appendChild(
+            createPageItem("Prev", currentPage - 1, false, currentPage === 1)
+        );
 
-            const a = document.createElement("a");
-            a.className = "page-link";
-            a.href = "#";
-            a.innerText = i;
+        let start = Math.max(1, currentPage - 1);
+        let end = Math.min(totalPages, start + maxVisiblePages - 1);
 
-            a.onclick = function (e) {
-                e.preventDefault();
-                showPage(i);
-            };
-
-            li.appendChild(a);
-            pagination.appendChild(li);
+        if (end - start < maxVisiblePages - 1) {
+            start = Math.max(1, end - maxVisiblePages + 1);
         }
+
+        if (start > 1) {
+            pagination.appendChild(createPageItem(1, 1));
+            pagination.appendChild(createPageItem("...", null, false, true));
+        }
+
+        for (let i = start; i <= end; i++) {
+            pagination.appendChild(
+                createPageItem(i, i, i === currentPage)
+            );
+        }
+
+        if (end < totalPages) {
+            pagination.appendChild(createPageItem("...", null, false, true));
+            pagination.appendChild(createPageItem(totalPages, totalPages));
+        }
+
+        pagination.appendChild(
+            createPageItem("Next", currentPage + 1, false, currentPage === totalPages)
+        );
     }
 
-    // Init
     showPage(1);
 </script>
+
 
     <script>
 
@@ -1813,50 +1874,84 @@
         }
 
 
-        function applyFilters() {
+function resetFilters() {
 
-            const dateFilter = document.getElementById("dateFilter").value;
-            const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
-            const colFilter = document.getElementById("columnFilter").value;
-            const searchValue = document.getElementById("searchBox")?.value.toLowerCase() || "";
+    document.getElementById("dateFilter").value = "";
+    document.getElementById("statusFilter").value = "";
+    document.getElementById("columnFilter").value = "";
+    document.getElementById("searchBox").value = "";
+    document.getElementById("fromDate").value = "";
+    document.getElementById("toDate").value = "";
 
-            const rows = document.querySelectorAll("#payoutTable tbody tr");
+    const rows = document.querySelectorAll("#payoutTable tbody tr");
+    rows.forEach(row => row.style.display = "");
+}
 
-            rows.forEach(row => {
+function applyFilters() {
 
-                const statusText =
-                    row.querySelector(".status-cell")?.innerText.toLowerCase() || "";
+    const dateFilter = document.getElementById("dateFilter").value;
+    const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
+    const colFilter = document.getElementById("columnFilter").value;
+    const searchValue = document.getElementById("searchBox")?.value.toLowerCase() || "";
 
-                const dateText =
-                    row.querySelector(".date-cell")?.innerText || "";
+    const fromDateVal = document.getElementById("fromDate").value;
+    const toDateVal = document.getElementById("toDate").value;
 
-                let searchText = "";
-                if (colFilter) {
-                    searchText =
-                        row.querySelector("." + colFilter)?.innerText.toLowerCase() || "";
-                } else {
-                    searchText = row.innerText.toLowerCase();
-                }
+    const fromDate = fromDateVal ? new Date(fromDateVal) : null;
+    const toDate = toDateVal ? new Date(toDateVal) : null;
 
-                const matchesDate =
-                    dateFilter ? checkDate(dateText, dateFilter) : true;
+    if (toDate) toDate.setHours(23, 59, 59, 999);
 
-                const matchesStatus =
-                    statusFilter ? statusText.includes(statusFilter) : true;
+    const rows = document.querySelectorAll("#payoutTable tbody tr");
 
-                const matchesSearch =
-                    searchValue ? searchText.includes(searchValue) : true;
+    rows.forEach(row => {
 
-                row.style.display =
-                    (matchesDate && matchesStatus && matchesSearch) ? "" : "none";
-            });
+        const statusText =
+            row.querySelector(".status-cell")?.innerText.toLowerCase() || "";
+
+        const dateText =
+            row.querySelector(".date-cell")?.innerText || "";
+
+        const rowDate = parseDate(dateText);
+
+        let searchText = "";
+        if (colFilter) {
+            searchText =
+                row.querySelector("." + colFilter)?.innerText.toLowerCase() || "";
+        } else {
+            searchText = row.innerText.toLowerCase();
         }
+
+        // Existing filters
+        const matchesDatePreset =
+            dateFilter ? checkDate(dateText, dateFilter) : true;
+
+        const matchesStatus =
+            statusFilter ? statusText.includes(statusFilter) : true;
+
+        const matchesSearch =
+            searchValue ? searchText.includes(searchValue) : true;
+
+        // NEW: From–To Date filter
+        let matchesRange = true;
+        if (fromDate && rowDate < fromDate) matchesRange = false;
+        if (toDate && rowDate > toDate) matchesRange = false;
+
+        row.style.display =
+            (matchesDatePreset && matchesRange && matchesStatus && matchesSearch)
+                ? ""
+                : "none";
+    });
+}
+
+
 
 
         document.getElementById("dateFilter").addEventListener("change", applyFilters);
         document.getElementById("statusFilter").addEventListener("change", applyFilters);
         document.getElementById("columnFilter").addEventListener("change", applyFilters);
         document.getElementById("searchBox").addEventListener("input", applyFilters);
+        
 
         // --- Download CSV ---
         function downloadTable() {
