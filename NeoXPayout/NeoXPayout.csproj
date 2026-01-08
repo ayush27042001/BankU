@@ -134,18 +134,22 @@
     <Content Include="Admin\EditProduct.aspx" />
     <Content Include="Admin\EditUser.aspx" />
     <Content Include="Admin\EditWebhook.aspx" />
+    <Content Include="Admin\FeatureMap.aspx" />
     <Content Include="Admin\ManageAPIDocument.aspx" />
     <Content Include="Admin\ManageApiReq.aspx" />
     <Content Include="Admin\ManageBlogs.aspx" />
     <Content Include="Admin\ManageDISTReq.aspx" />
+    <Content Include="Admin\ManageFeature.aspx" />
     <Content Include="Admin\Managepaymentrequest.aspx" />
     <Content Include="Admin\manageService.aspx" />
     <Content Include="Admin\Margin.aspx" />
+    <Content Include="Admin\MasterProvider.aspx" />
     <Content Include="Admin\OrderDetails.aspx" />
     <Content Include="Admin\PageACTReq.aspx" />
     <Content Include="Admin\PayoutReport.aspx" />
     <Content Include="Admin\ProfileRequest.aspx" />
     <Content Include="Admin\RegisteredUser.aspx" />
+    <Content Include="Admin\ServiceProvider.aspx" />
     <Content Include="Admin\SettlementReport.aspx" />
     <Content Include="Admin\SystemUpdate.aspx" />
     <Content Include="Admin\UserAgreement.aspx" />
@@ -156,8 +160,12 @@
     <Content Include="Admin\ViewAPIDocument.aspx" />
     <Content Include="Admin\ViewBlogs.aspx" />
     <Content Include="Admin\ViewDispute.aspx" />
+    <Content Include="Admin\ViewFeature.aspx" />
+    <Content Include="Admin\ViewFeatureMap.aspx" />
     <Content Include="Admin\ViewInvoice.aspx" />
+    <Content Include="Admin\ViewMasterProvider.aspx" />
     <Content Include="Admin\ViewProduct.aspx" />
+    <Content Include="Admin\ViewServiceProvider.aspx" />
     <Content Include="Admin\WebsiteRequest.aspx" />
     <Content Include="AEPS.aspx" />
     <Content Include="AepsCash.jpg" />
@@ -659,6 +667,7 @@
     <Content Include="Disputes.aspx" />
     <Content Include="DistributorServicActivation.aspx" />
     <Content Include="DMT.aspx" />
+    <Content Include="DMTNEW.aspx" />
     <Content Include="DownloadCertificate.aspx" />
     <Content Include="EmployeeDex\userInfo.aspx" />
     <Content Include="EMPuser.aspx" />
@@ -2235,6 +2244,13 @@
     <Compile Include="Admin\EditWebhook.aspx.designer.cs">
       <DependentUpon>EditWebhook.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\FeatureMap.aspx.cs">
+      <DependentUpon>FeatureMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\FeatureMap.aspx.designer.cs">
+      <DependentUpon>FeatureMap.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ManageAPIDocument.aspx.cs">
       <DependentUpon>ManageAPIDocument.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2263,6 +2279,13 @@
     <Compile Include="Admin\ManageDISTReq.aspx.designer.cs">
       <DependentUpon>ManageDISTReq.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ManageFeature.aspx.cs">
+      <DependentUpon>ManageFeature.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageFeature.aspx.designer.cs">
+      <DependentUpon>ManageFeature.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Managepaymentrequest.aspx.cs">
       <DependentUpon>Managepaymentrequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2290,6 +2313,13 @@
     </Compile>
     <Compile Include="Admin\Margin.aspx.designer.cs">
       <DependentUpon>Margin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\MasterProvider.aspx.cs">
+      <DependentUpon>MasterProvider.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\MasterProvider.aspx.designer.cs">
+      <DependentUpon>MasterProvider.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ModifyUsers.aspx.cs">
       <DependentUpon>ModifyUsers.aspx</DependentUpon>
@@ -2346,6 +2376,13 @@
     </Compile>
     <Compile Include="Admin\RegisteredUser.aspx.designer.cs">
       <DependentUpon>RegisteredUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ServiceProvider.aspx.cs">
+      <DependentUpon>ServiceProvider.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ServiceProvider.aspx.designer.cs">
+      <DependentUpon>ServiceProvider.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\SettlementReport.aspx.cs">
       <DependentUpon>SettlementReport.aspx</DependentUpon>
@@ -2424,6 +2461,20 @@
     <Compile Include="Admin\ViewDispute.aspx.designer.cs">
       <DependentUpon>ViewDispute.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ViewFeature.aspx.cs">
+      <DependentUpon>ViewFeature.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewFeature.aspx.designer.cs">
+      <DependentUpon>ViewFeature.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ViewFeatureMap.aspx.cs">
+      <DependentUpon>ViewFeatureMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewFeatureMap.aspx.designer.cs">
+      <DependentUpon>ViewFeatureMap.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ViewInvoice.aspx.cs">
       <DependentUpon>ViewInvoice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2431,12 +2482,26 @@
     <Compile Include="Admin\ViewInvoice.aspx.designer.cs">
       <DependentUpon>ViewInvoice.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ViewMasterProvider.aspx.cs">
+      <DependentUpon>ViewMasterProvider.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewMasterProvider.aspx.designer.cs">
+      <DependentUpon>ViewMasterProvider.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ViewProduct.aspx.cs">
       <DependentUpon>ViewProduct.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\ViewProduct.aspx.designer.cs">
       <DependentUpon>ViewProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ViewServiceProvider.aspx.cs">
+      <DependentUpon>ViewServiceProvider.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewServiceProvider.aspx.designer.cs">
+      <DependentUpon>ViewServiceProvider.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\WebsiteRequest.aspx.cs">
       <DependentUpon>WebsiteRequest.aspx</DependentUpon>
@@ -2628,6 +2693,13 @@
     </Compile>
     <Compile Include="DMT.aspx.designer.cs">
       <DependentUpon>DMT.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DMTNEW.aspx.cs">
+      <DependentUpon>DMTNEW.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DMTNEW.aspx.designer.cs">
+      <DependentUpon>DMTNEW.aspx</DependentUpon>
     </Compile>
     <Compile Include="DownloadCertificate.aspx.cs">
       <DependentUpon>DownloadCertificate.aspx</DependentUpon>
