@@ -206,9 +206,6 @@
     <Content Include="assets\images\payment\home.png" />
     <Content Include="assets\images\payment\ICN_scan_fp.gif" />
     <Content Include="assets\images\payment\imgi_4_aeps-icon.png" />
-    <Content Include="assets\images\payment\imgi_6_myntra.png" />
-    <Content Include="assets\images\payment\imgi_7_morpho.png" />
-    <Content Include="assets\images\payment\imgi_8_Startek.png" />
     <Content Include="assets\images\payment\loading-1.gif" />
     <Content Include="assets\images\payment\loan.png" />
     <Content Include="assets\images\payment\love.png" />

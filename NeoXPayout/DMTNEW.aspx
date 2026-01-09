@@ -160,17 +160,17 @@
       <div class="device-row">
 
         <div class="device-box">
-          <img src="assets/images/payment/imgi_6_myntra.png" class="device-img">
+          <img src="assets/images/mantra.png" class="device-img">
           Mantra L1
         </div>
 
         <div class="device-box">
-          <img src="assets/images/payment/imgi_7_morpho.png" class="device-img">
+          <img src="assets/images/morpho.png" class="device-img">
           Morpho L1
         </div>
 
         <div class="device-box">
-          <img src="assets/images/payment/imgi_8_Startek.png" class="device-img">
+          <img src="assets/images/secugen.png" class="device-img">
           Startek L1
         </div>
 
@@ -273,7 +273,7 @@
 
 </div>
 
-
+</div>
           
         </div>
     </div>
