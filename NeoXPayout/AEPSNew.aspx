@@ -430,7 +430,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <hr />
-        <asp:ScriptManager
+    <asp:ScriptManager
         ID="ScriptManager1"
         runat="server"
         EnableCdn="true"
@@ -466,7 +466,7 @@
                                 AEPS Transaction
                             </button>
                         </li>
-                      
+
                     </ul>
                 </div>
             </div>
@@ -479,7 +479,8 @@
                     <div class="row mb-4 align-items-center summary-row">
                         <div class="col-md-auto summary-item">
                             <small class="text-muted">TRANSACTION TODAY</small>
-                            <h5 class="mb-0"> <asp:Label ID="lblTxnToday" runat="server" Text="0"></asp:Label></h5>
+                            <h5 class="mb-0">
+                                <asp:Label ID="lblTxnToday" runat="server" Text="0"></asp:Label></h5>
                         </div>
                         <div class="col-md-auto summary-item">
                             <small class="text-muted">TOTAL VALUE</small>
@@ -487,7 +488,7 @@
                         </div>
                         <div class="col-md-auto summary-item">
                             <small class="text-muted">AVG VALUE</small>
-                            <h5 class="mb-0"> ₹<asp:Label ID="lblAvgValue" runat="server" Text="0"></asp:Label></h5>
+                            <h5 class="mb-0">₹<asp:Label ID="lblAvgValue" runat="server" Text="0"></asp:Label></h5>
                         </div>
                         <label runat="server" id="lblMessage" class="col text-end text-success"></label>
                         <label runat="server" id="lblerror" class="col text-end text-danger"></label>
@@ -510,7 +511,7 @@
                     </div>
                 </div>
 
-             
+
             </div>
 
             <!-- Filter Row -->
@@ -521,15 +522,15 @@
                         <option value="today">Today</option>
                         <option value="yesterday">Yesterday</option>
                     </select>
-                    
-                  
+
+
                     <select id="statusFilter" class="form-select form-select-sm" style="max-width: 150px;">
                         <option value="">All Status</option>
                         <option value="success">Success</option>
                         <option value="pending">Pending</option>
                         <option value="failed">Failed</option>
                     </select>
-                 
+
                 </div>
 
                 <div class="col-md-6 d-flex justify-content-end gap-2">
@@ -549,13 +550,13 @@
                     <button class="btn btn-outline-secondary btn-sm" onclick="downloadTable()">Download</button>
                 </div>
             </div>
-              <div class="row mb-3">
+            <div class="row mb-3">
                 <div class="col-md-6 d-flex gap-2">
-               <div class="d-flex gap-2">
+                    <div class="d-flex gap-2">
                         <input type="date" id="fromDate" class="form-control form-control-sm" style="max-width: 150px;" />
                         <input type="date" id="toDate" class="form-control form-control-sm" style="max-width: 150px;" />
 
-                        <button class="btn btn-sm btn-primary" type="button" style="background-color:purple" onclick="applyFilters()">
+                        <button class="btn btn-sm btn-primary" type="button" style="background-color: purple" onclick="applyFilters()">
                             Search
                         </button>
 
@@ -563,8 +564,8 @@
                             Reset
                         </button>
                     </div>
-                    </div>
-                  </div>
+                </div>
+            </div>
             <asp:Label runat="server" ID="lblMessage1"></asp:Label>
 
             <!-- Table -->
@@ -587,20 +588,20 @@
                         <asp:Repeater runat="server" ID="gvRequests">
                             <ItemTemplate>
                                 <tr>
-                                    <td>  <%# Container.ItemIndex + 1 %></td>
+                                    <td><%# Container.ItemIndex + 1 %></td>
                                     <td class="status-cell"><span class="badge
                         <%# Eval("Status").ToString() == "SUCCESS" ? "bg-success" : 
                             Eval("Status").ToString() == "Pending" ? "bg-warning text-dark" : "bg-danger" %>">
-                        <%# Eval("Status") %>
-                    </span></td>
+                                        <%# Eval("Status") %>
+                                    </span></td>
                                     <td class="orderid"><%# Eval("TransactionID") %></td>
                                     <td class="Type"><%# Eval("OperatorName") %></td>
-                                    <td class="MobileNo"><%# Eval("MobileNo") %></td>           
+                                    <td class="MobileNo"><%# Eval("MobileNo") %></td>
                                     <td class="AccountNo"><%# Eval("AccountNo") %></td>
                                     <td class="date-cell"><%# Eval("TxnDate") %></td>
                                     <td class="amount"><%# Eval("Amount") %></td>
                                 </tr>
-                               
+
                             </ItemTemplate>
                         </asp:Repeater>
 
@@ -608,8 +609,8 @@
 
                 </table>
                 <nav class="mt-3">
-    <ul class="pagination justify-content-end" id="payoutPagination"></ul>
-</nav>
+                    <ul class="pagination justify-content-end" id="payoutPagination"></ul>
+                </nav>
 
             </div>
 
@@ -703,7 +704,7 @@
         <asp:HiddenField ID="hfLastSidebar" runat="server" />
         <asp:HiddenField ID="hfTxnType" runat="server" />
 
-        
+
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="plansSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="offcanvas-header" style="background-color: whitesmoke">
@@ -840,15 +841,15 @@
                     <div class="d-flex justify-content-between mb-4 border-bottom pb-3">
                         <div>
                             <h6 class="fw-bold mb-1">Mini Statement Invoice</h6>
-                            <div><strong>Current Balance:</strong>&nbsp ₹<asp:Label ID="Label1" runat="server"></asp:Label></div>
+                            <div><strong>Current Balance:</strong>&nbsp ₹<asp:Label ID="Label1" class="balanceac" runat="server"></asp:Label></div>
 
                         </div>
                         <div class="text-end">
                             <div>
                                 <strong>Transaction ID:</strong>
-                                <asp:Label ID="lblTranID" runat="server"></asp:Label>
+                                <asp:Label ID="lblTranID" runat="server" class="balancerrn"></asp:Label>
                             </div>
-                            <div><strong>Date:</strong> <span id="lblTranDate"></span></div>
+                            <div><strong>Date:</strong> <span id="lblTranDate" class="lblTxnDate"></span></div>
                         </div>
                     </div>
 
@@ -857,20 +858,13 @@
                         <table class="table table-bordered w-100">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Type</th>
-                                    <th>Time</th>
+                                    <th>Txn Type</th>
+                                    <th>Date</th>
                                     <th>Amount(₹)</th>
                                     <th>Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>D</td>
-                                    <td>25/12</td>
-                                    <td>₹ 0.00</td>
-                                    <td>FIGD/test</td>
-                                </tr>
-
+                            <tbody id="miniStatementData">
                             </tbody>
                         </table>
                     </div>
@@ -951,7 +945,11 @@
                                     <td>Bank Name</td>
                                     <td class="balanceBankName"></td>
                                 </tr>
-                                <tr>
+                                <tr class="withdrawrow">
+                                    <td>Amount</td>
+                                    <td class="withdrawamount"></td>
+                                </tr>
+                                <tr class="availablebalancerow">
                                     <td>Available Balance</td>
                                     <td class="balanceac"></td>
                                 </tr>
@@ -1255,7 +1253,7 @@
         </div>
     </div>
 
-   <script>
+    <script>
     const rowsPerPage = 10;
     const table = document.getElementById("payoutTable");
     const tbody = table.querySelector("tbody");
@@ -1340,7 +1338,7 @@
     }
 
     showPage(1);
-</script>
+    </script>
 
 
     <script>
