@@ -653,6 +653,7 @@
     <Content Include="CreditCheck.aspx" />
     <Content Include="CurrentAccOpen.aspx" />
     <Content Include="CustomJS\BioMetric.js" />
+    <Content Include="CustomJS\CommiosnMgmt\AdminCommisionMgmt.js" />
     <Content Include="DeveloperAPI.aspx" />
     <Content Include="Digitalgold.aspx" />
     <Content Include="DigitalSignature.aspx" />
@@ -1738,6 +1739,7 @@
     <Content Include="TrainTicket.aspx" />
     <Content Include="Transaction.aspx" />
     <Content Include="TransactionDone.aspx" />
+    <Content Include="Views\Admin\CommisionMgmt\CommisionMgmt.html" />
     <Content Include="ViewUserDist.aspx" />
     <Content Include="wait.jpg" />
     <Content Include="WalletReport.aspx" />

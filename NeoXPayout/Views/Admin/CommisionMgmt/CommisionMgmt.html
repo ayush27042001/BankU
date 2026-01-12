@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Commission Admin Panel</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <style>
+        table th, table td {
+            vertical-align: middle;
+        }
+
+        input[type=number] {
+            max-width: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">Commission Admin Panel</h1>
+
+        <!-- Commission Headers -->
+        <div class="card mb-4">
+            <div class="card-header"><strong>Commission Rules</strong></div>
+            <div class="card-body">
+                <form class="row g-2 mb-3" id="headerForm">
+                    <div class="col-md-3">
+                        <select id="serviceId" class="form-select"><option value="">Select Service</option></select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="providerId" class="form-select"><option value="">Select Provider</option></select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="operatorId" class="form-select"><option value="">Select Operator</option></select>
+                    </div>
+                    <div class="col-md-3 d-grid">
+                        <button type="button" class="btn btn-primary" id="addHeader">Add Rule</button>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="headerTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Operator</th>
+                                <th>Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary" id="prevHeader">Prev</button>
+                    <span>Page <span id="headerPage">1</span></span>
+                    <button class="btn btn-outline-secondary" id="nextHeader">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commission Slabs -->
+        <div class="card mb-4">
+            <div class="card-header"><strong>Commission Slabs</strong></div>
+            <div class="card-body">
+                <form class="row g-2 mb-3" id="slabForm">
+                    <div class="col-md-3">
+                        <select id="slabRuleId" class="form-select"><option value="">Select Rule</option></select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="fromAmount" class="form-control" placeholder="From Amount">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" id="toAmount" class="form-control" placeholder="To Amount">
+                    </div>
+                    <div class="col-md-3 d-grid">
+                        <button type="button" class="btn btn-primary" id="addSlab">Add Slab</button>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="slabTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>RuleId</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary" id="prevSlab">Prev</button>
+                    <span>Page <span id="slabPage">1</span></span>
+                    <button class="btn btn-outline-secondary" id="nextSlab">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commission Distributions -->
+        <div class="card mb-4">
+            <div class="card-header"><strong>Commission Distributions</strong></div>
+            <div class="card-body">
+                <form class="row g-2 mb-3" id="distForm">
+                    <div class="col-md-2">
+                        <select id="distSlabId" class="form-select"><option value="">Select Slab</option></select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="userType" class="form-select">
+                            <option value="Retailer">Retailer</option>
+                            <option value="MD">MD</option>
+                            <option value="AD">AD</option>
+                            <option value="WL">WL</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="commType" class="form-select">
+                            <option value="1">FLAT</option>
+                            <option value="2">PERCENT</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" step="0.01" id="commValue" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <button type="button" class="btn btn-primary" id="addDistribution">Add Distribution</button>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="distTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>SlabId</th>
+                                <th>UserType</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary" id="prevDist">Prev</button>
+                    <span>Page <span id="distPage">1</span></span>
+                    <button class="btn btn-outline-secondary" id="nextDist">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../CustomJS/CommiosnMgmt/AdminCommisionMgmt.js"></script>
+</body>
+</html>

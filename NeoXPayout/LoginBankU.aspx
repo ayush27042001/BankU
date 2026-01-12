@@ -1249,23 +1249,28 @@ function toggleDropdown(element) {
         });
     });
     function combineOTP() {
-        const otp1 = document.getElementById("otp1").value;
-        const otp2 = document.getElementById("otp2").value;
-        const otp3 = document.getElementById("otp3").value;
-        const otp4 = document.getElementById("otp4").value;
+
+        const otp1El = document.getElementById("otp1");
+        const otp2El = document.getElementById("otp2");
+        const otp3El = document.getElementById("otp3");
+        const otp4El = document.getElementById("otp4");
+
+        const otp1 = otp1El ? otp1El.value : "";
+        const otp2 = otp2El ? otp2El.value : "";
+        const otp3 = otp3El ? otp3El.value : "";
+        const otp4 = otp4El ? otp4El.value : "";
 
         const combined = otp1 + otp2 + otp3 + otp4;
 
-       <%-- document.getElementById('<%= hdnOtpValue.ClientID %>').value = combined;--%>
-        // Set the value to hidden field
         document.getElementById('<%= hdnOtpValue.ClientID %>').value = combined;
 
-    // Check if all inputs are filled
-    if (otp1 && otp2 && otp3 && otp4) {
-        // Automatically click LinkButton1
-        document.getElementById('<%= LinkButton1.ClientID %>').click();
-    }
-    }
+        if (otp1El && otp2El && otp3El && otp4El &&
+            otp1 && otp2 && otp3 && otp4) {
+
+                document.getElementById('<%= LinkButton1.ClientID %>').click();
+            }
+        }
+
 </script>
 
 
