@@ -366,4 +366,10 @@
 
     <script src="CustomJS/DMT.js"></script>
       
+    <script>
+        $(document).ready(function () {
+            callServiceStatus();
+        });
+    </script>
+
 </asp:Content>
