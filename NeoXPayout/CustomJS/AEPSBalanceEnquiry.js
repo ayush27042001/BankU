@@ -512,7 +512,7 @@ function callBalanceEnquiry(pidXml) {
                 ManageInvoicePay("BALANCE", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Message || "Transaction Failed");
+                showFailed(res.Data[0].status || "Transaction Failed");
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -538,21 +538,10 @@ function callMinistatement(pidXml) {
         success: function (res) {
             console.log("AEPS Response:", res);
             if (res.Status === "SUCCESS") {
-
-                var txnType = res.Data[0].txntype;
-                var balance = res.Data[0].acamount;
-                var bankRefNo = res.Data[0].bankrefno;
-                var status = res.Data[0].status;
-
-                showSuccess(`
-                    <b>Status:</b> ${status}<br>
-                    <b>Transaction Type:</b> ${txnType}<br>
-                    <b>Balance:</b> ${balance}<br>
-                    <b>Bank Ref No:</b> ${bankRefNo}
-                `);
+                ManageInvoicePay("MINISTATEMENT", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Message || "Transaction Failed");
+                showFailed(res.Data[0].status || "Transaction Failed");
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -569,7 +558,6 @@ function callCashWidhrawal(pidXml) {
     $(".loader-overlay").css("display", "flex");
     $.ajax({
         url: "https://partner.banku.co.in/api/AEPSTXN",
-        //url: "http://localhost:54956/api/AEPSTXN",
         type: "POST",
         contentType: "application/json",
         dataType: "json",
@@ -578,24 +566,10 @@ function callCashWidhrawal(pidXml) {
         success: function (res) {
             console.log("AEPS Response:", res);
             if (res.Status === "SUCCESS") {
-                var txnType = res.Data[0].txntype;
-                var OrderAmount = res.Data[0].orderamount;
-                var Oldbalance = res.Data[0].oldbalance;
-                var Newbalance = res.Data[0].NewBalance;
-                var bankRefNo = res.Data[0].bankrefno;
-                var status = res.Data[0].status;
-
-                showSuccess(`
-                    <b>Status:</b> ${status}<br>
-                    <b>Transaction Type:</b> ${txnType}<br>
-                    <b>Order Amount:</b> ${OrderAmount}<br>
-                    <b>Old Balance:</b> ${Oldbalance}<br>
-                    <b>New Balance:</b> ${Newbalance}<br>
-                    <b>Bank Ref No:</b> ${bankRefNo}
-                `);
+                ManageInvoicePay("WITHDRAWAL", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Message || "Transaction Failed");
+                showFailed(res.Data[0].status || "Transaction Failed");
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -621,24 +595,10 @@ function callAadharPay(pidXml) {
         success: function (res) {
             console.log("AEPS Response:", res);
             if (res.Status === "SUCCESS") {
-                var txnType = res.Data[0].txntype;
-                var OrderAmount = res.Data[0].orderamount;
-                var Oldbalance = res.Data[0].oldbalance;
-                var Newbalance = res.Data[0].NewBalance;
-                var bankRefNo = res.Data[0].bankrefno;
-                var status = res.Data[0].status;
-
-                showSuccess(`
-                    <b>Status:</b> ${status}<br>
-                    <b>Transaction Type:</b> ${txnType}<br>
-                    <b>Order Amount:</b> ${OrderAmount}<br>
-                    <b>Old Balance:</b> ${Oldbalance}<br>
-                    <b>New Balance:</b> ${Newbalance}<br>
-                    <b>Bank Ref No:</b> ${bankRefNo}
-                `);
+                ManageInvoicePay("AADHARPAY", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Message || "Transaction Failed");
+                showFailed(res.Data[0].status || "Transaction Failed");
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -767,7 +727,7 @@ function buildBalanceEnquiryPayload(pidXml) {
     }
     const pid = parsePidXml(pidXml);
 
-    var Amount = $("#ContentPlaceHolder1_txtAmount").val();
+    var Amount = $("#ContentPlaceHolder1_txtamount").val();
 
     return {
         email: "",
@@ -1015,10 +975,27 @@ function buildSignUpValidatePayload() {
 
 function ManageInvoicePay(Mode, response)
 {
-    if (Mode == "BALANCE") {
+    if (Mode == "BALANCE" || Mode == "AADHARPAY" || Mode == "WITHDRAWAL") {
+
+        var TxnType = Mode == "BALANCE" ? "Balance Inquiry Invoice" : Mode == "WITHDRAWAL" ? "CASH Withdrawal Invoice" : "Aadhar Pay Invoice";
+
+
+        if (Mode == "AADHARPAY" || Mode == "WITHDRAWAL") {
+
+            $(".withdrawamount").text($("#ContentPlaceHolder1_txtamount").val());
+            $(".withdrawrow").css("display", "contents");
+            $(".availablebalancerow").css("display", "none");
+
+        }
+        else {
+
+            $(".withdrawamount").text("");
+            $(".withdrawrow").css("display", "none");
+            $(".availablebalancerow").css("display", "contents");
+        }
 
         $(".balancerrn").text(response.Data[0].agentid);
-        $(".balanceTxnType").text("Balance Inquiry Invoice");
+        $(".balanceTxnType").text(TxnType);
         $(".balanceac").text(response.Data[0].acamount);
         $(".balanceBankName").text($("#ContentPlaceHolder1_ddlCircle option:selected").text());
         $(".balanceAadhar").text($("#ContentPlaceHolder1_txtAadhar").val());
@@ -1035,6 +1012,32 @@ function ManageInvoicePay(Mode, response)
         console.log(formattedDateTime);
         $(".lblTxnDate").text(formattedDateTime);
         var modal = new bootstrap.Modal(document.getElementById('InvoiceTrnx'));
+        modal.show();
+    }
+
+    if (Mode == "MINISTATEMENT") {
+
+        $(".balancerrn").text(response.Data[0].agentid);
+        $(".balanceac").text(response.Data[0].acamount);
+
+        var now = new Date();
+        var formattedDateTime =
+            String(now.getDate()).padStart(2, '0') + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            now.getFullYear() + " " +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0') + ":" +
+            String(now.getSeconds()).padStart(2, '0');
+
+        console.log(formattedDateTime);
+        $(".lblTxnDate").text(formattedDateTime);
+        var invoiceData = '';
+        for (var i = 0; i < response.Data[0].xmllist.length; i++) {
+
+            invoiceData = invoiceData + "<tr><td>" + response.Data[0].xmllist[i].txnType + "</td> <td>" + response.Data[0].xmllist[i].date + "</td> <td>" + response.Data[0].xmllist[i].amount + "</td> <td>" + response.Data[0].xmllist[i].narration + "</td></tr>";
+        }
+        $("#miniStatementData").html(invoiceData);
+        var modal = new bootstrap.Modal(document.getElementById('InvoiceMiniState'));
         modal.show();
     }
 }
