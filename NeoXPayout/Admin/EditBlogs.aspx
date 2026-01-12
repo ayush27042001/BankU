@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
+   <div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
 	<div class="row">
 		<div class="col-md-12">
 

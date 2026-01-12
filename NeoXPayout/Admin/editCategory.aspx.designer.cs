@@ -11,7 +11,7 @@ namespace NeoXPayout.Admin
 {
 
 
-    public partial class ManageBlogs
+    public partial class editCategory
     {
 
         /// <summary>
@@ -24,58 +24,22 @@ namespace NeoXPayout.Admin
         protected global::System.Web.UI.WebControls.Label lblmessage;
 
         /// <summary>
-        /// FileUpload1 control.
+        /// txtcategoryname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+        protected global::System.Web.UI.WebControls.TextBox txtcategoryname;
 
         /// <summary>
-        /// txtheading control.
+        /// HiddenField1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtheading;
-
-        /// <summary>
-        /// ddlcategory control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlcategory;
-
-        /// <summary>
-        /// txtcontent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtcontent;
-
-        /// <summary>
-        /// Ckeditorcontrol4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Ckeditorcontrol4;
-
-        /// <summary>
-        /// txtDateTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDateTime;
+        protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
 
         /// <summary>
         /// ddlstatus control.
@@ -96,12 +60,12 @@ namespace NeoXPayout.Admin
         protected global::System.Web.UI.WebControls.LinkButton btnAdd;
 
         /// <summary>
-        /// Label1 control.
+        /// btndelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.LinkButton btndelete;
     }
 }

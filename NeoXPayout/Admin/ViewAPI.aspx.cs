@@ -25,6 +25,7 @@ namespace NeoXPayout.Admin
             {
                 LoadRequests();
                 GetCategory();
+                GetCategoryFilter();
             }
             
         }
@@ -219,7 +220,7 @@ namespace NeoXPayout.Admin
         {
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                string query = "SELECT  Category FROM APICategory"; // choose correct column names
+                string query = "SELECT  Category FROM APICategory"; 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     con.Open();
@@ -228,17 +229,47 @@ namespace NeoXPayout.Admin
                     if (reader.HasRows)
                     {
                         ddlCategory.DataSource = reader;
-                        ddlCategory.DataTextField = "Category";   // what user sees
-                        ddlCategory.DataValueField = "Category";   // actual value (can also be CategoryName if no ID column)
+                        ddlCategory.DataTextField = "Category";  
+                        ddlCategory.DataValueField = "Category"; 
                         ddlCategory.DataBind();
+                        APICategoryFilter.DataSource = reader;
+                        APICategoryFilter.DataTextField = "Category";
+                        APICategoryFilter.DataValueField = "Category";
+                        APICategoryFilter.DataBind();
                     }
 
                     reader.Close();
                 }
             }
 
-            // Insert a default option at the top
+          
             ddlCategory.Items.Insert(0, new ListItem("-- Select API Category --", ""));
+        }
+        protected void GetCategoryFilter()
+        {
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                string query = "SELECT  Category FROM APICategory";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                       
+                        APICategoryFilter.DataSource = reader;
+                        APICategoryFilter.DataTextField = "Category";
+                        APICategoryFilter.DataValueField = "Category";
+                        APICategoryFilter.DataBind();
+                    }
+
+                    reader.Close();
+                }
+            }
+
+
+            APICategoryFilter.Items.Insert(0, new ListItem("Select API Category", ""));
         }
     }
 }

@@ -22,8 +22,8 @@
                 <button 
                     type="button"
                     class='header-tab <%# Container.ItemIndex == 0 ? "active" : "" %>'
-                    onclick="changeTransfer(this,'Money Transfer - <%# Eval("ProviderCode") %>')">
-                    Money Transfer - <%# Eval("ProviderCode") %>
+                    onclick="changeTransfer(this,'<%# Eval("FeatureName") %>')">
+                    <%# Eval("FeatureName") %>
                 </button>
             </ItemTemplate>
         </asp:Repeater>

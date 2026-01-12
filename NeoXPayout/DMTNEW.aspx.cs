@@ -49,7 +49,7 @@ namespace NeoXPayout
                 string Service = "DMT";
 
 
-                string url = "https://partner.banku.co.in/api/ServiceStatus";
+                string url = "https://partner.banku.co.in/api/MasterFeature";
                 string body = "{\"Apiversion\":\"" + ApiVersion + "\",\"ServiceName\":\"" + Service + "\"}";
 
                 var client = new RestClient(url);
@@ -71,29 +71,36 @@ namespace NeoXPayout
                     if (dataArray != null && dataArray.Count > 0)
                     {
                         DataTable dt = new DataTable();
-                        dt.Columns.Add("Id");
-                        dt.Columns.Add("ServiceCode");
-                        dt.Columns.Add("ProviderCode");
-                        dt.Columns.Add("IsEnabled", typeof(bool));
+                    dt.Columns.Add("Id", typeof(int));
+                    dt.Columns.Add("ServiceCode");
+                    dt.Columns.Add("FeatureName");
+                    dt.Columns.Add("IsEnabled", typeof(bool));
+                    dt.Columns.Add("DisplayOrder", typeof(int));
 
-                        foreach (JObject item in dataArray)
+
+                    foreach (JObject item in dataArray)
+                    {
+                        if (item["ServiceCode"]?.ToString() == "DMT" &&
+                            item["IsEnabled"]?.ToObject<bool>() == true)
                         {
-                            if (item["ServiceCode"]?.ToString() == "DMT" &&
-                                item["IsEnabled"]?.ToObject<bool>() == true)
-                            {
-                                dt.Rows.Add(
-                                    item["Id"],
-                                    item["ServiceCode"],
-                                    item["ProviderCode"],
-                                    item["IsEnabled"]
-                                );
-                            }
+                            dt.Rows.Add(
+                                Convert.ToInt32(item["Id"]),
+                                item["ServiceCode"],
+                                item["FeatureName"],
+                                item["IsEnabled"],
+                                Convert.ToInt32(item["DisplayOrder"])
+                            );
                         }
-
-                        rptTransferTabs.DataSource = dt;
-                        rptTransferTabs.DataBind();
                     }
+
+                    DataView dv = dt.DefaultView;
+                    dv.Sort = "DisplayOrder ASC";
+
+                    rptTransferTabs.DataSource = dv;
+                    rptTransferTabs.DataBind();
+
                 }
+            }
                 else
                 {
                     lblMessage1.Text = "No request available";

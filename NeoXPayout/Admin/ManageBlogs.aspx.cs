@@ -30,10 +30,36 @@ namespace NeoXPayout.Admin
 
                 if (!IsPostBack)
                 {
-
+                    bind();
                     //Getdetails();
                 }
             }
+        }
+
+        public void bind()
+        {
+
+            using (con)
+            {
+                string query = "SELECT  * FROM blogCategory where Status='Active'";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        ddlcategory.DataSource = reader;
+                        ddlcategory.DataTextField = "CategoryName";
+                        ddlcategory.DataValueField = "CategoryName";
+                        ddlcategory.DataBind();
+                    }
+
+                    reader.Close();
+                }
+            }
+
+            ddlcategory.Items.Insert(0, new ListItem("-- Select Blog Category --", ""));
         }
         public string UploadRC1()
         {
@@ -63,7 +89,7 @@ namespace NeoXPayout.Admin
                 cmd.Parameters.AddWithValue("@Heading", txtheading.Text);
                 cmd.Parameters.AddWithValue("@Details", txtcontent.Text);
                 cmd.Parameters.AddWithValue("@LongDescription", Ckeditorcontrol4.Text);
-                cmd.Parameters.AddWithValue("@Category", Ckeditorcontrol3.Text);
+                cmd.Parameters.AddWithValue("@Category", ddlcategory.SelectedValue);
                 cmd.Parameters.AddWithValue("@DateTime", txtDateTime.Text);
                 cmd.Parameters.AddWithValue("@Status", ddlstatus.Text);
                 cmd.ExecuteNonQuery();

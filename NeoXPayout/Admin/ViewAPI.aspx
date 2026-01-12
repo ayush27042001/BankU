@@ -57,6 +57,13 @@
         <option value="Inactive">Inactive</option>
       
     </select>
+
+    <asp:DropDownList ID="APICategoryFilter" style="max-width:200px;" CssClass="form-select" runat="server">
+
+    </asp:DropDownList>
+
+
+
 </div>
 
 <div class="table-responsive" style="margin-left:20px; margin-right:20px; margin-top:20px;border-radius:7px; overflow-x:auto; ">
@@ -177,32 +184,45 @@
   </div>
 </div>
 
-
-
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
 
-    // Search Box Filter
-    document.getElementById("searchBox").addEventListener("keyup", function () {
-        var searchText = this.value.toLowerCase();
-        var rows = document.querySelectorAll("#<%= gvRequests.ClientID %> tbody tr");
+        const gridSelector = "#<%= gvRequests.ClientID %>";
 
-        rows.forEach(function (row) {
-            var rowText = row.innerText.toLowerCase();
-            row.style.display = rowText.includes(searchText) ? "" : "none";
-        });
-    });
+    function applyFilters() {
+        const searchText = (document.getElementById("searchBox")?.value || "").toLowerCase();
+        const statusValue = (document.getElementById("statusFilter")?.value || "").toLowerCase();
+        const categoryValue = (document.getElementById("<%= APICategoryFilter.ClientID %>")?.value || "").toLowerCase();
 
-    // Status Dropdown Filter
-    document.getElementById("statusFilter").addEventListener("change", function () {
-        var filterValue = this.value.toLowerCase();
-        var rows = document.querySelectorAll("#<%= gvRequests.ClientID %> tbody tr");
+        const rows = document.querySelectorAll(gridSelector + " tr");
 
         rows.forEach(function (row) {
-            var statusCell = row.cells[5]?.innerText.toLowerCase(); // 4th column index
-            row.style.display = filterValue === "" || statusCell === filterValue ? "" : "none";
+
+            if (row.querySelectorAll("td").length === 0) {
+                row.style.display = "";
+                return;
+            }
+
+            const rowText = row.innerText.toLowerCase();
+            const statusCell = row.cells[5]?.innerText.trim().toLowerCase() || "";
+            const categoryCell = row.cells[4]?.innerText.trim().toLowerCase() || "";
+
+            const searchMatch = rowText.includes(searchText);
+            const statusMatch = statusValue === "" || statusCell === statusValue;
+            const categoryMatch = categoryValue === "" || categoryCell === categoryValue;
+
+            row.style.display = (searchMatch && statusMatch && categoryMatch) ? "" : "none";
         });
-    });
+    }
+
+    document.getElementById("searchBox")?.addEventListener("keyup", applyFilters);
+
+    document.getElementById("statusFilter")?.addEventListener("change", applyFilters);
+
+    document.getElementById("<%= APICategoryFilter.ClientID %>")?.addEventListener("change", applyFilters);
+});
 </script>
+
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </asp:Content>
