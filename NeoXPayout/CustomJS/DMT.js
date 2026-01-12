@@ -165,4 +165,70 @@
  
    
 
-/*  <% --end --%>*/
+
+function callServiceStatus() {
+
+    const payload = {
+        Apiversion: "1.0",
+        ServiceName: "DMT"
+    };
+
+    $(".loader-overlay").css("display", "flex");
+
+    $.ajax({
+        url: "https://partner.banku.co.in/api/MasterFeature",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 30000,
+        data: JSON.stringify(payload),
+
+        success: function (res) {
+            console.log("Service Status Response:", res);
+
+            if (res.Status === "SUCCESS") {
+
+                $(".loader-overlay").css("display", "none");
+
+                if (res.Data && res.Data.length > 0) {
+                    bindTransferTabs(res.Data);
+                }
+
+            } else {
+
+                $(".loader-overlay").css("display", "none");
+                $("#lblMessage1").text("No request available").css("color", "red");
+            }
+        },
+
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            showFailed("Network / CORS Error");
+            $(".loader-overlay").css("display", "none");
+        }
+    });
+}
+
+function bindTransferTabs(data) {
+
+    const filteredData = data
+        .filter(item => item.ServiceCode === "DMT" && item.IsEnabled === true)
+        .sort((a, b) => a.DisplayOrder - b.DisplayOrder);
+
+    let html = "";
+
+    filteredData.forEach((item, index) => {
+        html += `
+            <button
+                type="button"
+                class="header-tab ${index === 0 ? "active" : ""}"
+                onclick="changeTransfer(this,'${item.FeatureName}')">
+                ${item.FeatureName}
+            </button>
+        `;
+    });
+
+    $(".header-tabs").find("button").remove();
+    $(".header-tabs").append(html);
+    }
+    

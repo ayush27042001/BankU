@@ -37,69 +37,9 @@ namespace NeoXPayout
             }
             if (!IsPostBack)
             {          
-                getServiceStatus();
-              
+            
             }
 
-        }
-
-        protected void getServiceStatus()
-        {
-                string ApiVersion = "1.0";
-                string Service = "DMT";
-
-
-                string url = "https://partner.banku.co.in/api/ServiceStatus";
-                string body = "{\"Apiversion\":\"" + ApiVersion + "\",\"ServiceName\":\"" + Service + "\"}";
-
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-                request.AddHeader("cache-control", "no-cache");
-                request.AddHeader("Accept", "application/json");
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
-
-                IRestResponse response = client.Execute(request);
-                string Apiresponse = response.Content;
-
-                JObject jObjects = JObject.Parse(Apiresponse);
-                string scode = jObjects["Status"]?.ToString();
-                if (scode == "SUCCESS")
-                {
-                    JArray dataArray = (JArray)jObjects["Data"];
-
-                    if (dataArray != null && dataArray.Count > 0)
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Columns.Add("Id");
-                        dt.Columns.Add("ServiceCode");
-                        dt.Columns.Add("ProviderCode");
-                        dt.Columns.Add("IsEnabled", typeof(bool));
-
-                        foreach (JObject item in dataArray)
-                        {
-                            if (item["ServiceCode"]?.ToString() == "DMT" &&
-                                item["IsEnabled"]?.ToObject<bool>() == true)
-                            {
-                                dt.Rows.Add(
-                                    item["Id"],
-                                    item["ServiceCode"],
-                                    item["ProviderCode"],
-                                    item["IsEnabled"]
-                                );
-                            }
-                        }
-
-                        rptTransferTabs.DataSource = dt;
-                        rptTransferTabs.DataBind();
-                    }
-                }
-                else
-                {
-                    lblMessage1.Text = "No request available";
-                    lblMessage1.ForeColor = System.Drawing.Color.Red;
-                }
-            
         }
         private bool IsRechargeServiceActive()
         {

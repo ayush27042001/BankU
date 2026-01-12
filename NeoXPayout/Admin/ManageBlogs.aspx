@@ -3,7 +3,7 @@
 	<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
+   <div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
 	<div class="row">
 		<div class="col-md-12">
 
@@ -27,6 +27,12 @@
 									
 							</div>
 							<div class="mb-3 col-md-12 col-12">
+								<label class="col-form-label">Category</label>
+							<asp:DropDownList runat="server" ID="ddlcategory" CssClass="form-control">
+
+							</asp:DropDownList>
+							</div>
+							<div class="mb-3 col-md-12 col-12">
 								<label class="col-form-label">Content</label>
 									<asp:TextBox ID="txtcontent" CssClass="form-control" runat="server" Placeholder="Enter Product Discription"></asp:TextBox>
 									
@@ -37,11 +43,7 @@
 								<asp:TextBox ID="Ckeditorcontrol4" runat="server" TextMode="MultiLine" Rows="10" Columns="80" ValidateRequestMode="Disabled"></asp:TextBox>
 							</div>
 
-							<div class="mb-3 col-md-12 col-12">
-								<label class="col-form-label">Categoryc</label>
-								<asp:TextBox ID="Ckeditorcontrol3" runat="server" TextMode="MultiLine" Rows="10" Columns="80" ValidateRequestMode="Disabled"></asp:TextBox>
-								
-							</div>
+							
 							<div class="mb-3 col-md-12 col-12">
 								<label class="col-form-label">Date Time</label>
 								<asp:TextBox ID="txtDateTime" runat="server" CssClass="form-control" 
@@ -68,14 +70,14 @@
 								
 				</div>
 
-			</div> <!-- Personal Information Card End -->
+			</div> 
 
 		</div>
 	</div>
 </div>
 
 	<script>
-		CKEDITOR.replace('<%= Ckeditorcontrol4.ClientID %>');
-        CKEDITOR.replace('<%= Ckeditorcontrol3.ClientID %>');
+        CKEDITOR.replace('<%= Ckeditorcontrol4.ClientID %>');
+
     </script>
 </asp:Content>

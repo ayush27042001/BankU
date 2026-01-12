@@ -125,10 +125,12 @@
     <Content Include="Admin\AddMargin.aspx" />
     <Content Include="Admin\AddProduct.aspx" />
     <Content Include="Admin\APICat.aspx" />
+    <Content Include="Admin\blogCategory.aspx" />
     <Content Include="Admin\Complain.aspx" />
     <Content Include="Admin\DistUser.aspx" />
     <Content Include="Admin\EditAPIDocument.aspx" />
     <Content Include="Admin\EditBlogs.aspx" />
+    <Content Include="Admin\editCategory.aspx" />
     <Content Include="Admin\EditDispute.aspx" />
     <Content Include="Admin\EditInvoice.aspx" />
     <Content Include="Admin\EditProduct.aspx" />
@@ -2158,6 +2160,13 @@
     <Compile Include="Admin\APICat.aspx.designer.cs">
       <DependentUpon>APICat.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\blogCategory.aspx.cs">
+      <DependentUpon>blogCategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\blogCategory.aspx.designer.cs">
+      <DependentUpon>blogCategory.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Complain.aspx.cs">
       <DependentUpon>Complain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2213,6 +2222,13 @@
     </Compile>
     <Compile Include="Admin\EditBlogs.aspx.designer.cs">
       <DependentUpon>EditBlogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\editCategory.aspx.cs">
+      <DependentUpon>editCategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\editCategory.aspx.designer.cs">
+      <DependentUpon>editCategory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\EditDispute.aspx.cs">
       <DependentUpon>EditDispute.aspx</DependentUpon>
