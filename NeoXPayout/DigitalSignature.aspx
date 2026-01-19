@@ -1,8 +1,60 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="DigitalSignature.aspx.cs" Inherits="NeoXPayout.DigitalSignature" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
   <style>
+      .simple-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.simple-modal {
+  background: #fff;
+  width: 360px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+.simple-modal-header {
+  background: purple;
+  color: white;
+  padding: 12px;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.simple-modal-body {
+  padding: 20px;
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.ok-btn {
+  background: purple;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
     :root {
       --purple: #6e007c;
       --bg: #f9fafb;
@@ -337,30 +389,22 @@
     </div>
   </div>
 
-  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
-         data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg rounded-3 text-center">
-      
-          <!-- Modal Header -->
-          <div class="modal-header  text-white border-0" style="background-color:purple">
-            <h5 class="modal-title w-100" id="successModalLabel">Request Added Successful</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-      
-          <!-- Modal Body -->
-          <div class="modal-body">
-            <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" 
-                 alt="Success" class="mb-3" width="80" height="80" />
-            <h6 class="fw-semibold">Your request has been added successfully!</h6>
-            <button type="button" class="btn w-100" data-bs-dismiss="modal" style="background-color:purple; color:white">OK</button>
-          </div>
-      
-        </div>
-      </div>
+<div id="successModal" class="simple-modal-overlay">
+  <div class="simple-modal">
+    <div class="simple-modal-header">
+      <h5>Request Added Successfully</h5>
+      <span class="close-btn" onclick="closeSuccessModal()">×</span>
     </div>
-       	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="simple-modal-body">
+      <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png"
+           alt="Success" width="80" class="mb-2" />
+      <p>Your request has been added successfully!</p>
+      <button class="ok-btn" type="button" onclick="closeSuccessModal()">OK</button>
+    </div>
+  </div>
+</div>
+
 
   <script>
     function openSidebar(title) {
@@ -373,6 +417,18 @@
     }
   </script>
 
+<script>
+    function showSuccessModal() {
+        document.getElementById("successModal").style.display = "flex";
+    }
+
+    function closeSuccessModal() {
+        document.getElementById("successModal").style.display = "none";
+        // optional: sidebar close
+        const sidebar = document.getElementById("sidebar1");
+        if (sidebar) sidebar.classList.remove("active");
+    }
+</script>
   <script>
         function submitActivation() {
             // Trigger ASP.NET Page_ClientValidate

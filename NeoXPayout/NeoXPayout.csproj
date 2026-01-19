@@ -707,6 +707,7 @@
     <Content Include="MiniWebsite.aspx" />
     <Content Include="MPIN.aspx" />
     <Content Include="MPINValidation.asmx" />
+    <Content Include="Notification.aspx" />
     <Content Include="onboarding\bsk_logo.png" />
     <Content Include="onboarding\img\1.png" />
     <Content Include="onboarding\img\2.png" />
@@ -2854,6 +2855,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="mycode\UserManagement.cs" />
+    <Compile Include="Notification.aspx.cs">
+      <DependentUpon>Notification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Notification.aspx.designer.cs">
+      <DependentUpon>Notification.aspx</DependentUpon>
+    </Compile>
     <Compile Include="onboarding\onboarding.aspx.cs">
       <DependentUpon>onboarding.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

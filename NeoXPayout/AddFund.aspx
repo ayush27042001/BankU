@@ -712,7 +712,7 @@ table th {
                 btn.className = "btn btn-sm btn-outline-primary";
                 btn.id = "btn-" + i;
 
-                // ✅ Prevent page refresh!
+             
                 btn.type = "button";
 
                 btn.addEventListener("click", function (e) {
@@ -733,19 +733,17 @@ table th {
 
 
   <script>
-      let timerInterval; // store interval ID globally
-      let timeLeft = 90; // 1 minute 30 seconds (90 seconds)
+      let timerInterval;
+      let timeLeft = 45; // 45 seconds
 
       const paymentSidebar = document.getElementById('paymentSidebar');
       const timerDisplay = document.getElementById('paymentTimer');
 
-      // Function to start timer
       function startPaymentTimer() {
-          // Reset timer each time sidebar opens
-          timeLeft = 90;
-          timerDisplay.textContent = "01:30";
+          timeLeft = 45;
+          timerDisplay.textContent = "00:45";
 
-          clearInterval(timerInterval); // avoid multiple intervals
+          clearInterval(timerInterval);
           timerInterval = setInterval(() => {
               const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
               const seconds = (timeLeft % 60).toString().padStart(2, '0');
@@ -757,7 +755,7 @@ table th {
                   const offcanvas = bootstrap.Offcanvas.getInstance(paymentSidebar);
                   if (offcanvas) offcanvas.hide();
 
-                  // Trigger hidden ASP.NET button
+                  // ASP.NET postback
                   __doPostBack('<%= btnCheckStatus.UniqueID %>', '');
             }
 
@@ -765,16 +763,15 @@ table th {
         }, 1000);
       }
 
-      // Function to stop timer when sidebar closes
       function stopPaymentTimer() {
           clearInterval(timerInterval);
-          timerDisplay.textContent = "01:30"; // reset display
+          timerDisplay.textContent = "00:45";
       }
 
-      // Attach event listeners for offcanvas open/close
       paymentSidebar.addEventListener('shown.bs.offcanvas', startPaymentTimer);
       paymentSidebar.addEventListener('hidden.bs.offcanvas', stopPaymentTimer);
   </script>
+
 
 
 <script>

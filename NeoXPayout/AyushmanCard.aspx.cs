@@ -64,6 +64,7 @@ namespace NeoXPayout
                         cmd.ExecuteNonQuery();
                     }
                 }
+                ScriptManager.RegisterStartupScript(this,GetType(),"showSuccessModal","showSuccessModal();",true);
 
                 // Change button text & disable it
                 btnActivate.Text = "⏳ Processing...";

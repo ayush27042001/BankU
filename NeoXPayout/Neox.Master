@@ -18,7 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/vendor/dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+    
     <style>
         .bank-transfer-row {
             display: flex;
@@ -884,7 +884,7 @@
                                         <span class="ms-2">Collect Orders</span>
                                     </a>
                                 </li>
-                                <li>
+                               <%-- <li>
                                     <a href="BankAccountReport.aspx" aria-label="Bank" data-bs-toggle="tooltip"
                                         data-bs-title="Bank" data-bs-placement="right">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -896,7 +896,7 @@
                                         </svg>
                                         <span class="ms-2">Bank Accounts</span>
                                     </a>
-                                </li>
+                                </li>--%>
                                 <li>
                                     <a href="Settlement.aspx" aria-label="Settlement" data-bs-toggle="tooltip"
                                         data-bs-title="Settlement" data-bs-placement="right">
@@ -1013,7 +1013,7 @@
                                           </a>
                                         </li>
                                         <!-- EMP User -->
-                                        <li>
+                                       <%-- <li>
                                           <a href="EMPuser.aspx" aria-label="EMP User" data-bs-toggle="tooltip" data-bs-title="EMP User" data-bs-placement="right">
                                             <svg class="svg-stroke" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1024,7 +1024,7 @@
                                             </svg>
                                             <span class="ms-2">EMP User</span>
                                           </a>
-                                        </li>
+                                        </li>--%>
                                       </ul>
                                     </li>
                      
@@ -1083,11 +1083,11 @@
                                 <ul class="dropdown-menu dropdown-menu-end p-2 p-xl-3 shadow rounded-4"
                                     aria-labelledby="bd-theme-one">
                                     <li class="mb-1">
-                                        <a class="dropdown-item rounded-pill" href="Profile.aspx">RM Name : BankU
+                                        <a class="dropdown-item rounded-pill" >RM Name : <span runat="server" id="rmName"></span>
                                         </a>
                                     </li>
                                     <li class="mb-1">
-                                        <a class="dropdown-item rounded-pill" href="tel:9999999999">RM Phone : 9999999999
+                                        <a class="dropdown-item rounded-pill"  runat="server" id="rmPhoneLink">RM Phone : <span runat="server" id="rmPhone"></span>
                                         </a>
                                     </li>
                                     <li class="mb-1">
@@ -1185,12 +1185,12 @@
                                         </a>
                                     </li>
                                     <li class="mb-1">
-                                        <a class="dropdown-item rounded-pill" href="#">
+                                        <a class="dropdown-item rounded-pill" href="Profile.aspx">
                                             <i class="bi bi-gear me-2"></i>Settings
                                         </a>
                                     </li>
                                     <li class="mb-1">
-                                        <a class="dropdown-item rounded-pill" href="#">
+                                        <a class="dropdown-item rounded-pill" href="Notification.aspx">
                                             <i class="bi bi-bell me-2"></i>Notifications
                                         </a>
                                     </li>

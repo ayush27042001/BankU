@@ -64,7 +64,8 @@ namespace NeoXPayout
                     }
                 }
 
-                // Change button text & disable it
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "showSuccessModal", "showSuccessModal();", true);
                 btnActivate.Text = "⏳ Processing...";
                 btnActivate.BackColor = System.Drawing.Color.White;
                 btnActivate.ForeColor = System.Drawing.Color.Orange;
