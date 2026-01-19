@@ -15,13 +15,40 @@ namespace NeoXPayout
     {
 
         /// <summary>
-        /// btnActivate control.
+        /// btnActivateInternational control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnActivate;
+        protected global::System.Web.UI.WebControls.Button btnActivateInternational;
+
+        /// <summary>
+        /// btnActivateNepal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnActivateNepal;
+
+        /// <summary>
+        /// btnActivateUSA control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnActivateUSA;
+
+        /// <summary>
+        /// hdnServiceType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnServiceType;
 
         /// <summary>
         /// txtUseCase control.

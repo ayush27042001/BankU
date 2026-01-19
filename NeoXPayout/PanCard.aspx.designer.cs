@@ -15,48 +15,48 @@ namespace NeoXPayout
     {
 
         /// <summary>
-        /// btnActivate control.
+        /// hfPanServiceCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnActivate;
+        protected global::System.Web.UI.WebControls.HiddenField hfPanServiceCode;
 
         /// <summary>
-        /// txtUseCase control.
+        /// txtName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUseCase;
+        protected global::System.Web.UI.WebControls.TextBox txtName;
 
         /// <summary>
-        /// rfvUseCase control.
+        /// txtMobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUseCase;
+        protected global::System.Web.UI.WebControls.TextBox txtMobile;
 
         /// <summary>
-        /// btnRequestActivation control.
+        /// ddlMode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRequestActivation;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMode;
 
         /// <summary>
-        /// btnSaveActivation control.
+        /// lnkSubmitPan control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSaveActivation;
+        protected global::System.Web.UI.WebControls.LinkButton lnkSubmitPan;
     }
 }

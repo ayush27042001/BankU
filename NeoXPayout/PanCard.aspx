@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="PanCard.aspx.cs" Inherits="NeoXPayout.PanCard" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     :root {
@@ -267,71 +267,81 @@
   </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<br> 
- 
-<div class="bnk-card-grid" style="margin:10px">
+    <asp:HiddenField ID="hfPanServiceCode" runat="server" />
 
-  <div class="bnk-card">
-    <div class="bnk-card-icon">🪪</div>
-    <div class="bnk-card-title">Pan Card Service Activation</div>
-    <div class="bnk-card-desc">
-      Enable PAN Card services at your outlet to help customers apply for and manage PAN cards seamlessly.  
-      With BankU PAN Services, you can ensure quick processing, transparency, and trust for your customers.
+<div class="bnk-main-header">
+    <div class="bnk-left-header">
+        <h2>PAN Card Services</h2>
     </div>
 
-    <ul style="font-size: 0.9rem; color: var(--text-light); padding-left: 18px; margin-top: -6px;">
-      <li>Apply for New PAN Cards Easily</li>
-      <li>Track Application Status in Real-Time</li>
-      <li>Secure & Transparent PAN Issuance</li>
-      <li>Support for Lost or Duplicate PAN</li>
-      <li>Build Customer Trust with Faster Processing</li>
-    </ul>
+    <div class="bnk-right-header">
+        <button class="bnk-outline-btn" type="button"
+                onclick="openSidebar('PAN Creation', '5024')">
+            🆕 PAN Creation
+        </button>
 
-    <asp:Button 
-      ID="btnActivate" 
-      runat="server" 
-      CssClass="bnk-activate-btn" 
-      Text="Activate" 
-      OnClientClick="openSidebar('Pan Card Service Activation'); return false;" />
-  </div>
-
+        <button class="bnk-outline-btn" type="button"
+                onclick="openSidebar('PAN Correction', '5025')">
+            ✏️ PAN Correction
+        </button>
+    </div>
 </div>
+<div class="bnk-sidebar" id="sidebar1">
+    <button class="bnk-close-btn" type="button" onclick="closeSidebar()">&times;</button>
 
-<div class="bnk-sidebar" id="sidebar1" >
-  <button class="bnk-close-btn" type="button" onclick="closeSidebar()">&times;</button>
-  <h3 id="bnk-sidebar-title"></h3>
-  <p style="margin-bottom: 10px; color: #555;">
-    Activate PAN Card services and provide customers a secure way to apply for PAN cards quickly and reliably.
-  </p>
+    <h3 id="bnk-sidebar-title"></h3>
+    <p style="color:#555; font-size:14px">
+        Fill the details to proceed with PAN application.
+    </p>
 
-  <div class="bnk-alert-box">
-    <strong>⚠️ Attention!</strong><br>
-    ₹ 5,000 + 18% GST <br /> <b> Sub Total:- </b> 5,900.00 <span style="font-size: x-small;"> non-refundable fee</span>
-  </div>
+    <div class="bnk-alert-box">
+        <strong>⚠️ Charges</strong><br />
+        ₹ 5,000 + 18% GST <br />
+        <small>Non-refundable</small>
+    </div>
 
-  <label for="website-url">Enter Message</label>
-  <asp:TextBox ID="txtUseCase" runat="server" Rows="4" placeholder="Enter your Message" CssClass="form-control" />
-  <asp:RequiredFieldValidator ID="rfvUseCase" runat="server"
-        ControlToValidate="txtUseCase"
-        ErrorMessage="Message required."
-        Display="Dynamic"
-        CssClass="text-danger" 
-        ValidationGroup="APIRequest"/>
+    <!-- Name -->
+    <label>Applicant Name</label>
+    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" />
+    <asp:RequiredFieldValidator runat="server"
+        ControlToValidate="txtName"
+        ErrorMessage="Name required"
+        CssClass="text-danger"
+        ValidationGroup="PAN" />
 
-  <div class="bnk-sidebar-footer">
-      <asp:Button ID="btnRequestActivation" runat="server" 
-        Text="Request Activation"
-        style="color:white; background-color:#6e007c"
-        ValidationGroup="APIRequest"
-        OnClick="btnSaveActivation_Click" />
+    <!-- Mobile -->
+    <label>Mobile Number</label>
+    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" MaxLength="10" />
+    <asp:RequiredFieldValidator runat="server"
+        ControlToValidate="txtMobile"
+        ErrorMessage="Mobile number required"
+        CssClass="text-danger"
+        ValidationGroup="PAN" />
 
-      <asp:Button ID="btnSaveActivation" runat="server" 
-          Text="Hidden Save" 
-          CssClass="d-none" 
-          ValidationGroup="APIRequest"
-          OnClick="btnSaveActivation_Click" />
-      <a href="#">View Business Model</a>
-  </div>
+    <!-- Mode -->
+    <label>PAN Mode</label>
+    <asp:DropDownList ID="ddlMode" runat="server" CssClass="form-select">
+        <asp:ListItem Text="-- Select Mode --" Value="" />
+        <asp:ListItem Text="EKYC (Without Signature)" Value="EKYC" />
+        <asp:ListItem Text="ESIGN (With Signature & Photo)" Value="ESIGN" />
+    </asp:DropDownList>
+    <asp:RequiredFieldValidator runat="server"
+        ControlToValidate="ddlMode"
+        InitialValue=""
+        ErrorMessage="Select PAN mode"
+        CssClass="text-danger"
+        ValidationGroup="PAN" />
+
+    <!-- Submit -->
+    <div class="bnk-sidebar-footer">
+        <asp:LinkButton ID="lnkSubmitPan"
+            runat="server"
+            CssClass="bnk-primary-btn w-100 text-center"
+            ValidationGroup="PAN"
+            OnClick="lnkSubmitPan_Click">
+            Submit PAN Request
+        </asp:LinkButton>
+    </div>
 </div>
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
          data-bs-backdrop="static" data-bs-keyboard="false">
@@ -358,27 +368,14 @@
        	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function openSidebar(title) {
+    function openSidebar(title, serviceCode) {
         document.getElementById("bnk-sidebar-title").innerText = title;
+        document.getElementById("<%= hfPanServiceCode.ClientID %>").value = serviceCode;
         document.getElementById("sidebar1").classList.add("active");
     }
 
     function closeSidebar() {
         document.getElementById("sidebar1").classList.remove("active");
-    }
-</script>
-
-<script>
-    function submitActivation() {
-        // Trigger ASP.NET Page_ClientValidate
-        if (typeof (Page_ClientValidate) == 'function') {
-            if (!Page_ClientValidate('APIRequest')) {
-                return false; // Stop if validation fails
-            }
-        }
-
-        // Click hidden button programmatically
-        document.getElementById("<%= btnSaveActivation.ClientID %>").click();
     }
 </script>
 

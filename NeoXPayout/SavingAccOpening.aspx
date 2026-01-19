@@ -2,6 +2,59 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+      .simple-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.simple-modal {
+  background: #fff;
+  width: 360px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+.simple-modal-header {
+  background: purple;
+  color: white;
+  padding: 12px;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.simple-modal-body {
+  padding: 20px;
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.ok-btn {
+  background: purple;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
     :root {
       --purple: #6e007c;
       --bg: #f9fafb;
@@ -331,6 +384,21 @@
       <a href="#">View Business Model</a>
   </div>
 </div>
+<div id="successModal" class="simple-modal-overlay">
+  <div class="simple-modal">
+    <div class="simple-modal-header">
+      <h5>Request Added Successfully</h5>
+      <span class="close-btn" onclick="closeSuccessModal()">×</span>
+    </div>
+
+    <div class="simple-modal-body">
+      <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png"
+           alt="Success" width="80" class="mb-2" />
+      <p>Your request has been added successfully!</p>
+      <button class="ok-btn" type="button" onclick="closeSuccessModal()">OK</button>
+    </div>
+  </div>
+</div>
 
 <script>
     function openSidebar(title) {
@@ -343,6 +411,18 @@
     }
 </script>
 
+<script>
+    function showSuccessModal() {
+        document.getElementById("successModal").style.display = "flex";
+    }
+
+    function closeSuccessModal() {
+        document.getElementById("successModal").style.display = "none";
+        // optional: sidebar close
+        const sidebar = document.getElementById("sidebar1");
+        if (sidebar) sidebar.classList.remove("active");
+    }
+</script>
 <script>
     function submitActivation() {
         if (typeof (Page_ClientValidate) == 'function') {

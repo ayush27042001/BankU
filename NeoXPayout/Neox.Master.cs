@@ -157,26 +157,56 @@ namespace NeoXPayout
             if (dt.Rows.Count > 0)
             {
                 string accountNumber = dt.Rows[0]["BankAccount"].ToString();
-
+                string RmId = dt.Rows[0]["RmId"].ToString();
+                if (!string.IsNullOrEmpty(RmId))
+                {
+                    SetRM(RmId);
+                }
                 if (!string.IsNullOrEmpty(accountNumber) && accountNumber.Length > 4)
                 {
-                    // Mask except last 4 digits
+                    
                     string masked = new string('*', accountNumber.Length - 4) + accountNumber.Substring(accountNumber.Length - 4);
                     lblAccountNumber.Text = masked;
                 }
                 else
                 {
-                    lblAccountNumber.Text = accountNumber; // If less than 4 digits, show as is
+                    lblAccountNumber.Text = accountNumber;
                 }
             }
         }
+        public void SetRM(string RmId)
+        {
+            string query = "select RmName,RmMobile from RmDetail where Id=@Id AND Status=@Status";
 
+            SqlCommand mcom = new SqlCommand(query, con);
+            mcom.Parameters.AddWithValue("@Id", RmId);
+            mcom.Parameters.AddWithValue("@Status", "Active");
+            SqlDataAdapter mda = new SqlDataAdapter(mcom);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+
+            if (dt.Rows.Count > 0)
+            {
+                string mobile = dt.Rows[0]["RmMobile"].ToString();
+
+                rmName.InnerText = dt.Rows[0]["RmName"].ToString();
+                rmPhone.InnerText = mobile;
+                rmPhoneLink.HRef = "tel:" + mobile;
+
+            }
+            else
+            {
+                rmPhone.InnerText = "";
+                rmName.InnerText = "";
+                rmPhoneLink.HRef ="";
+            }
+        }
         protected void btnReload_Click(object sender, EventArgs e)
         {
             string UserID = this.Session["BankURTUID"].ToString();
             lblWalletBalance.Text = Um.GetBalance(UserID);
             ScriptManager.RegisterStartupScript(this, GetType(), "OpenSidebar",
-        "document.getElementById('bankuModalBackdrop').style.display='flex';", true);
+            "document.getElementById('bankuModalBackdrop').style.display='flex';", true);
         }
     }
 }

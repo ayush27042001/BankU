@@ -87,6 +87,33 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// rmName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl rmName;
+
+        /// <summary>
+        /// rmPhoneLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor rmPhoneLink;
+
+        /// <summary>
+        /// rmPhone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl rmPhone;
+
+        /// <summary>
         /// lblAccountNumber control.
         /// </summary>
         /// <remarks>

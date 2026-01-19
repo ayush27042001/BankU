@@ -64,9 +64,8 @@ namespace NeoXPayout
                         cmd.ExecuteNonQuery();
                     }
                 }
-                string script = "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccessModal", script, true);
-                // Change button text & disable it
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "showSuccessModal", "showSuccessModal();", true);
                 btnActivate.Text = "⏳ Processing...";
                 btnActivate.BackColor = System.Drawing.Color.White;
                 btnActivate.ForeColor = System.Drawing.Color.Orange;

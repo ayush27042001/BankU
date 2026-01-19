@@ -122,7 +122,7 @@ namespace NeoXPayout
                     }
                     else
                     {
-                        Response.Redirect("Login.aspx", false);
+                        Response.Redirect("LoginBankU.aspx", false);
                         Context.ApplicationInstance.CompleteRequest();
                     }
                     break;                    

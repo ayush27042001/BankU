@@ -20,57 +20,29 @@ namespace NeoXPayout
             }
             if (!IsPostBack) // only check on first load
             {
-                string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
-                using (SqlConnection con = new SqlConnection(cs))
-                {
-                    string query = "SELECT COUNT(1) FROM ServiceActivation WHERE UserID = @UserID AND ServiceType = @ServiceType";
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        cmd.Parameters.AddWithValue("@UserID", Session["BankURTUID"].ToString());
-                        cmd.Parameters.AddWithValue("@ServiceType", "Pan Card Service Activation");
-
-                        con.Open();
-                        int exists = Convert.ToInt32(cmd.ExecuteScalar());
-
-                        if (exists > 0)
-                        {
-                            // Already requested → set to processing
-                            btnActivate.Text = "⏳ Processing...";
-                            btnActivate.BackColor = System.Drawing.Color.White;
-                            btnActivate.ForeColor = System.Drawing.Color.Orange;
-                            btnActivate.Enabled = false;
-                        }
-                    }
-                }
+               
+               
             }
         }
-        protected void btnSaveActivation_Click(object sender, EventArgs e)
+        protected void lnkSubmitPan_Click(object sender, EventArgs e)
         {
-            if (Page.IsValid)
-            {
-                string UserMessage = txtUseCase.Text.Trim();
-                string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
-                using (SqlConnection con = new SqlConnection(cs))
-                {
-                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage,status, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage,@status, GETDATE())";
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        cmd.Parameters.AddWithValue("@ServiceType", "Pan Card Service Activation");
-                        cmd.Parameters.AddWithValue("@UserMessage", UserMessage);
-                        cmd.Parameters.AddWithValue("@status", "Pending");
-                        cmd.Parameters.AddWithValue("@UserID", Session["BankURTUID"].ToString());
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                string script = "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccessModal", script, true);
-                // Change button text & disable it
-                btnActivate.Text = "⏳ Processing...";
-                btnActivate.BackColor = System.Drawing.Color.White;
-                btnActivate.ForeColor = System.Drawing.Color.Orange;
-                btnActivate.Enabled = false;
-            }
+            string serviceCode = hfPanServiceCode.Value; // 5024 or 5025
+            string name = txtName.Text.Trim();
+            string mobile = txtMobile.Text.Trim();
+            string mode = ddlMode.SelectedValue;
+
+            // Example:
+            // 5024 = PAN Creation
+            // 5025 = PAN Correction
+
+            // TODO:
+            // Save request to DB
+            // Call PAN API
+            // Redirect or show success modal
+
+            ScriptManager.RegisterStartupScript(this, GetType(),
+                "success", "$('#successModal').modal('show');", true);
         }
+
     }
 }

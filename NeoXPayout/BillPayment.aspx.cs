@@ -143,6 +143,7 @@ namespace NeoXPayout
                     lblBillAmount.Text = d["billAmount"]?.ToString();
                     lblBillNo.Text = d["cellNumber"]?.ToString();
                     lblReqID.Text = orderid;
+                    lblNumber.Text = mobile;
                     lblbillerResponse.Text = json["message"]?.ToString();
 
                     // Convert date
