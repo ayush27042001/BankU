@@ -995,7 +995,7 @@ Fintech as a service India"/>
 
                                      <div class="form-group mb-3">
                                       <asp:DropDownList ID="ddlNature" runat="server" CssClass="form-control text-dark" style="border: 1px solid red; border-radius: 6px; height: 45px; -webkit-text-fill-color:black">
-                                        <asp:ListItem Text="Select Nature of Business" Value="" />
+                                        <asp:ListItem Text="Select Entity of Business" Value="" />
                                         <asp:ListItem Text="Logistics & Supply Chain" Value="Logistics & Supply Chain" />
                                         <asp:ListItem Text="Waste Management & Recycling" Value="Waste Management & Recycling" />
                                         <asp:ListItem Text="Beauty & Personal Care Services" Value="Beauty & Personal Care Services" />

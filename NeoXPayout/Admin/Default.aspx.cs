@@ -122,8 +122,8 @@ namespace NeoXPayout.Admin
 
         private void SendOTP(string number)
         {
-            //string otp = Um.signupotp(number);
-            string otp = "1234";
+            string otp = Um.signupotp(number);
+            //string otp = "1234";
             if (otp != "-1")
             {
                 Session["OTP"] = otp;

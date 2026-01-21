@@ -16,6 +16,7 @@ namespace NeoXPayout
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Redirect("LoginBanku.aspx");
             if (!IsPostBack)
             {
                 Session["BankURTName"] = null;
