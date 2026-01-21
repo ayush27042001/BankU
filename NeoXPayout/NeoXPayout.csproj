@@ -256,6 +256,7 @@
     <Content Include="BankU.png" />
     <Content Include="BankULogo1.png" />
     <Content Include="bcAuth.jpg" />
+    <Content Include="BCAuthorization.jpg" />
     <Content Include="BillPayment.aspx" />
     <Content Include="bin\AjaxControlToolkit.dll" />
     <Content Include="bin\AjaxMin.dll" />
@@ -695,6 +696,7 @@
     <Content Include="icons\8.png" />
     <Content Include="icons\9.png" />
     <Content Include="icons\aeps.png" />
+    <Content Include="idcard.jpg" />
     <Content Include="Insurance.aspx" />
     <Content Include="IntMoneyTransfer.aspx" />
     <Content Include="Invoice.aspx" />

@@ -545,10 +545,10 @@ namespace NeoXPayout
                 string Address = hdnAddress.Value;
                 string Gender = hdnGender.Value;
                 string DOB = hdnDOB.Value;
-                string fathername = hdnFatherName.Value;
+                string careOf = hdnFatherName.Value;
                 string State = hdnstate.Value;
                 string Pincode = hdnpostal.Value;
-                string sql = "UPDATE Registration SET AadharNo = @AadharNo, AddressUser=@AddressUser, Gender=@Gender, DOB=@DOB,FatherName=@FatherName,State=@State,Postal=@Postal,RegistrationStatus=@RegistrationStatus WHERE RegistrationId = @RegistrationId";
+                string sql = "UPDATE Registration SET AadharNo = @AadharNo, AddressUser=@AddressUser, Gender=@Gender, DOB=@DOB,careOf=@careOf,State=@State,Postal=@Postal,RegistrationStatus=@RegistrationStatus WHERE RegistrationId = @RegistrationId";
                 SqlCommand cmd = new SqlCommand(sql, con);          
                 cmd.Parameters.AddWithValue("@AadharNo", aadhaar);
                 //cmd.Parameters.AddWithValue("@VoterIDCard", 
@@ -557,7 +557,7 @@ namespace NeoXPayout
                 cmd.Parameters.AddWithValue("@AddressUser", Address);
                 cmd.Parameters.AddWithValue("@Gender", Gender);
                 cmd.Parameters.AddWithValue("@DOB", DOB);
-                cmd.Parameters.AddWithValue("@FatherName", fathername);
+                cmd.Parameters.AddWithValue("@careOf", careOf);
                 cmd.Parameters.AddWithValue("@State", State);
                 cmd.Parameters.AddWithValue("@Postal", Pincode);
                 cmd.Parameters.AddWithValue("@RegistrationStatus", "Aadhar");
@@ -1015,14 +1015,14 @@ namespace NeoXPayout
                     string DOB = json["dob"]?.ToString();
                     string Gender = json["gender"]?.ToString();
                     string careOf = json["care_of"]?.ToString();
-                    string fatherName = careOf?.Replace("S/O:", "").Trim();
+                    //string fatherName = careOf?.Replace("S/O", "").Trim();
                     string state = json["split_address"]?["state"]?.ToString();
                     string pincode = json["split_address"]?["pincode"]?.ToString();
                     string Image = json["photo_link"]?.ToString();
                     hdnAddress.Value = Address;
                     hdnGender.Value = Gender;
                     hdnDOB.Value = DOB;
-                    hdnFatherName.Value = fatherName;
+                    hdnFatherName.Value = careOf;
                     hdnstate.Value = state;
                     hdnpostal.Value = pincode;
                     hdnImage.Value = Image;
@@ -1278,6 +1278,20 @@ namespace NeoXPayout
                 txtBusiPan.ReadOnly = false;
             }
         }
+        //protected void ddlAccType_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (ddlAccType.SelectedValue == "BankU Seva Kendra")
+        //    {               
+        //        ddlNature.SelectedIndex = 0;
+        //        ddlNature.Enabled = false;
+        //        divNature.Visible = false;
+        //    }
+        //    else
+        //    {               
+        //        ddlNature.Enabled = true;
+        //        divNature.Visible = true;
+        //    }
+        //}
 
     }
 

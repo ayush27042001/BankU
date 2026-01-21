@@ -421,13 +421,13 @@
         Text="Request Activation"
         style="color:white; background-color:#6e007c"
         ValidationGroup="APIRequest"
-        OnClick="btnSaveActivation_Click" />
+        OnClick="btnSaveActivation_Click"  OnClientClick="return confirmActivation();" />
 
       <asp:Button ID="btnSaveActivation" runat="server" 
           Text="Hidden Save" 
           CssClass="d-none" 
           ValidationGroup="APIRequest"
-          OnClick="btnSaveActivation_Click" />
+          OnClick="btnSaveActivation_Click"   />
       <a href="#">View Business Model</a>
   </div>
 </div>
@@ -447,6 +447,17 @@
   </div>
 </div>       	
 
+
+<script>
+    function confirmActivation() {
+        return confirm(
+            "⚠️ Confirmation Required\n\n" +
+            "₹2,478 (including GST) will be deducted from your account.\n" +
+            "This amount is non-refundable.\n\n" +
+            "Do you want to continue?"
+        );
+    }
+</script>
 <script>
     function openSidebar(title) {
         document.getElementById("bnk-sidebar-title").innerText = title;
