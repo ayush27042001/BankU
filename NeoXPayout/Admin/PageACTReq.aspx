@@ -37,7 +37,7 @@
 
     <select id="statusFilter" class="form-select" style="max-width:200px;">
         <option value="">All Status</option>
-        <option value="Processing">Processing</option>
+        <option value="Pending">Pending</option>
         <option value="Approved">Approved</option>
         <option value="Rejected">Rejected</option>
     </select>
@@ -74,7 +74,7 @@
                 <ItemTemplate>
                     <div class="d-flex gap-2">
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select form-select-sm">
-                            <asp:ListItem Value="Processing">Processing</asp:ListItem>
+                            <asp:ListItem Value="Pending">Pending</asp:ListItem>
                             <asp:ListItem Value="Approved">Approved</asp:ListItem>
                             <asp:ListItem Value="Rejected">Rejected</asp:ListItem>
                         </asp:DropDownList>

@@ -26,6 +26,7 @@ namespace NeoXPayout
             }
              if (!IsPostBack)
             {
+
                 mvSteps.ActiveViewIndex = 0;
                 LinkButton1.Text = "NEXT";
                 
@@ -49,10 +50,6 @@ namespace NeoXPayout
 
                     case "Aadhar":
                         mvSteps.ActiveViewIndex = 5;  // View for Aadhar step
-                        break;
-
-                    case "Face":
-                        mvSteps.ActiveViewIndex = 6;  // View for Face step
                         break;
 
                     default:
@@ -86,8 +83,16 @@ namespace NeoXPayout
                 case 1:
                     if (ValidateStep2())
                     {
-                        
-                        mvSteps.ActiveViewIndex = 2;
+                        string accType = ddlAccType.SelectedValue;
+                      
+                        if (accType == "BankU Seva Kendra" || accType == "Distributor")
+                        {
+                            mvSteps.ActiveViewIndex = 3; 
+                        }
+                        else
+                        {
+                            mvSteps.ActiveViewIndex = 2; 
+                        }
                     }
                     break;
 
@@ -103,29 +108,20 @@ namespace NeoXPayout
                 case 3:
                     if (ValidateStep4())
                     {
-                       
-                        mvSteps.ActiveViewIndex = 4;
-                               
+                        bool isSubmitted = SubmitFinalForm();
+
+                        if (isSubmitted)
+                        {
+                          
+                            mvSteps.ActiveViewIndex = 4; 
+                        }
                     }
                     break;
                 case 4:
-                    if (ValidateStep5())
-                    {                      
-                        mvSteps.ActiveViewIndex = 5;                     
-                    }
+                    LinkButton1.Enabled = false;
+                    btnBack.Enabled = false;
                     break;
-                case 5:
 
-                    if (LinkButton1.Text != "Login")
-                    {
-                        LinkButton1.Text = "Login";
-                    }
-                    else
-                    {
-                        Response.Redirect("LoginBankU.aspx", false);
-                        Context.ApplicationInstance.CompleteRequest();
-                    }
-                    break;                    
             }
         }
 
@@ -243,7 +239,18 @@ namespace NeoXPayout
                 return false;
             }
             lblError.Text = "";
+            string status = "Email";
+            string accType = ddlAccType.SelectedValue;
 
+            // Skip Step-3 for specific account types
+            if (accType == "BankU Seva Kendra" || accType == "Distributor")
+            {
+                status = "Bussiness";
+            }
+            else
+            {
+                status = "Bussiness";
+            }
             try
             {
                 
@@ -269,7 +276,7 @@ namespace NeoXPayout
                     cmdfr12.Parameters.AddWithValue("@Email", txtEmail.Text);
                     cmdfr12.Parameters.AddWithValue("@BusinessType", ddlBusinessType.SelectedValue);
                     cmdfr12.Parameters.AddWithValue("@RegistrationId", bankUrtuId);
-                    cmdfr12.Parameters.AddWithValue("@RegistrationStatus", "Email");
+                    cmdfr12.Parameters.AddWithValue("@RegistrationStatus", status);
                     con.Open();
                     int rowsAffected = cmdfr12.ExecuteNonQuery();
                     con.Close();
@@ -412,59 +419,7 @@ namespace NeoXPayout
                 return false;
             }
         }
-        //private bool ValidateStep4()
-        //{
-        //    string Name= Session["BankURTName"].ToString();
-        //    string mobile= Session["BankURTMobileno"].ToString(); ;
-        //    string bankUrtuId = Session["BankURTUID"].ToString();
-        //    if (string.IsNullOrWhiteSpace(txtBankAcc.Text) || string.IsNullOrWhiteSpace(txtIFSC.Text) || string.IsNullOrWhiteSpace(ddlBankAccType.SelectedValue))
-        //    {
-        //        lblError.Text = "Please fill all Bank details.";
-        //        return false;
-        //    }
-        //    lblError.Text = "";
-        //    if (verifyBankAccount(txtBankAcc.Text, txtIFSC.Text, Name, mobile) == "-1")
-        //    {
-        //        lblError.Text = "Invalid Bank details.";
-        //        return false;
-        //    }
-
-        //    try
-        //    {
-        //        string BankName = hdnBankName.Value;
-        //        string Accholder = hdnAccHolderName.Value;
-        //        string sqlfr12 = "UPDATE Registration SET BankAccount = @BankAccount, IFSC = @IFSC, AccountHolderType = @AccountHolderType, AccHolder=@AccHolder, BankName=@BankName, RegistrationStatus=@RegistrationStatus WHERE RegistrationId = @RegistrationId";
-        //        SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
-        //        cmdfr12.Parameters.AddWithValue("@BankAccount", txtBankAcc.Text);
-        //        cmdfr12.Parameters.AddWithValue("@IFSC", txtIFSC.Text);
-        //        cmdfr12.Parameters.AddWithValue("@AccountHolderType", ddlBankAccType.SelectedValue);
-        //        cmdfr12.Parameters.AddWithValue("@BankName", BankName);
-        //        cmdfr12.Parameters.AddWithValue("@AccHolder", Accholder);
-        //        cmdfr12.Parameters.AddWithValue("@RegistrationId", bankUrtuId);
-        //        cmdfr12.Parameters.AddWithValue("@RegistrationStatus", "Bank");
-        //        con.Open();
-        //        int rowsAffected = cmdfr12.ExecuteNonQuery();
-        //        con.Close();
-
-        //        if (rowsAffected > 0)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            string strscript = "<script language='javascript'>alert('Something went wrong! Please try after some time.');</script>";
-        //            Page.RegisterStartupScript("popup", strscript);
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        con.Close(); // Ensure connection is closed in case of error
-        //        string strscript = "<script language='javascript'>alert('Something went wrong! Please try after some time.');</script>";
-        //        Page.RegisterStartupScript("popup", strscript);
-        //        return false;
-        //    }
-        //}
+    
         private bool ValidateStep4()
         {
             string bankUrtuId = Session["BankURTUID"]?.ToString();
@@ -532,10 +487,16 @@ namespace NeoXPayout
                 lblError.Text = "Missing Aadhaar reference. Please resend OTP.";
                 return false;
             }
-
-            if (VerifyAadhaar(otp, refId) == "-1")
+            string code = VerifyAadhaar(otp, refId);
+            if (code == "-1")
             {
-                lblError.Text = "Aadhaar OTP verification failed.";
+                lblError.Text = Session["AadhaarErrorMessage"]?.ToString()
+                                ?? "Aadhaar OTP verification failed.";
+                return false;
+            }
+            else if (code == "-2")
+            {
+                lblError.Text = "The name on Aadhaar does not match the name on PAN.";
                 return false;
             }
 
@@ -697,7 +658,7 @@ namespace NeoXPayout
                 IRestResponse response = client.Execute(request);
                 Apiresponse = response.Content;
                 Um.LogApiCall(bankUrtuId, body, Apiresponse, "VerifyPan");
-                // Parse the response to get reference_id
+             
                 var json = JObject.Parse(Apiresponse);
                 string valid = json["valid"]?.ToString();
                 string type=json["type"]?.ToString().ToUpper();
@@ -964,7 +925,7 @@ namespace NeoXPayout
                 // Parse the response to get reference_id
                 var json = JObject.Parse(Apiresponse);
                 string status = json["status"]?.ToString();
-
+                string Message = json["message"]?.ToString();
                 if (status == "SUCCESS")
                 {
                     string refId = json["ref_id"]?.ToString();
@@ -973,7 +934,7 @@ namespace NeoXPayout
                 }
                 else
                 {
-                    return "-1";
+                    return Message;
                 }
             }
             catch
@@ -1007,26 +968,45 @@ namespace NeoXPayout
                 // Parse the response
                 var json = JObject.Parse(Apiresponse);
                 string status = json["status"]?.ToString();
-                string panName = Session["PanName"]?.ToString()?.ToUpper();
-                string name = json["name"]?.ToString().ToUpper();
-                if (status == "VALID" && panName == name)
+                string Message = json["message"]?.ToString();
+                Session["AadhaarErrorMessage"] = Message;
+
+                string panName = Session["PanName"]?.ToString();
+
+                if (string.IsNullOrWhiteSpace(panName))
                 {
-                    string Address = json["address"]?.ToString();
-                    string DOB = json["dob"]?.ToString();
-                    string Gender = json["gender"]?.ToString();
-                    string careOf = json["care_of"]?.ToString();
-                    //string fatherName = careOf?.Replace("S/O", "").Trim();
-                    string state = json["split_address"]?["state"]?.ToString();
-                    string pincode = json["split_address"]?["pincode"]?.ToString();
-                    string Image = json["photo_link"]?.ToString();
-                    hdnAddress.Value = Address;
-                    hdnGender.Value = Gender;
-                    hdnDOB.Value = DOB;
-                    hdnFatherName.Value = careOf;
-                    hdnstate.Value = state;
-                    hdnpostal.Value = pincode;
-                    hdnImage.Value = Image;
-                    return "SUCCESS";
+                    panName = GetPanNameFromDB();
+                    Session["PanName"] = panName; 
+                }
+                panName = panName?.ToUpper();
+
+                string name = json["name"]?.ToString().ToUpper();
+                if (status == "VALID")
+                {
+                    if(panName == name)
+                    {
+                        string Address = json["address"]?.ToString();
+                        string DOB = json["dob"]?.ToString();
+                        string Gender = json["gender"]?.ToString();
+                        string careOf = json["care_of"]?.ToString();
+                        //string fatherName = careOf?.Replace("S/O", "").Trim();
+                        string state = json["split_address"]?["state"]?.ToString();
+                        string pincode = json["split_address"]?["pincode"]?.ToString();
+                        string Image = json["photo_link"]?.ToString();
+                        hdnAddress.Value = Address;
+                        hdnGender.Value = Gender;
+                        hdnDOB.Value = DOB;
+                        hdnFatherName.Value = careOf;
+                        hdnstate.Value = state;
+                        hdnpostal.Value = pincode;
+                        hdnImage.Value = Image;
+                        return "SUCCESS";
+                    }
+                    else 
+                    {
+                        return "-2";
+                    }
+                   
                 }
                 else
                 {
@@ -1035,6 +1015,7 @@ namespace NeoXPayout
             }
             catch
             {
+                Session["AadhaarErrorMessage"] = "Something went wrong. Please try again.";
                 return "-1";
             }
 
@@ -1185,7 +1166,7 @@ namespace NeoXPayout
             }
             else
             {
-                lblError.Text = "Failed to send OTP. Please check your Aadhaar number.";
+                lblError.Text = "Failed to send OTP. Please check your Aadhaar number. "+ result;
             }
         }
 
@@ -1265,7 +1246,14 @@ namespace NeoXPayout
         protected void ddlBusinessType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected = ddlBusinessType.SelectedValue;
-            string pan = Session["PanNumber"]?.ToString() ?? "";
+            string pan = Session["PanNumber"]?.ToString();
+
+            
+            if (string.IsNullOrWhiteSpace(pan))
+            {
+                pan = GetPanFromDB();
+                Session["PanNumber"] = pan;
+            }
 
             if (selected == "Proprietorship" || selected == "PSU / Govt. Entitie")
             {
@@ -1278,20 +1266,121 @@ namespace NeoXPayout
                 txtBusiPan.ReadOnly = false;
             }
         }
-        //protected void ddlAccType_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (ddlAccType.SelectedValue == "BankU Seva Kendra")
-        //    {               
-        //        ddlNature.SelectedIndex = 0;
-        //        ddlNature.Enabled = false;
-        //        divNature.Visible = false;
-        //    }
-        //    else
-        //    {               
-        //        ddlNature.Enabled = true;
-        //        divNature.Visible = true;
-        //    }
-        //}
+        private string GetPanFromDB()
+        {
+            string pan = "";
+            string regId = Session["BankURTUID"]?.ToString();
+
+            if (string.IsNullOrEmpty(regId))
+                return "";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(
+                    ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+                {
+                    string sql = "SELECT PANNO FROM Registration WHERE RegistrationId = @RegistrationId";
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@RegistrationId", regId);
+                        con.Open();
+                        object result = cmd.ExecuteScalar();
+                        con.Close();
+
+                        if (result != null)
+                            pan = result.ToString();
+                    }
+                }
+            }
+            catch
+            {
+                // Optional: log error
+                pan = "";
+            }
+
+            return pan;
+        }
+        private string GetPanNameFromDB()
+        {
+            string panName = "";
+            string regId = Session["BankURTUID"]?.ToString();
+
+            if (string.IsNullOrEmpty(regId))
+                return "";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(
+                    ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+                {
+                    string sql = "SELECT FullName FROM Registration WHERE RegistrationId = @RegistrationId";
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@RegistrationId", regId);
+                        con.Open();
+                        object result = cmd.ExecuteScalar();
+                        con.Close();
+
+                        if (result != null)
+                            panName = result.ToString();
+                    }
+                }
+            }
+            catch
+            {
+                // Optional: log error
+                panName = "";
+            }
+
+            return panName;
+        }
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            int step = mvSteps.ActiveViewIndex;
+
+            switch (step)
+            {
+                case 1:
+                  
+                    break;
+
+                case 2:
+                    mvSteps.ActiveViewIndex = 1;
+                    break;
+
+                case 3:
+                    // Step-3 → Step-2
+                    mvSteps.ActiveViewIndex = 1;
+                    break;
+
+                case 4:
+                    string accType = ddlAccType.SelectedValue;
+
+                    // If Step-3 was skipped, go back to Step-2
+                    if (accType == "BankU Seva Kendra" || accType == "Distributor")
+                    {
+                        mvSteps.ActiveViewIndex = 1;
+                    }
+                    else
+                    {
+                        mvSteps.ActiveViewIndex = 2;
+                    }
+                    break;
+
+                case 5:
+                 
+                    break;
+            }
+        }
+        private void ToggleBackButton()
+        {
+            int step = mvSteps.ActiveViewIndex;
+
+           
+            btnBack.Visible = !(step == 0 || step == 4);
+        }
+
 
     }
 

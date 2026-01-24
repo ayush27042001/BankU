@@ -52,11 +52,12 @@ namespace NeoXPayout
                 string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
                 using (SqlConnection con = new SqlConnection(cs))
                 {
-                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage, GETDATE())";
+                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage,status, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage,status, GETDATE())";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@ServiceType", "Saving Account Opening");
                         cmd.Parameters.AddWithValue("@UserMessage", UserMessage);
+                        cmd.Parameters.AddWithValue("@status", "Pending");
                         cmd.Parameters.AddWithValue("@UserID", Session["BankURTUID"].ToString());
 
                         con.Open();

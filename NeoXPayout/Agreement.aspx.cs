@@ -102,28 +102,28 @@ namespace NeoXPayout
 
                 IRestResponse response = client.Execute(request);
                 Apiresponse = response.Content;
-                Um.LogApiCall(bankUrtuId, body, Apiresponse, "SendAadhaar");
+                Um.LogApiCall(bankUrtuId, body, Apiresponse, "SendAadhaarAgreement");
 
                 // Parse the response to get reference_id
                 var json = JObject.Parse(Apiresponse);
                 string status = json["status"]?.ToString();
-
+                string message= json["message"]?.ToString();
                 if (status == "SUCCESS")
                 {
                     string refId = json["ref_id"]?.ToString();
                     hdnAadhaarRefId.Value = refId;
                     lblmsg.Text = "OTP Send Successfully";
                     ScriptManager.RegisterStartupScript(
-                this,
-                this.GetType(),
-                "openOtp",
-                "var myModal = new bootstrap.Modal(document.getElementById('otpModal')); myModal.show();",
-                true
-            );
+                    this,
+                    this.GetType(),
+                    "openOtp",
+                    "var myModal = new bootstrap.Modal(document.getElementById('otpModal')); myModal.show();",
+                    true
+                      );
                 }
                 else
                 {
-                    lblmsg.Text = "OTP Not Send";
+                    lblmsg.Text = "OTP Not Send "+ message;
                     ScriptManager.RegisterStartupScript(
                 this,
                 this.GetType(),
@@ -162,7 +162,7 @@ namespace NeoXPayout
 
                 IRestResponse response = client.Execute(request);
                 Apiresponse = response.Content;
-                Um.LogApiCall(bankUrtuId, body, Apiresponse, "VerifyAadhaar");
+                Um.LogApiCall(bankUrtuId, body, Apiresponse, "VerifyAadhaarAgreement");
 
                 var json = JObject.Parse(Apiresponse);
                 string status = json["status"]?.ToString();

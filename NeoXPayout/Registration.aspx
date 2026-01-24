@@ -868,7 +868,18 @@ Fintech as a service India"/>
                 <div class="col-lg-5 d-flex align-items-center justify-content-center bg-white login-section" style="padding: 40px;">
                     <div class="w-100" style="max-width: 400px;">
                         <h3 class="mb-4">Get Started</h3>
-                        <div class="form-group mb-3">
+
+                       <div class="mb-3 d-flex justify-content-end">
+                            <asp:LinkButton 
+                                ID="btnBack" 
+                                runat="server" 
+                                OnClick="btnBack_Click"
+                                CssClass="text-decoration-none"
+                                Style="color:#0047AB; font-size:14px;">
+                                ← Back
+                            </asp:LinkButton>
+                        </div>
+     <div class="form-group mb-3">
                              <asp:Label runat="server"  ID="lblPanName"></asp:Label>
                         </div>
                     
@@ -932,7 +943,7 @@ Fintech as a service India"/>
                                       </div>
 
                                     <div class="form-group mb-3">
-                                        <asp:DropDownList ID="ddlAccType" runat="server" CssClass="form-control text-dark" style="border: 1px solid red; border-radius: 6px; height: 45px; -webkit-text-fill-color:black">
+                                        <asp:DropDownList ID="ddlAccType" runat="server" onchange="toggleNatureDropdown();" CssClass="form-control text-dark" style="border: 1px solid red; border-radius: 6px; height: 45px; -webkit-text-fill-color:black">
                                             <asp:ListItem Text="Select Account Type" Value="" />
                                             <asp:ListItem Text="BankU Seva Kendra" Value="BankU Seva Kendra" />
                                             <asp:ListItem Text="Distributor" Value="Distributor" />
@@ -993,7 +1004,7 @@ Fintech as a service India"/>
                                         <asp:TextBox ID="txtCIN" runat="server"  CssClass="form-control" Placeholder="CIN Number" style="display:none; border: 1px solid red; border-radius: 6px; height: 45px; -webkit-text-fill-color:black"></asp:TextBox>
                                     </div>
 
-                                     <div class="form-group mb-3">
+                                     <div class="form-group mb-3" id="natureWrapper">
                                       <asp:DropDownList ID="ddlNature" runat="server" CssClass="form-control text-dark" style="border: 1px solid red; border-radius: 6px; height: 45px; -webkit-text-fill-color:black">
                                         <asp:ListItem Text="Select Entity of Business" Value="" />
                                         <asp:ListItem Text="Logistics & Supply Chain" Value="Logistics & Supply Chain" />
@@ -1285,6 +1296,37 @@ Fintech as a service India"/>
 <script src="Website/assets/js/custom.js"></script>
 <!-- animation from javascript -->
 <script src="Website/assets/js/aos.js"></script>
+<%--<script>
+    function toggleNatureDropdown() {
+
+        var accType = document.getElementById("<%= ddlAccType.ClientID %>");
+        var nature = document.getElementById("<%= ddlNature.ClientID %>");
+        var wrapper = document.getElementById("natureWrapper");
+
+        if (!accType || !nature || !wrapper) return;
+
+        if (accType.value === "BankU Seva Kendra") {
+            wrapper.style.display = "none";
+            nature.disabled = true;
+            nature.value = "";
+            localStorage.setItem("hideNature", "true");
+        } else {
+            wrapper.style.display = "block";
+            nature.disabled = false;
+            localStorage.setItem("hideNature", "false");
+        }
+    }
+
+    // 🔥 Restore immediately (WebForms-safe)
+    (function restoreNatureState() {
+        if (localStorage.getItem("hideNature") === "true") {
+            toggleNatureDropdown();
+        }
+    })();
+</script>--%>
+
+
+
 <script>
     function setupMegaMenu(navId, tabPrefix) {
         const navLinks = document.querySelectorAll(`#${navId} .nav-link`);
