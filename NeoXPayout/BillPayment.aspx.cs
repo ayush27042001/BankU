@@ -76,10 +76,10 @@ namespace NeoXPayout
         {
             string billType = hfBillType.Value;
             string UserId = Session["BankURTUID"].ToString();
-            string accountNo = txtAccountNo.Text.Trim();            // consumer_id
-            string mobile = txtMobileBill.Text.Trim();              // optional
-            string operatorCode = hfOperatorText.Value;             // opcode
-            string orderid = Guid.NewGuid().ToString("N").Substring(0, 12); // generate unique order ID
+            string accountNo = txtAccountNo.Text.Trim();          
+            string mobile = txtMobileBill.Text.Trim();             
+            string operatorCode = hfOperatorText.Value;           
+            string orderid = Guid.NewGuid().ToString("N").Substring(0, 12); 
             //decimal balance = 0;
             //decimal.TryParse(Um.GetBalance(UserId), out balance);
 
