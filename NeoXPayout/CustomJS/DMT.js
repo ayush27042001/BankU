@@ -39,10 +39,7 @@
   
   {/* <% --pop up form script here-- %>*/}
     
-        function openSenderSidebar() {
-            document.getElementById("senderSidebar").style.display = "flex";
-            document.body.style.overflow = "hidden";
-        }
+        
 
         function closeSenderSidebar() {
             document.getElementById("senderSidebar").style.display = "none";
@@ -154,6 +151,7 @@
                 drawer.style.right = "-500px";
             });
 
+       
             // ESC close
             document.addEventListener("keydown", function (e) {
                 if (e.key === "Escape") {
@@ -161,7 +159,27 @@
                 }
             });
 
-        })();
+})();
+
+(function () {
+
+    const drawerBene = document.getElementById("DeleteBenePreviewSidebar");
+    const closeBeneBtn = document.getElementById("closeDeleteBeneSidebar");
+
+
+
+    closeBeneBtn.addEventListener("click", function () {
+        drawerBene.style.right = "-500px";
+    });
+
+    // ESC close
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            drawerBene.style.right = "-500px";
+        }
+    });
+
+})();
  
    
 
@@ -221,6 +239,7 @@ function bindTransferTabs(data) {
         html += `
             <button
                 type="button"
+                data-item="${item.FeatureCode}"
                 class="header-tab ${index === 0 ? "active" : ""}"
                 onclick="changeTransfer(this,'${item.FeatureName}')">
                 ${item.FeatureName}

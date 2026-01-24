@@ -1,5 +1,5 @@
-﻿const apiBase = "https://localhost:7142/api/admin";
-const apiBaseforDD = "https://localhost:7142/api/dropdowns";
+﻿const apiBase = "https://api.banku.co.in/api/admin";
+const apiBaseforDD = "https://api.banku.co.in/api/dropdowns";
 let headerPage = 1, slabPage = 1, distPage = 1;
 const pageSize = 5;
 

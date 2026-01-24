@@ -36,8 +36,9 @@ namespace NeoXPayout
                 return;
             }
             if (!IsPostBack)
-            {          
-            
+            {
+                string UserId = Session["BankURTUID"].ToString();
+                hdnUserId.Value= UserId;
             }
 
         }

@@ -667,6 +667,7 @@
     <Content Include="CustomJS\BioMetric.js" />
     <Content Include="CustomJS\DMT.js" />
     <Content Include="CustomJS\CommiosnMgmt\AdminCommisionMgmt.js" />
+    <Content Include="CustomJS\INS-DMT\InstantPayDMT.js" />
     <Content Include="DeveloperAPI.aspx" />
     <Content Include="Digitalgold.aspx" />
     <Content Include="DigitalSignature.aspx" />
