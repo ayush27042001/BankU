@@ -254,21 +254,21 @@ namespace NeoXPayout
             try
             {
                 
-                string query = "select * from Registration where Email=@Email";
-                SqlCommand mcom = new SqlCommand(query, con);
-                mcom.Parameters.AddWithValue("@Email", txtEmail.Text);
+                //string query = "select * from Registration where Email=@Email";
+                //SqlCommand mcom = new SqlCommand(query, con);
+                //mcom.Parameters.AddWithValue("@Email", txtEmail.Text);
                
 
-                SqlDataAdapter mda = new SqlDataAdapter(mcom);
-                DataTable dt = new DataTable();
-                mda.Fill(dt);
-                if (dt.Rows.Count > 0)
-                {
-                    lblError.Text = "This Email is already Registered Please enter another.";
-                    return false;
-                }
-                else
-                {
+                //SqlDataAdapter mda = new SqlDataAdapter(mcom);
+                //DataTable dt = new DataTable();
+                //mda.Fill(dt);
+                //if (dt.Rows.Count > 0)
+                //{
+                //    lblError.Text = "This Email is already Registered Please enter another.";
+                //    return false;
+                //}
+                //else
+                //{
                     
                     string sqlfr12 = "UPDATE Registration SET AccountType = @AccountType, Email = @Email, BusinessType = @BusinessType, RegistrationStatus=@RegistrationStatus WHERE RegistrationId = @RegistrationId";
                     SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
@@ -291,7 +291,7 @@ namespace NeoXPayout
                         Page.RegisterStartupScript("popup", strscript);
                         return false;
                     }
-                }
+                //}
 
             }
             catch (Exception)

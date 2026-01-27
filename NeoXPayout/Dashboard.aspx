@@ -396,45 +396,13 @@
     Copied
     <span style="margin-left:10px; cursor:pointer; font-weight:bold;" onclick="hideToast()">×</span>
 </div>
-
+    <script src="CustomJS/Dashboard.js" ></script>
 <script>
-    function copyText(text) {
-        navigator.clipboard.writeText(text);
-        showToast("Copied");
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById("copyToast");
-        toast.style.display = "inline-block";
-        toast.innerHTML = msg + ` <span style="margin-left:10px; cursor:pointer; font-weight:bold;" onclick="hideToast()">×</span>`;
-
-        clearTimeout(window.toastTimer);
-        window.toastTimer = setTimeout(() => {
-            hideToast();
-        }, 2000);
-    }
-
-    function hideToast() {
-        document.getElementById("copyToast").style.display = "none";
-    }
+    $(document).ready(function () {
+        checkStatusAjax();
+    });
 </script>
-   <script>
-       let isBalanceVisible = false;
 
-       function toggleBalanceInline() {
-           const toggleEl = document.getElementById("balanceToggle");
-           const balanceLabel = document.getElementById("<%= Label3.ClientID %>");
-           const balanceValue = "₹" + balanceLabel.innerText.trim();
-
-           if (!isBalanceVisible) {
-               toggleEl.innerText = balanceValue;
-           } else {
-               toggleEl.innerText = "View Balance";
-           }
-
-           isBalanceVisible = !isBalanceVisible;
-       }
-   </script>
         
 </asp:Content>
 

@@ -73,8 +73,8 @@
             </div>
             <div class="modal-footer border-0 d-block text-center">
                 <hr />
-                <a href="#" class="text-decoration-none fw-semibold" style="color:#5A2D82;">
-                    Unlock using Password
+                <a href="ForgetMpin.aspx" class="text-decoration-none fw-semibold" style="color:#5A2D82;">
+                  Forgot MPIN
                 </a>
             </div>
         </div>

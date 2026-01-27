@@ -669,6 +669,7 @@
     <Content Include="CreditCheck.aspx" />
     <Content Include="CurrentAccOpen.aspx" />
     <Content Include="CustomJS\BioMetric.js" />
+    <Content Include="CustomJS\Dashboard.js" />
     <Content Include="CustomJS\DMT.js" />
     <Content Include="CustomJS\CommiosnMgmt\AdminCommisionMgmt.js" />
     <Content Include="CustomJS\INS-DMT\InstantPayDMT.js" />
@@ -684,6 +685,7 @@
     <Content Include="EMPuser.aspx" />
     <Content Include="Failed.gif" />
     <Content Include="FixedDeposit.aspx" />
+    <Content Include="ForgetMpin.aspx" />
     <Content Include="GiftCard.aspx" />
     <Content Include="GSTReg.aspx" />
     <Content Include="I D Card-1.jpg" />
@@ -2763,6 +2765,13 @@
     </Compile>
     <Compile Include="FixedDeposit.aspx.designer.cs">
       <DependentUpon>FixedDeposit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForgetMpin.aspx.cs">
+      <DependentUpon>ForgetMpin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgetMpin.aspx.designer.cs">
+      <DependentUpon>ForgetMpin.aspx</DependentUpon>
     </Compile>
     <Compile Include="GiftCard.aspx.cs">
       <DependentUpon>GiftCard.aspx</DependentUpon>
