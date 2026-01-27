@@ -409,15 +409,19 @@ table th {
             </thead>
           <tbody>
               <asp:Repeater runat="server" ID="gvRequests">
-                  <ItemTemplate>
+              <ItemTemplate>
                 <tr>
                     <td class="toggle-btn" style="cursor:pointer;">+</td>
-                    <td class="status-cell"><span class="status-success"><%# Eval("Status") %></span></td>
+                    <td class="status-cell"> <span class="badge
+                        <%# Eval("Status").ToString() == "SUCCESS" ? "bg-success" : 
+                            Eval("Status").ToString() == "Pending" ? "bg-warning text-dark" : "bg-danger" %>">
+                        <%# Eval("Status") %>
+                    </span></td>
                     <td class="orderid "><%# Eval("TransID") %></td>
                     <td><%# Eval("OperatorName") %></td>
                     <td class="beneficiary"> <%# Eval("MobileNo") %></td>
                    
-                  <td class="date-cell">
+                    <td class="date-cell">
                         <%# string.Format("{0:yyyy-MM-dd HH:mm:ss}", Eval("TxnDate")) %>
                     </td>
 
@@ -447,6 +451,9 @@ table th {
             </tbody>
 
         </table>
+         <nav class="mt-3">
+                    <ul class="pagination justify-content-end" id="payoutPagination"></ul>
+                </nav>
          <div id="pagination" class="d-flex mt-3 gap-2"></div>
     </div>
 
@@ -848,64 +855,94 @@ table th {
 
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const rows = document.querySelectorAll("#payoutTable tbody tr");
-        const pageSize = 10;
-        const paginationContainer = document.getElementById("pagination");
+    <script>
+        const rowsPerPage = 10;
+        const table = document.getElementById("payoutTable");
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const pagination = document.getElementById("payoutPagination");
 
-        const mainRows = [];
-        rows.forEach((row, index) => {
-            if ((index % 2) === 0) mainRows.push(row);
-        });
-
-        const pageCount = Math.ceil(mainRows.length / pageSize);
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+        const maxVisiblePages = 3;
 
         function showPage(page) {
-            let start = page * pageSize;
-            let end = start + pageSize;
+            if (page < 1 || page > totalPages) return;
 
-            rows.forEach((r) => (r.style.display = "none"));
+            currentPage = page;
 
-            for (let i = start * 2; i < end * 2; i++) {
-                if (rows[i]) rows[i].style.display = "";
-            }
+            rows.forEach((row, index) => {
+                row.style.display =
+                    index >= (page - 1) * rowsPerPage &&
+                        index < page * rowsPerPage
+                        ? ""
+                        : "none";
+            });
 
-            // ✅ Update active page button styling
-            document
-                .querySelectorAll("#pagination button")
-                .forEach((btn) => btn.classList.remove("active"));
-
-            const activeBtn = document.getElementById("btn-" + page);
-            if (activeBtn) activeBtn.classList.add("active");
+            updatePagination();
         }
 
-        function createPagination() {
-            paginationContainer.innerHTML = "";
+        function createPageItem(text, page, isActive = false, isDisabled = false) {
+            const li = document.createElement("li");
+            li.className = "page-item";
+            if (isActive) li.classList.add("active");
+            if (isDisabled) li.classList.add("disabled");
 
-            for (let i = 0; i < pageCount; i++) {
-                let btn = document.createElement("button");
-                btn.innerText = i + 1;
-                btn.className = "btn btn-sm btn-outline-primary";
-                btn.id = "btn-" + i;
+            const a = document.createElement("a");
+            a.className = "page-link";
+            a.href = "#";
+            a.innerText = text;
 
-                // ✅ Prevent page refresh!
-                btn.type = "button";
-
-                btn.addEventListener("click", function (e) {
+            if (!isDisabled) {
+                a.onclick = function (e) {
                     e.preventDefault();
-                    e.stopPropagation();
-                    showPage(i);
-                });
-
-                paginationContainer.appendChild(btn);
+                    showPage(page);
+                };
             }
+
+            li.appendChild(a);
+            return li;
         }
 
-        createPagination();
-        showPage(0);
-    });
-</script>
+        function updatePagination() {
+            pagination.innerHTML = "";
+
+            pagination.appendChild(
+                createPageItem("Prev", currentPage - 1, false, currentPage === 1)
+            );
+
+            let start = Math.max(1, currentPage - 1);
+            let end = Math.min(totalPages, start + maxVisiblePages - 1);
+
+            if (end - start < maxVisiblePages - 1) {
+                start = Math.max(1, end - maxVisiblePages + 1);
+            }
+
+            if (start > 1) {
+                pagination.appendChild(createPageItem(1, 1));
+                pagination.appendChild(createPageItem("...", null, false, true));
+            }
+
+            for (let i = start; i <= end; i++) {
+                pagination.appendChild(
+                    createPageItem(i, i, i === currentPage)
+                );
+            }
+
+            if (end < totalPages) {
+                pagination.appendChild(createPageItem("...", null, false, true));
+                pagination.appendChild(createPageItem(totalPages, totalPages));
+            }
+
+            pagination.appendChild(
+                createPageItem("Next", currentPage + 1, false, currentPage === totalPages)
+            );
+        }
+
+        showPage(1);
+    </script>
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,6 +21,7 @@ namespace NeoXPayout
         SqlDataAdapter da = new SqlDataAdapter();
         SqlDataAdapter da1 = new SqlDataAdapter();
         DataSet ds = new DataSet();
+        UserManagement  Um = new  UserManagement();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (this.Session["BankURTName"] == null || !(Session["IsMPINVerified"] is bool isVerified && isVerified))
@@ -113,7 +115,7 @@ namespace NeoXPayout
 
         //    if (dt.Rows.Count > 0)
         //    {
-               
+
         //        lblNotificationContent.Text = dt.Rows[0]["Content"].ToString();
         //        ViewState["NotificationID"] = dt.Rows[0]["NotificationID"].ToString();
         //    }
@@ -138,7 +140,7 @@ namespace NeoXPayout
         //        cmd.ExecuteNonQuery();
         //        con.Close();
 
-                
+
         //        LoadNotification();
         //    }
         //}
@@ -149,9 +151,9 @@ namespace NeoXPayout
             decimal totalCredit = 0;
             decimal totalDebit = 0;
             string UserId = Session["BankURTUID"].ToString();
-            string conStr = "Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100";
+                
 
-            using (SqlConnection con = new SqlConnection(conStr))
+            using (con)
             {
                 con.Open();
 
@@ -172,6 +174,276 @@ namespace NeoXPayout
             lblMoneyIn.Text = "₹" + totalCredit.ToString("0.00");
             lblMoneyOut.Text = "₹" + totalDebit.ToString("0.00");
         }
+
+        [WebMethod(EnableSession = true)]
+        public static object GetLastOrderId()
+        {
+            string lastOrderId = "";
+            string userId = Convert.ToString(HttpContext.Current.Session["BankURTUID"]);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new
+                {
+                    Status = "FAILED",
+                    Message = "Session expired"
+                };
+            }
+
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = @"
+                SELECT TOP 1 OrderId
+                FROM dbo.Addfund
+                WHERE UserId = @UserId AND Status = @Status
+                ORDER BY ReqDate DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@Status", "Pending");
+
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        lastOrderId = result.ToString();
+                    }
+                }
+            }
+
+            return new
+            {
+                Status = "SUCCESS",
+                Data = lastOrderId
+            };
+        }
+        //protected void Checkstatus()
+        //{
+        //    string User = this.Session["BankURTUID"].ToString();
+        //    try
+        //    {
+        //        string order_id = getLastOrderId();
+        //        string Apiresponse = String.Empty;
+        //        string url = "https://allapi.in/order/status";
+        //        string body = "{ \"token\":\"" + "4a33cc-594dcc-2b6c9b-c062fa-9ac491" + "\",\"order_id\":\"" + order_id + "\"}";
+        //        var client = new RestClient(url);
+        //        var request = new RestRequest(Method.POST);
+        //        request.AddHeader("cache-control", "no-cache");
+        //        request.AddHeader("Accept", "application/json");
+        //        request.AddHeader("Content-Type", "application/json");
+        //        request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
+        //        IRestResponse response = client.Execute(request);
+        //        Apiresponse = response.Content;
+        //        Um.LogApiCall(User, body, Apiresponse, "AddFundStatus");
+        //        JObject jObjects = JObject.Parse(Apiresponse);
+        //        decimal amount = 0;
+
+        //        string scode = jObjects["status"].ToString().ToUpper();
+        //        if (scode == "TRUE")
+        //        {
+        //            JObject resultObj = (JObject)jObjects["results"];
+        //            string paymentStatus = resultObj["status"]?.ToString().ToUpper();
+
+        //            if (decimal.TryParse(resultObj["txn_amount"]?.ToString(), out decimal amt))
+        //                amount = amt;
+
+
+        //            // Step 2: Update Addfund
+        //            using (con)
+        //            {
+        //                string updateQuery = @"
+        //            UPDATE dbo.Addfund
+        //            SET Status = @status, AmountPaid=@AmountPaid, ApiResponse = @ApiResponse
+        //            WHERE OrderId = @OrderId";
+
+        //                using (SqlCommand cmd = new SqlCommand(updateQuery, con))
+        //                {
+        //                    cmd.Parameters.AddWithValue("@status", paymentStatus == "SUCCESS" ? "Success" : "Failed");
+        //                    cmd.Parameters.AddWithValue("@AmountPaid", paymentStatus == "SUCCESS" ? amount : 0);
+        //                    cmd.Parameters.AddWithValue("@ApiResponse", Apiresponse);
+        //                    cmd.Parameters.AddWithValue("@OrderId", order_id);
+        //                    con.Open();
+        //                    cmd.ExecuteNonQuery();
+        //                }
+        //            }
+
+        //            // Step 3: Add balance
+        //            if (paymentStatus == "SUCCESS")
+        //            {
+        //                string UserId = Session["BankURTUID"].ToString();
+        //                decimal balance = Convert.ToDecimal(Um.GetBalance(UserId));
+        //                decimal newBalance = balance + amount;
+
+        //                string con = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
+        //                using (SqlConnection conn = new SqlConnection(con))
+        //                {
+        //                    string query = @"INSERT INTO tbluserbalance
+        //            (Old_Bal, Amount, New_Bal, TxnType, crDrType, UserId, Remarks, TxnDatetime)
+        //            VALUES (@Old_Bal, @Amount, @New_Bal, @TxnType, @crDrType, @UserId, @Remarks, @TxnDatetime);";
+
+        //                    using (SqlCommand cmd = new SqlCommand(query, conn))
+        //                    {
+        //                        cmd.Parameters.AddWithValue("@Old_Bal", balance);
+        //                        cmd.Parameters.AddWithValue("@Amount", amount);
+        //                        cmd.Parameters.AddWithValue("@New_Bal", newBalance);
+        //                        cmd.Parameters.AddWithValue("@TxnType", "Fund Added By User");
+        //                        cmd.Parameters.AddWithValue("@crDrType", "Credit");
+        //                        cmd.Parameters.AddWithValue("@UserId", UserId);
+        //                        cmd.Parameters.AddWithValue("@Remarks", "Amount Added By user");
+        //                        cmd.Parameters.AddWithValue("@TxnDatetime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+
+        //                        conn.Open();
+        //                        cmd.ExecuteNonQuery();
+        //                    }
+        //                }
+
+        //                //Session["ShowSuccessModal"] = true;
+        //                //Response.Redirect(Request.RawUrl, false);
+        //                //Context.ApplicationInstance.CompleteRequest();
+        //                return;
+        //            }
+        //            else
+        //            {
+        //                //Session["ShowErrorModal"] = true;
+        //                //Response.Redirect(Request.RawUrl, false);
+        //                //Context.ApplicationInstance.CompleteRequest();
+        //                return;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            //Session["ShowErrorModal"] = true;
+        //            //Response.Redirect(Request.RawUrl, false);
+        //            //Context.ApplicationInstance.CompleteRequest();
+        //            return;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Session["ErrorMsg"] = ex.ToString();
+        //        //Session["ShowErrorModal"] = true;
+        //        //Response.Redirect(Request.RawUrl, false);
+        //        //Context.ApplicationInstance.CompleteRequest();
+        //    }
+        //}
+        [WebMethod(EnableSession = true)]
+        public static object CheckstatusAjax()
+        {
+            UserManagement um = new UserManagement();
+            try
+            {
+                string userId = Convert.ToString(HttpContext.Current.Session["BankURTUID"]);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return new { Status = "FAILED", Message = "Session expired" };
+                }
+
+                string connStr = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
+
+              
+                string orderId = "";
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    string q = @"SELECT TOP 1 OrderId FROM dbo.Addfund WHERE UserId=@UserId AND Status='Pending'  ORDER BY ReqDate DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(q, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        conn.Open();
+                        object r = cmd.ExecuteScalar();
+                        if (r != null) orderId = r.ToString();
+                    }
+                }
+
+                if (string.IsNullOrEmpty(orderId))
+                {
+                    return new { Status = "FAILED", Message = "No pending order found" };
+                }
+
+                string apiUrl = "https://allapi.in/order/status";
+                string body = $"{{\"token\":\"4a33cc-594dcc-2b6c9b-c062fa-9ac491\",\"order_id\":\"{orderId}\"}}";
+
+                var client = new RestClient(apiUrl);
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", body, ParameterType.RequestBody);
+
+                var response = client.Execute(request);
+                string apiResponse = response.Content;
+
+                um.LogApiCall(userId, body, apiResponse, "AddFundStatus");
+
+                JObject jobj = JObject.Parse(apiResponse);
+                if (jobj["status"]?.ToString().ToUpper() != "TRUE")
+                {
+                    return new { Status = "FAILED", Message = "API returned false" };
+                }
+
+                JObject result = (JObject)jobj["results"];
+                string paymentStatus = result["status"]?.ToString().ToUpper();
+                decimal amount = Convert.ToDecimal(result["txn_amount"] ?? 0);
+
+               
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    string uq = @"UPDATE dbo.Addfund SET Status=@Status, AmountPaid=@AmountPaid, ApiResponse=@ApiResponse WHERE OrderId=@OrderId";
+
+                    using (SqlCommand cmd = new SqlCommand(uq, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Status", paymentStatus == "SUCCESS" ? "Success" : "Failed");
+                        cmd.Parameters.AddWithValue("@AmountPaid", paymentStatus == "SUCCESS" ? amount : 0);
+                        cmd.Parameters.AddWithValue("@ApiResponse", apiResponse);
+                        cmd.Parameters.AddWithValue("@OrderId", orderId);
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+              
+                if (paymentStatus == "SUCCESS")
+                {
+
+                    decimal oldBal = Convert.ToDecimal(um.GetBalance(userId));
+                    decimal newBal = oldBal + amount;
+
+                    using (SqlConnection conn = new SqlConnection(connStr))
+                    {
+                        string iq = @"INSERT INTO tbluserbalance (Old_Bal, Amount, New_Bal, TxnType, crDrType, UserId, Remarks, TxnDatetime)  VALUES (@Old_Bal,@Amount,@New_Bal,@TxnType,@crDrType,@UserId,@Remarks,@TxnDatetime)";
+
+                        using (SqlCommand cmd = new SqlCommand(iq, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Old_Bal", oldBal);
+                            cmd.Parameters.AddWithValue("@Amount", amount);
+                            cmd.Parameters.AddWithValue("@New_Bal", newBal);
+                            cmd.Parameters.AddWithValue("@TxnType", "Fund Added By User");
+                            cmd.Parameters.AddWithValue("@crDrType", "Credit");
+                            cmd.Parameters.AddWithValue("@UserId", userId);
+                            cmd.Parameters.AddWithValue("@Remarks", "Amount Added By user");
+                            cmd.Parameters.AddWithValue("@TxnDatetime", DateTime.Now);
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                return new
+                {
+                    Status = "SUCCESS",
+                    PaymentStatus = paymentStatus,
+                    Amount = amount,
+                    OrderId = orderId
+                };
+            }
+            catch (Exception ex)
+            {
+                return new { Status = "FAILED", Message = ex.Message };
+            }
+        }
+
+
         public string ApiBalanceCreditByAdmin(int ToUserKey, string transaction_type, string remarks, decimal amount, string Username)
         {
             try

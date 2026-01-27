@@ -128,13 +128,7 @@ namespace NeoXPayout
             using (SqlConnection con = new SqlConnection(cs))
             {
                 string summaryQuery = @"
-                SELECT 
-                    COUNT(*) AS TxnCount, 
-                    ISNULL(SUM(Amount),0) AS TotalValue, 
-                    ISNULL(AVG(Amount),0) AS AvgValue
-                    FROM dbo.AddFund 
-                    WHERE UserId = @UserId 
-                  AND CAST(ReqDate AS DATE) = CAST(GETDATE() AS DATE)  AND Status = 'Success'";
+                SELECT  COUNT(*) AS TxnCount,  ISNULL(SUM(Amount),0) AS TotalValue,  ISNULL(AVG(Amount),0) AS AvgValue FROM dbo.AddFund  WHERE UserId = @UserId  AND CAST(ReqDate AS DATE) = CAST(GETDATE() AS DATE)  AND Status = 'Success'";
 
                 SqlCommand summaryCmd = new SqlCommand(summaryQuery, con);
                 summaryCmd.Parameters.AddWithValue("@UserId", UserId);
@@ -260,10 +254,7 @@ namespace NeoXPayout
                     // Step 2: Update Addfund
                     using (SqlConnection conn = new SqlConnection(connStr))
                     {
-                        string updateQuery = @"
-                    UPDATE dbo.Addfund
-                    SET Status = @status, AmountPaid=@AmountPaid, ApiResponse = @ApiResponse
-                    WHERE OrderId = @OrderId";
+                        string updateQuery = @" UPDATE dbo.Addfund SET Status = @status, AmountPaid=@AmountPaid, ApiResponse = @ApiResponse  WHERE OrderId = @OrderId";
 
                         using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
                         {

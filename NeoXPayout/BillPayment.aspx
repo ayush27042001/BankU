@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="BillPayment.aspx.cs" Inherits="NeoXPayout.BillPayment" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
 <style>
 .form-icon-group 
 {
@@ -309,6 +310,29 @@ table th {
 #payoutTable tbody tr {
     border-bottom: 1px solid #e9ecef;
 }
+.disabled-card {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+    position: relative;
+}
+
+/* Coming Soon badge */
+.coming-soon-text {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #6c757d;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
 
 .status-success { color: green; font-weight: bold; }
 .status-failed { color: red; font-weight: bold; }
@@ -395,16 +419,25 @@ table th {
         </div>
     </div>
 
-    <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="Donation" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
-            <img src="assets/images/payment/love.png" alt="Donation"  style="height:60px; width:60px;" 
+   <div class="col-6 col-md-2">
+    <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
+
+        <img src="assets/images/payment/love.png"
+             alt="Donation"
+             style="height:60px; width:60px;"
              class="mx-auto d-block"/>
-            <h6  style="font-size: 12px;">Donation</h6>
-        </div>
+
+        <h6 style="font-size: 12px;">Donation</h6>
     </div>
+</div>
+
 
     <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="EducationFee" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/academic.png" alt="EducationFee"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6  style="font-size: 12px;">Education Fee</h6>
@@ -420,7 +453,9 @@ table th {
     </div>
 
     <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="Hospital" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+       <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/heart.png" alt="Hospital"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">Hospital & Pathology</h6>
@@ -428,7 +463,9 @@ table th {
     </div>
 
       <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="Housing" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/home.png" alt="Housing"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6  style="font-size: 12px;">Housing & Society</h6>
@@ -436,7 +473,9 @@ table th {
     </div>
 
       <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="INSURANCE" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+        <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/shield.png" alt="Insurance"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6  style="font-size: 12px;">Insurance</h6>
@@ -444,7 +483,9 @@ table th {
     </div>
 
     <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="Landline" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/telephone.png" alt="Landline"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">Landline</h6>
@@ -460,7 +501,9 @@ table th {
     </div>--%>
 
       <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="MUNICIPALTAX" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/tax.png" alt="Taxes"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6  style="font-size: 12px;">Municipal Taxes & Services</h6>
@@ -468,7 +511,9 @@ table th {
     </div>
 
      <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="NPS" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+        <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/rocking-chair.png" alt="NPS"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">National Pension Scheme(NPS)</h6>
@@ -476,7 +521,9 @@ table th {
     </div>
 
     <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="NCMC" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+        <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/train.png" alt="NCMC"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">NCMC Recharge</h6>
@@ -484,7 +531,9 @@ table th {
     </div>
 
     <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="RecurringDeposit" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/calendar.png" alt="RecurringDeposit"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">Recurring Deposit</h6>
@@ -492,7 +541,9 @@ table th {
     </div>
 
     <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="Rental" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+          <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/rental-service.png" alt="Rental"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">Rental</h6>
@@ -500,7 +551,9 @@ table th {
     </div>
 
       <div class="col-6 col-md-2">
-        <div class="card bill-card p-3 text-center" data-billtype="Subscription" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
+         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
+        
+        <span class="coming-soon-text">Coming Soon</span>
             <img src="assets/images/payment/subscription.png" alt="Subscription"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
             <h6 style="font-size: 12px;">Subscription</h6>
@@ -650,6 +703,10 @@ table th {
         <FooterTemplate>
                     </tbody>
                 </table>
+             <nav class="mt-3">
+                    <ul class="pagination justify-content-end" id="payoutPagination"></ul>
+                </nav>
+
             </div>
         </FooterTemplate>
     </asp:Repeater>
@@ -945,13 +1002,92 @@ table th {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    document.addEventListener("hidden.bs.offcanvas", function () {
-        document.querySelectorAll(".offcanvas-backdrop").forEach(b => b.remove());
-        document.body.classList.remove("offcanvas-backdrop", "modal-open");
-        document.body.style.overflow = ""; 
-    });
-</script>
+ <script>
+     const rowsPerPage = 10;
+     const table = document.getElementById("payoutTable");
+     const tbody = table.querySelector("tbody");
+     const rows = Array.from(tbody.querySelectorAll("tr"));
+     const pagination = document.getElementById("payoutPagination");
+
+     let currentPage = 1;
+     const totalPages = Math.ceil(rows.length / rowsPerPage);
+     const maxVisiblePages = 3;
+
+     function showPage(page) {
+         if (page < 1 || page > totalPages) return;
+
+         currentPage = page;
+
+         rows.forEach((row, index) => {
+             row.style.display =
+                 index >= (page - 1) * rowsPerPage &&
+                     index < page * rowsPerPage
+                     ? ""
+                     : "none";
+         });
+
+         updatePagination();
+     }
+
+     function createPageItem(text, page, isActive = false, isDisabled = false) {
+         const li = document.createElement("li");
+         li.className = "page-item";
+         if (isActive) li.classList.add("active");
+         if (isDisabled) li.classList.add("disabled");
+
+         const a = document.createElement("a");
+         a.className = "page-link";
+         a.href = "#";
+         a.innerText = text;
+
+         if (!isDisabled) {
+             a.onclick = function (e) {
+                 e.preventDefault();
+                 showPage(page);
+             };
+         }
+
+         li.appendChild(a);
+         return li;
+     }
+
+     function updatePagination() {
+         pagination.innerHTML = "";
+
+         pagination.appendChild(
+             createPageItem("Prev", currentPage - 1, false, currentPage === 1)
+         );
+
+         let start = Math.max(1, currentPage - 1);
+         let end = Math.min(totalPages, start + maxVisiblePages - 1);
+
+         if (end - start < maxVisiblePages - 1) {
+             start = Math.max(1, end - maxVisiblePages + 1);
+         }
+
+         if (start > 1) {
+             pagination.appendChild(createPageItem(1, 1));
+             pagination.appendChild(createPageItem("...", null, false, true));
+         }
+
+         for (let i = start; i <= end; i++) {
+             pagination.appendChild(
+                 createPageItem(i, i, i === currentPage)
+             );
+         }
+
+         if (end < totalPages) {
+             pagination.appendChild(createPageItem("...", null, false, true));
+             pagination.appendChild(createPageItem(totalPages, totalPages));
+         }
+
+         pagination.appendChild(
+             createPageItem("Next", currentPage + 1, false, currentPage === totalPages)
+         );
+     }
+
+     showPage(1);
+ </script>
 
 <script>
     function printReceipt() {
