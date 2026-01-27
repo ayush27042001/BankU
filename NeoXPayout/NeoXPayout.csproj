@@ -43,11 +43,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
-      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    <Reference Include="AjaxControlToolkit, Version=20.1.0.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.20.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="CKEditor.NET, Version=3.6.4.0, Culture=neutral, PublicKeyToken=e379cdf2f8354999, processorArchitecture=MSIL">
-      <HintPath>..\packages\CkeditorForASP.NET.1.0.0\lib\CKEditor.NET.dll</HintPath>
+    <Reference Include="AjaxMin, Version=5.14.5506.26196, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxMin.5.14.5506.26202\lib\net40\AjaxMin.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.6.2\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
@@ -262,8 +266,7 @@
     <Content Include="bin\AjaxMin.dll" />
     <Content Include="bin\BouncyCastle.Cryptography.dll" />
     <Content Include="bin\BouncyCastle.Cryptography.xml" />
-    <Content Include="bin\CKEditor.NET.dll" />
-    <Content Include="bin\CKEditor.NET.pdb" />
+   
     <Content Include="bin\itextsharp.dll" />
     <Content Include="bin\itextsharp.xml" />
     <Content Include="bin\Microsoft.Bcl.AsyncInterfaces.dll" />
@@ -3290,8 +3293,6 @@
     <Content Include="Admin\NeoxAdmin.Master" />
     <Content Include="onboarding\BankU_KYC_Forms.pdf" />
     <Content Include="APIDocument\developer.Master" />
-    <Content Include="bin\AjaxControlToolkit.dll.refresh" />
-    <Content Include="bin\CKEditor.NET.dll.refresh" />
     <Content Include="bin\NeoXPayout.dll.config" />
     <Content Include="bin\roslyn\csc.exe.config" />
     <Content Include="bin\roslyn\csc.rsp" />
