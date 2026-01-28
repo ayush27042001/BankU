@@ -64,7 +64,7 @@ namespace NeoXPayout
             string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                string query = "SELECT * FROM BillPayments WHERE UserId = @UserId ORDER BY CreatedDate DESC";
+                string query = "SELECT * FROM TxnReport WHERE UserId = @UserId AND ServiceName='BillPay' ORDER BY TxnDate DESC";
                 SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
                 cmd.Parameters.AddWithValue("@UserId", UserId);

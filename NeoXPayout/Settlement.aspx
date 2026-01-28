@@ -8,8 +8,8 @@
         <div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
             <div class="row align-items-center mb-3">
                 <div class="col-md-6">
-                    <h5 class="mb-0 fw-semibold">Settlement History</h5>
-                    <small class="text-muted">View your Settlement details</small>
+                    <h5 class="mb-0 fw-semibold">Statement History</h5>
+                    <small class="text-muted">View your Statement details</small>
                 </div>
                 <div class="col-md-6 text-end">
                     <button class="btn btn-sm"
@@ -45,30 +45,33 @@
                                         class="table align-middle table-hover  table-body table-responsive w-100">
                                         <thead style="background-color:#F5F6FA">
                                           <tr class="small text-muted text-uppercase">                                                 
-                                            <th>ID</th>
-                                            <th>User</th>
+                                            <th>ID</th>                                       
                                             <th>Service</th>
-                                            <th>Amount</th>
-                                            <th>Txn Date</th>
                                             <th>Operator Name</th>
-                                            <th>Mobile No</th>
-                                            <th>Status</th>                           
+                                            <th>Amount</th>
+                                                                                   
+                                            <th>Account No</th>
+                                               <th>Transaction Id</th>
+                                               <th>Ref Id</th>
+                                            <th>Status</th>
+                                              <th>Txn Date</th>  
                                           </tr>
                                         </thead>
                                         <tbody>
                                          <asp:Repeater runat="server" ID="rptProduct">
                                           <ItemTemplate>
                                               <tr class="row-selectable">
-                                                <td><%# Eval("TransID") %></td>
-                                                <td><%# Eval("UserName") %></td>
+                                               <td><%# Container.ItemIndex + 1 %></td>                                              
                                                 <td><%# Eval("ServiceName") %></td>
-                                                <td>₹<%#string.Format("{0:n2}",Eval("Amount")) %></td>                          
-                                                <td data-order='<%# Eval("TxnDate","{0:yyyyMMdd}") %>'><%# Eval("TxnDate") %></td>
                                                 <td><%# Eval("OperatorName") %></td>
-                                                <td><%# Eval("MobileNo") %></td>                
-                                            <td><span style='color: <%# Eval("Status").ToString() == "FAILED" ? "red" :
+                                                <td>₹<%#string.Format("{0:n2}",Eval("Amount")) %></td>                                                                        
+                                                <td><%# Eval("AccountNo") %></td> 
+                                                <td><%# Eval("TransactionID") %></td>
+                                                    <td><%# Eval("BRID") %></td>
+                                                <td><span style='color: <%# Eval("Status").ToString() == "FAILED" ? "red" :
                                                Eval("Status").ToString() == "SUCCESS" ? "green" : "orange" %>;  font-weight:600;'><%# Eval("Status") %></span>
-                                              </td>                  
+                                              </td> 
+                                                    <td data-order='<%# Eval("TxnDate","{0:yyyyMMdd}") %>'><%# Eval("TxnDate") %></td>
                                               </tr>
                                              </ItemTemplate>
                                             </asp:Repeater>                                           

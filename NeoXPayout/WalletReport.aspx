@@ -48,13 +48,15 @@
                                         <thead style="background-color:#F5F6FA">
                                              <tr class="small text-muted text-uppercase">
                                                  
-                            <th>ID</th>
+                            <th>Sr No.</th>
                             <th>Type</th>
                             <th>Transaction Type</th>
-                            <th>Amount</th>
-                            <th>Txn Date</th>
                             <th>Old Balance</th>
+                            <th>Amount</th>
                             <th>New Balance</th>
+                            <th>Txn Date</th>
+                            
+                          
                             <th>Remarks</th>
                            
                                              </tr>
@@ -63,14 +65,13 @@
                      <asp:Repeater runat="server" ID="rptProduct">
                       <ItemTemplate>
                           <tr class="row-selectable">
-                            <td><%# Eval("Id") %></td>
+                            <td><%# Container.ItemIndex + 1 %></td>
                             <td><%# Eval("CrDrType") %></td>
                             <td><%# Eval("TxnType") %></td>
-                            <td>₹<%#string.Format("{0:n2}",Eval("Amount")) %></td>
-                           
-                               <td data-order='<%# Eval("TxnDatetime","{0:yyyyMMdd}") %>'><%# Eval("TxnDatetime") %></td>
                             <td>₹<%#string.Format("{0:n2}",Eval("Old_Bal")) %></td>
-                            <td>₹<%#string.Format("{0:n2}",Eval("New_Bal")) %></td>                           
+                            <td>₹<%#string.Format("{0:n2}",Eval("Amount")) %></td>
+                            <td>₹<%#string.Format("{0:n2}",Eval("New_Bal")) %></td>    
+                            <td data-order='<%# Eval("TxnDatetime","{0:yyyyMMdd}") %>'><%# Eval("TxnDatetime") %></td>                                              
                             <td><%# Eval("Remarks") %></td>                      
                           </tr>
                          </ItemTemplate>
