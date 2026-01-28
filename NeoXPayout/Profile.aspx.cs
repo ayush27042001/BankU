@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -15,9 +16,10 @@ namespace NeoXPayout
 {
     public partial class Profile : System.Web.UI.Page
     {
-        
-       
+
+
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString);
+        UserManagement Um = new UserManagement();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (this.Session["BankURTName"] == null || !(Session["IsMPINVerified"] is bool isVerified && isVerified))
@@ -25,10 +27,11 @@ namespace NeoXPayout
                 Response.Redirect("LoginBankU.aspx");
             }
             if (!IsPostBack)
-            {         
-                    getpaymentdetails();
-                    getProfileImage();
-                    LoadPreviousRequests();
+            {
+                getpaymentdetails();
+                UserBankDetails();
+                getProfileImage();
+                LoadPreviousRequests();
             }
             
         }
@@ -121,15 +124,17 @@ namespace NeoXPayout
                 lblBusinessType.Text = row["BusinessType"]?.ToString() ?? "";
                 lblAccountHolder.Text = row["AccHolder"]?.ToString() ?? "";
                 lblBankName.Text = row["BankName"]?.ToString() ?? "";
-
+                lblBankNameS.Text = row["BankName"]?.ToString() ?? "";
                 string account = row["BankAccount"]?.ToString() ?? "";
                 lblAccountNumber.Text = account.Length >= 4
                     ? "XXXXXX" + account.Substring(account.Length - 4)
                     : account;
-
+                lblAccountNo.Text = account.Length >= 4
+                    ? "XXXXXX" + account.Substring(account.Length - 4)
+                    : account;
                 lblAccountType.Text = row["AccountHolderType"]?.ToString() ?? "";
                 lblIFSC.Text = row["IFSC"]?.ToString() ?? "";
-
+                lblIfsc1.Text= row["IFSC"]?.ToString() ?? "";
                 string bankAccount = row["BankAccount"]?.ToString()?.Trim();
                 addAccount.Visible = string.IsNullOrEmpty(bankAccount);
                 //DOB.Text = Convert.ToDateTime(dt.Rows[0]["DOB"]).ToString("dd-MM-yyyy");
@@ -148,17 +153,20 @@ namespace NeoXPayout
             string Status =verifyBankAccount(BankAcc, IFSC, Name, Phone);
             if(Status== "SUCCESS")
             {
+                getpaymentdetails();
+                UserBankDetails();
                 ScriptManager.RegisterStartupScript(this, this.GetType(),
                      "showSuccessModal", "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();", true);
             }
             else 
             {
-                lblError.Text = "Use your valid account details.";
+                lblError.Text = "Bank Validation Failed. "+ Status;
             }
         }
         public string verifyBankAccount(string BankAcc, string IFSC, string Name, string Phone)
         {
-            string UserId= Session["BankURTUID"].ToString();
+            string UserId = Session["BankURTUID"].ToString();
+            string UserName = Session["BankURTName"].ToString().ToUpper();
             try
             {
                 string Apiresponse = string.Empty;
@@ -177,51 +185,216 @@ namespace NeoXPayout
 
                 IRestResponse response = client.Execute(request);
                 Apiresponse = response.Content;
-
+                Um.LogApiCall(UserId, body, Apiresponse, "VerifyBankProfile");
                 // Parse the response to get reference_id
                 var json = JObject.Parse(Apiresponse);
-                string status = json["account_status"]?.ToString();              
-               
-                string AccHolder = json["name_at_bank"]?.ToString().ToUpper();
-                if (status == "VALID" )
+                string status = json["account_status"]?.ToString();
+                string Message = json["account_status_code"]?.ToString();
+                string AccHolder = CleanAccountHolderName(json["name_at_bank"]?.ToString());
+                if (status == "VALID")
                 {
-                    string AccHolderName = json["name_at_bank"]?.ToString();
-                    string BankName = json["bank_name"]?.ToString();
-
-                    string sqlfr12 = "UPDATE Registration SET BankAccount = @BankAccount, IFSC = @IFSC, AccountHolderType = @AccountHolderType, AccHolder=@AccHolder, BankName=@BankName WHERE RegistrationId = @RegistrationId";
-                    SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
-                    cmdfr12.Parameters.AddWithValue("@BankAccount", BankAcc);
-                    cmdfr12.Parameters.AddWithValue("@IFSC", IFSC);
-                    cmdfr12.Parameters.AddWithValue("@AccountHolderType", ddlBankAccType.SelectedValue);
-                    cmdfr12.Parameters.AddWithValue("@BankName", BankName);
-                    cmdfr12.Parameters.AddWithValue("@AccHolder", AccHolderName);
-                    cmdfr12.Parameters.AddWithValue("@RegistrationId", UserId);
-                    //cmdfr12.Parameters.AddWithValue("@RegistrationStatus", "Bank");
-                    con.Open();
-                    int rowsAffected = cmdfr12.ExecuteNonQuery();
-                    con.Close();
-
-                    if (rowsAffected > 0)
+                    if (UserName == AccHolder)
                     {
-                        return "SUCCESS";
+                        string AccHolderName = CleanAccountHolderName(json["name_at_bank"]?.ToString());
+                        string BankName = json["bank_name"]?.ToString();
+                        
+                        int count = GetUserBankCount(UserId);
+                        
+                        if (BankAccountAlreadyFilled())
+                        {
+                            if (count >= 5)
+                            {
+                                return "MAX_LIMIT";
+                            }
+                            //string sqlfr12 = "UPDATE Registration SET BankAccount = @BankAccount, IFSC = @IFSC, AccountHolderType = @AccountHolderType, AccHolder=@AccHolder, BankName=@BankName WHERE RegistrationId = @RegistrationId";
+                            string sqlfr12 = "INSERT INTO UserBanks (UserId, AccountNo, IFSC, BankName,AccHolder) VALUES(@UserId,@AccountNo,@IFSC,@BankName,@AccHolder)";
+                            SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
+
+                            cmdfr12.Parameters.AddWithValue("@AccountNo", BankAcc);
+                            cmdfr12.Parameters.AddWithValue("@IFSC", IFSC);                       
+                            cmdfr12.Parameters.AddWithValue("@BankName", BankName);
+                            cmdfr12.Parameters.AddWithValue("@AccHolder", AccHolderName);
+                            cmdfr12.Parameters.AddWithValue("@UserId", UserId);
+                            
+                            con.Open();
+                            int rowsAffected = cmdfr12.ExecuteNonQuery();
+                            con.Close();
+
+                            if (rowsAffected > 0)
+                            {
+                                return "SUCCESS";
+                            }
+                            else
+                            {
+                                return "Error updating details. Try again later.";
+                            }
+                        }
+                        else 
+                        { 
+                            string sqlfr12 = "UPDATE Registration SET BankAccount = @BankAccount, IFSC = @IFSC, AccountHolderType = @AccountHolderType, AccHolder=@AccHolder, BankName=@BankName WHERE RegistrationId = @RegistrationId";
+                            SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
+                            cmdfr12.Parameters.AddWithValue("@BankAccount", BankAcc);
+                            cmdfr12.Parameters.AddWithValue("@IFSC", IFSC);
+                            cmdfr12.Parameters.AddWithValue("@AccountHolderType", ddlBankAccType.SelectedValue);
+                            cmdfr12.Parameters.AddWithValue("@BankName", BankName);
+                            cmdfr12.Parameters.AddWithValue("@AccHolder", AccHolderName);
+                            cmdfr12.Parameters.AddWithValue("@RegistrationId", UserId);
+                           
+                            con.Open();
+                            int rowsAffected = cmdfr12.ExecuteNonQuery();
+                            con.Close();
+
+                                if (rowsAffected > 0)
+                                {
+                                    return "SUCCESS";
+                                }
+                                else
+                                {
+                                     return "Error updating details. Try again later.";
+                                }
+                        }
+
                     }
                     else
                     {
-                        return "-1";
+
+                        return "Enter only your own account details.";
                     }
-                 
+
+
                 }
                 else
                 {
 
-                    return "-1";
+                    return Message;
                 }
             }
             catch
             {
-                return "-1";
+                return "Error updating details. Try again later.";
             }
 
+        }
+        private bool BankAccountAlreadyFilled()
+        {
+            if (Session["BankURTUID"] == null)
+                return false;
+
+            string userId = Session["BankURTUID"].ToString();
+
+            using (SqlConnection con = new SqlConnection(
+                ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = @" SELECT COUNT(*) FROM Registration WHERE RegistrationId = @RegistrationId AND ISNULL(BankAccount, '') <> ''";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@RegistrationId", userId);
+
+                    con.Open();
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+
+                    return count > 0;
+                }
+            }
+        }
+
+        private int GetUserBankCount(string userId)
+        {
+            string sql = "SELECT COUNT(*) FROM UserBanks WHERE UserId = @UserId";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            con.Open();
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+            con.Close();
+
+            return count;
+        }
+        private void UserBankDetails()
+        {
+            string userId = Session["BankURTUID"].ToString();
+            string sql = @"SELECT  BankName,IFSC, AccountNo, REPLICATE('X', LEN(AccountNo) - 4) + RIGHT(AccountNo, 4) AS MaskedAccountNo FROM UserBanks WHERE UserId = @UserId";
+
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            con.Open();
+            SqlDataAdapter mda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+
+            if (dt.Rows.Count == 0)
+            {
+                rptBankAccounts.Visible = false;
+            }
+            else
+            {
+                rptBankAccounts.Visible = true;
+                rptBankAccounts.DataSource = dt;
+                rptBankAccounts.DataBind();
+            }
+
+            con.Close();
+        }
+        private string CleanAccountHolderName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
+
+            name = name.ToUpper().Trim();
+
+            // Remove prefixes (start of name)
+            string[] prefixes =
+            {
+                "MR ", "MRS ", "MS ", "SHRI ", "SMT ","MR. ", "MRS. ", "MS. ", "SHRI. ", "SMT. "
+            };
+
+            foreach (var prefix in prefixes)
+            {
+                if (name.StartsWith(prefix))
+                {
+                    name = name.Substring(prefix.Length);
+                    break;
+                }
+            }
+
+            // Remove relations / suffix part (everything after these)
+            string[] relations =
+            {
+                " S/O ", " D/O ", " W/O ", " C/O "
+            };
+
+            foreach (var rel in relations)
+            {
+                int index = name.IndexOf(rel);
+                if (index > -1)
+                {
+                    name = name.Substring(0, index);
+                    break;
+                }
+            }
+
+            // Remove trailing titles if any
+            string[] suffixes =
+            {
+                " MR", " MRS", " MS", " SHRI", " SMT"
+            };
+
+            foreach (var suffix in suffixes)
+            {
+                if (name.EndsWith(suffix))
+                {
+                    name = name.Substring(0, name.Length - suffix.Length);
+                    break;
+                }
+            }
+
+            // Normalize spaces
+            name = Regex.Replace(name, @"\s+", " ").Trim();
+
+            return name;
         }
         protected void SaveImage_Click(object sender, EventArgs e)
         {
@@ -313,7 +486,7 @@ namespace NeoXPayout
 
                 IRestResponse response = client.Execute(request);
                 Apiresponse = response.Content;
-
+                Um.LogApiCall(UserId, body, Apiresponse, "VerifyGSTProfile");
                 // Parse the response to get reference_id
                 var json = JObject.Parse(Apiresponse);
                 string valid = json["valid"]?.ToString();
@@ -354,6 +527,7 @@ namespace NeoXPayout
             string verifyCode = "Voter" + new Random().Next(1000, 999999).ToString();
             string VoterID = txtVoterID.Text;
             string UserId = Session["BankURTUID"].ToString();
+            string UserName = Session["BankURTName"].ToString().ToUpper();
             try
             {
                 string Apiresponse = string.Empty;
@@ -371,23 +545,30 @@ namespace NeoXPayout
 
                 IRestResponse response = client.Execute(request);
                 Apiresponse = response.Content;
-
+                Um.LogApiCall(UserId, body, Apiresponse, "VerifyVoterProfile");
                 var json = JObject.Parse(Apiresponse);
                 string status = json["status"]?.ToString();
-
+                string VoterName= json["name"]?.ToString().ToUpper();
                 if (status == "VALID")
                 {
-                    string sqlfr12 = "UPDATE Registration SET VoterIDCard = @VoterIDCard WHERE RegistrationId = @RegistrationId";
-                    SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
-                    cmdfr12.Parameters.AddWithValue("@VoterIDCard", VoterID);           
-                    cmdfr12.Parameters.AddWithValue("@RegistrationId", UserId);
+                    if (UserName == VoterName)
+                    {
+                        string sqlfr12 = "UPDATE Registration SET VoterIDCard = @VoterIDCard WHERE RegistrationId = @RegistrationId";
+                        SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
+                        cmdfr12.Parameters.AddWithValue("@VoterIDCard", VoterID);
+                        cmdfr12.Parameters.AddWithValue("@RegistrationId", UserId);
 
-                    con.Open();
-                    int rowsAffected = cmdfr12.ExecuteNonQuery();
-                    con.Close();
-                    getpaymentdetails();
-                    ScriptManager.RegisterStartupScript(this, this.GetType(),
-                    "showSuccessModal", "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();", true);
+                        con.Open();
+                        int rowsAffected = cmdfr12.ExecuteNonQuery();
+                        con.Close();
+                        getpaymentdetails();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(),
+                        "showSuccessModal", "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();", true);
+                    }
+                    else 
+                    {
+                        lblVoterErr.Text = "Use your own valid Voter Id.";
+                    }
                 }
                 else
                 {
@@ -434,15 +615,15 @@ namespace NeoXPayout
             txtReason.Text = "";
             LoadPreviousRequests();
             ScriptManager.RegisterStartupScript(this, GetType(), "SuccessMsg", @"
-        Swal.fire({
-            icon: 'success',
-            title: 'Request Submitted',
-            text: 'Your update request has been sent!',
-            confirmButtonColor: '#6f42c1'
-        });
-        $('#UpdateModal').modal('hide');
-    ", true);
-        }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Request Submitted',
+                    text: 'Your update request has been sent!',
+                    confirmButtonColor: '#6f42c1'
+                });
+                $('#UpdateModal').modal('hide');
+            ", true);
+                }
 
         private void LoadPreviousRequests()
         {

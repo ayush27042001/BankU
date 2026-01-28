@@ -583,7 +583,7 @@ namespace NeoXPayout
 
                 // Save to database
                 string regId = Session["BankURTUID"]?.ToString();
-                string sql = "UPDATE Registration SET IPAddress = @IP, Latitude = @Lat, Longitude = @Lng, GeoVerification = @GeoJson,FaceVerificationResult=@FaceVerificationResult, RegistrationStatus = @RegistrationStatus WHERE RegistrationId = @RegId";
+                string sql = "UPDATE Registration SET IPAddress = @IP, Latitude = @Lat, Longitude = @Lng, GeoVerification = @GeoJson,RmId=@RmId , FaceVerificationResult=@FaceVerificationResult, RegistrationStatus = @RegistrationStatus WHERE RegistrationId = @RegId";
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
                     cmd.Parameters.AddWithValue("@IP", ip);
@@ -591,6 +591,7 @@ namespace NeoXPayout
                     cmd.Parameters.AddWithValue("@Lng", longitude);
                     cmd.Parameters.AddWithValue("@GeoJson", geoResult);
                     cmd.Parameters.AddWithValue("@RegId", regId);
+                    cmd.Parameters.AddWithValue("@RmId", "1");
                     cmd.Parameters.AddWithValue("@FaceVerificationResult", "true");
                     cmd.Parameters.AddWithValue("@RegistrationStatus", "Done");
                    

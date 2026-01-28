@@ -1,14 +1,32 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="NeoXPayout.Profile" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
 
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    background: #fff;
+}
+
+.sidebar-footer a {
+    color: purple;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <main class="container-fluid px-0">
     <div class="content">
         <!-- start: page header -->
-			
-
 			<!-- start: page body area -->
 			<div class="px-xl-5 px-lg-4 px-3 py-3 page-body">
 				<div class="row">
@@ -242,6 +260,11 @@
                                                         OnClientClick="openAddBankModal(); return false;">
                                                         Add
                                                     </asp:LinkButton>
+                                                     <asp:LinkButton runat="server" ID="LinkButton1" CssClass="btn btn-sm"
+                                                        style="background-color: purple; color: #fff; border: none;"
+                                                       OnClientClick="return openBankModal();">
+                                                        View
+                                                    </asp:LinkButton>
                                                 </div>
                                                 <asp:Label runat="server" ID="lblError" CssClass=" text-danger"></asp:Label>
                                                 <p class="text-muted small mb-4">Provide your bank account details for transactions.</p>
@@ -371,6 +394,103 @@
     </div>
   </div>
 </div>
+
+ <div id="ViewBankModal" style="position: fixed; top: 0; right: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: none; align-items: flex-start; justify-content: flex-end;">
+
+     <div style="background: white; width: 500px; height: 100vh; box-shadow: -2px 0 12px rgba(0,0,0,0.15); padding: 16px; position: relative;">
+            <!-- Header with Back -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+               
+                <h2 style="margin: 0; font-size: 18px; flex: 1; text-align: center;">Bank Accounts</h2>
+
+                  <asp:LinkButton runat="server" ID="LinkButton2" CssClass="btn btn-sm"
+                    style="background-color: purple; color: #fff; border: none;"
+                    OnClientClick="openAddBankModal(); return false;">
+                    Add
+                   </asp:LinkButton>
+
+                <button onclick="document.getElementById('ViewBankModal').style.display='none'"
+                    type="button" style="background: transparent; border: none; font-size: 22px; cursor: pointer;">
+                    &times;</button>
+
+            </div>
+
+            <!-- Bank Cards -->
+            <div style="display: flex; flex-direction: column; gap: 16px; overflow-y: auto; height: calc(100vh - 80px);">
+
+                <div style="background: #f9f9f9; padding: 16px; border-radius: 12px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                       <%-- <img src="assets\images\bank\idfc.png" style="width: 32px; height: 32px; margin-right: 8px; border-radius: 5px">--%>
+                        <strong style="font-size: 16px;">
+                            <asp:Label ID="lblBankNameS" runat="server">
+                            </asp:Label>
+                        </strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                        <span>Account Number</span>
+                        <span style="font-weight: 600; color: red">
+                            <asp:Label ID="lblAccountNo" runat="server"></asp:Label>
+                        </span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>IFSC</span>
+                        <span style="font-weight: 600;">
+                            <asp:Label runat="server" ID="lblIfsc1"></asp:Label>
+                        </span>
+                    </div>
+                </div>
+
+                <asp:Repeater ID="rptBankAccounts" runat="server">
+                    <ItemTemplate>
+                        
+                        <div style="background: #f9f9f9; padding: 16px; border-radius: 12px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                              <%--  <img src="assets\images\bank\Axis.png" style="width: 32px; height: 32px; margin-right: 8px; border-radius: 5px">--%>
+                                <strong style="font-size: 16px;"><%# Eval("BankName") %></strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <span>Account Number</span>
+                                <span style="font-weight: 600; color: red"><%# Eval("MaskedAccountNo") %></span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>IFSC</span>
+                                <span style="font-weight: 600;"><%# Eval("IFSC") %></span>
+                            </div>
+                        </div>  
+                        
+                   </ItemTemplate>
+                  </asp:Repeater>
+
+
+              <div style="margin-top: 20px;">
+                <div style="display: flex; margin-bottom: 10px;">
+                    <i class="bi bi-check-circle" style="color: green; margin-right: 8px; font-size: 16px;"></i>
+                    <span>Your linked bank accounts are securely stored and used only for authorized transactions.</span>
+                </div>
+                <div style="display: flex; margin-bottom: 10px;">
+                    <i class="bi bi-check-circle" style="color: green; margin-right: 8px; font-size: 16px;"></i>
+                    <span>You can add up to 5 bank accounts under your profile.</span>
+                </div>
+                <div style="display: flex; margin-bottom: 10px;">
+                    <i class="bi bi-check-circle" style="color: green; margin-right: 8px; font-size: 16px;"></i>
+                    <span>Only bank accounts held in your name or your registered business name are allowed.</span>
+                </div>
+                <div style="display: flex;">
+                    <i class="bi bi-check-circle" style="color: green; margin-right: 8px; font-size: 16px;"></i>
+                    <span>For security reasons, account numbers are displayed in masked format.</span>
+                </div>
+            </div>
+
+
+          <div class="sidebar-footer">
+    <a href="mailto:help@banku.co.in" target="_blank">Contact Helpdesk</a>
+</div>
+
+
+
+            </div>
+        </div>
+ </div>
 
 <div class="modal fade" id="addGSTModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true"
      data-bs-backdrop="static" data-bs-keyboard="false">
@@ -603,10 +723,26 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
+    function openBankModal() {
+        document.getElementById('bankuModalBackdrop').style.display = 'none';
+        document.getElementById('ViewBankModal').style.display = 'flex';
+        return false;
+    }
+
     function openAddBankModal() {
-        var myModal = new bootstrap.Modal(document.getElementById('addBankModal'));
+
+    
+        const viewModal = document.getElementById('ViewBankModal');
+        if (viewModal) {
+            viewModal.style.display = 'none';
+        }
+
+        const addModalEl = document.getElementById('addBankModal');
+        const myModal = new bootstrap.Modal(addModalEl);
         myModal.show();
     }
+
     function openGStModal() {
         var myModal = new bootstrap.Modal(document.getElementById('addGSTModal'));
         myModal.show();

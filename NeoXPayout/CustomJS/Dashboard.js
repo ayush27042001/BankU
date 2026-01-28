@@ -20,21 +20,23 @@
     }
 
 
-       let isBalanceVisible = false;
+let isBalanceVisible = false;
 
-       function toggleBalanceInline() {
-           const toggleEl = document.getElementById("balanceToggle");
-           const balanceLabel = document.getElementById("<%= Label3.ClientID %>");
-           const balanceValue = "₹" + balanceLabel.innerText.trim();
+function toggleBalanceInline() {
+    const toggleEl = document.getElementById("balanceToggle");
+    const balanceLabel = document.getElementById("Label3");
 
-           if (!isBalanceVisible) {
-               toggleEl.innerText = balanceValue;
-           } else {
-               toggleEl.innerText = "View Balance";
-           }
+    if (!balanceLabel) {
+        console.error("Label3 not found in DOM");
+        return;
+    }
 
-           isBalanceVisible = !isBalanceVisible;
+    const balanceValue = "₹ " + balanceLabel.innerText.trim();
+
+    toggleEl.innerText = isBalanceVisible ? "View Balance" : balanceValue;
+    isBalanceVisible = !isBalanceVisible;
 }
+
 function checkStatusAjax() {
 
     $(".loader-overlay").show();
