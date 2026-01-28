@@ -41,8 +41,7 @@ namespace NeoXPayout.Admin
             {
                 //string ApiKey = Session["AdminNeoxApikey"].ToString();
                 con.Open();
-                string query = "insert into Registration(AccountType,BusinessType,CompanyName,FullName,MobileNo,Email,MPIN,AddressUser,Postal,PANNO,AadharNo,BusinessPAN,BusinessProof,NatureOfBusiness,Gender,DOB,FatherName,State,Regdate,Status,FaceVerificationResult,RegistrationStatus,UserType)" +
-                    "values(@AccountType,@BusinessType,@CompanyName,@FullName,@MobileNo,@Email,@MPIN,@AddressUser,@Postal,@PANNO,@AadharNo ,@BusinessPAN,@BusinessProof,@NatureOfBusiness,@Gender,@DOB,@FatherName,@State,@Regdate  ,@Status,@FaceVerificationResult,@RegistrationStatus,@UserType)";
+                string query = "insert into Registration(AccountType,BusinessType,CompanyName,FullName,MobileNo,Email,MPIN,AddressUser,Postal,PANNO,AadharNo,BusinessPAN,BusinessProof,NatureOfBusiness,Gender,DOB,FatherName,State,Regdate,Status,FaceVerificationResult,RegistrationStatus,UserType) values(@AccountType,@BusinessType,@CompanyName,@FullName,@MobileNo,@Email,@MPIN,@AddressUser,@Postal,@PANNO,@AadharNo ,@BusinessPAN,@BusinessProof,@NatureOfBusiness,@Gender,@DOB,@FatherName,@State,@Regdate  ,@Status,@FaceVerificationResult,@RegistrationStatus,@UserType)";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@AccountType", txtAccount1.SelectedValue);
                 cmd.Parameters.AddWithValue("@BusinessType", ddlBusinessType.SelectedValue);

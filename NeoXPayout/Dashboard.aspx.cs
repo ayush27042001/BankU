@@ -58,52 +58,12 @@ namespace NeoXPayout
                 }
 
                 string UserID = this.Session["BankURTUID"].ToString();
-                string url = "https://partner.banku.co.in/api/GetUserBalance";
-                string body = "{\"UserId\":\"" + UserID + "\",\"Apiversion\":\"" + "1.0" + "\"}";
-                string Apiresponse = String.Empty;
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.POST);
-                request.AddHeader("cache-control", "no-cache");
-                request.AddHeader("Accept", "application/json");
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
-                IRestResponse response = client.Execute(request);
-                Apiresponse = response.Content;
-
-                try
-                {
-                    JObject jObject = JObject.Parse(Apiresponse);
-                    string scode = jObject["Status"]?.ToString();
-
-                 
-                    if (scode == "SUCCESS" && jObject["Data"] != null && jObject["Data"].Type == JTokenType.Array)
-                    {
-                        JArray dataArray = (JArray)jObject["Data"];
-
-                        if (dataArray.Count > 0)
-                        {
-                            string currentBalance = dataArray[0]["CurrentBalance"]?.ToString();
-                            //lblsuccess.Text = currentBalance;
-                            Label3.Text = currentBalance;
-                            return;
-                        }
-                    }
-
-                    //lblsuccess.Text = "0.00";
-                    Label3.Text = "0.00";
-                }
-                catch
-                {
-
-                    //lblsuccess.Text = "0.00";
-                    Label3.Text = "0.00";
-                }
-
-
+                string balance = Um.GetBalance(UserID);
+                Label3.Text = balance;
+                
             }
 
         }
-
 
         //public void LoadNotification()
         //{
@@ -145,7 +105,6 @@ namespace NeoXPayout
         //    }
         //}
 
-
         private void LoadWalletSummary()
         {
             decimal totalCredit = 0;
@@ -158,7 +117,7 @@ namespace NeoXPayout
                 con.Open();
 
 
-                using (SqlCommand cmd = new SqlCommand("SELECT ISNULL(SUM(Amount),0) FROM tbluserbalance WHERE CrDrType='Credit' AND UserId=@UserID AND TxnType = 'Fund Added By User'", con))
+                using (SqlCommand cmd = new SqlCommand("SELECT ISNULL(SUM(Amount),0) FROM tbluserbalance WHERE  (CrDrType='Credit' OR CrDrType='CR') AND UserId=@UserID AND TxnType = 'Fund Added By User'", con))
                 {
                     cmd.Parameters.AddWithValue("@UserId", UserId);
                     totalCredit = Convert.ToDecimal(cmd.ExecuteScalar());

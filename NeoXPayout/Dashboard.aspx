@@ -169,7 +169,13 @@
         <div class="mt-4 fs-5">
 
             <!-- ASP.NET label  -->
-            <asp:Label ID="Label3" runat="server" CssClass="d-none"></asp:Label>
+          <asp:Label 
+            ID="Label3" 
+            runat="server" 
+            ClientIDMode="Static"
+            CssClass="d-none">
+        </asp:Label>
+
 
             <!-- Visible toggle text -->
             <span id="balanceToggle"

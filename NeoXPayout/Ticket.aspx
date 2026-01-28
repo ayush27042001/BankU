@@ -90,6 +90,9 @@
                 <asp:ListItem Value="Recharge">Recharge Service</asp:ListItem>
                 <asp:ListItem Value="AEPS">AEPS Service</asp:ListItem>
                 <asp:ListItem Value="DMT">DMT Service</asp:ListItem>
+                <asp:ListItem Value="SinglePayout">Single Payout Service</asp:ListItem>
+                <asp:ListItem Value="BillPayment">Bill Payment Service</asp:ListItem>
+                <asp:ListItem Value="Others">Others</asp:ListItem>
             </asp:DropDownList>
         </div>
 

@@ -228,7 +228,7 @@ namespace NeoXPayout
             //}
 
             string urlBill = "https://partner.banku.co.in/api/BillPay";
-            string bodyBill = "{\"UserId\":\"" + "1000" + "\",\"Apiversion\":\"" + "1.0" + "\",\"ServiceName\":\"" + servicename + "\",\"OperatorId\":\"" + selectedOperatorId + "\",\"Accountno\":\"" + Accountno + "\",\"MobileNo\":\"" + MobileNo1 + "\",\"Amt\":\"" + Amount + "\",\"CustomerName\":\"" + Name + "\",\"billerResponse\":\"" + billerResponse + "\",\"inputParams\":\"" + inputParams + "\",\"reqid\":\"" + reqid + "\",\"ainfo\":\"" + ainfo + "\"}";
+            string bodyBill = "{\"UserId\":\"" + UserId + "\",\"Apiversion\":\"" + "1.0" + "\",\"ServiceName\":\"" + servicename + "\",\"OperatorId\":\"" + selectedOperatorId + "\",\"Accountno\":\"" + Accountno + "\",\"MobileNo\":\"" + MobileNo1 + "\",\"Amt\":\"" + Amount + "\",\"CustomerName\":\"" + Name + "\",\"billerResponse\":\"" + billerResponse + "\",\"inputParams\":\"" + inputParams + "\",\"reqid\":\"" + reqid + "\",\"ainfo\":\"" + ainfo + "\"}";
             string ApiresponseBill = String.Empty;
             var clientBill = new RestClient(urlBill);
             var requestBill = new RestRequest(Method.POST);
@@ -263,27 +263,25 @@ namespace NeoXPayout
                     lblheader.Text = "Bill Paid Successfully";
                     lblheader.CssClass = "modal-title text-success";
 
-                    using (SqlConnection conn = new SqlConnection(con))
-                    {
-                        string updateQuery = @"UPDATE BillPayments
-                                           SET status = @status, ApiResponse = @ApiResponse
-                                           WHERE OrderId = @OrderId";
+                    //using (SqlConnection conn = new SqlConnection(con))
+                    //{
+                    //    string updateQuery = @"UPDATE BillPayments SET status = @status, ApiResponse = @ApiResponse WHERE OrderId = @OrderId";
 
-                        using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@status", "Success");
-                            cmd.Parameters.AddWithValue("@ApiResponse", ApiresponseBill);
-                            cmd.Parameters.AddWithValue("@OrderId", orderId);
+                    //    using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                    //    {
+                    //        cmd.Parameters.AddWithValue("@status", "Success");
+                    //        cmd.Parameters.AddWithValue("@ApiResponse", ApiresponseBill);
+                    //        cmd.Parameters.AddWithValue("@OrderId", orderId);
 
-                            conn.Open();
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
+                    //        conn.Open();
+                    //        cmd.ExecuteNonQuery();
+                    //    }
+                    //}
                 }
             }
             else
             {
-                // --- Payment Failed → Return Amount ---
+              
                
 
                 lblheader.CssClass = "modal-title text-danger";
