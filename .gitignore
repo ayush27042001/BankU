@@ -35,3 +35,4 @@ packages/
 
 # Publish output
 publish/
+/NeoXPayout/Properties/PublishProfiles/FolderProfile2.pubxml
