@@ -571,7 +571,15 @@ table th {
 
     <div class="offcanvas-header" style="background-color:whitesmoke">
         <h5 class="offcanvas-title" id="billSidebarTitle">Bill Payment</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+     <button type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        data-bs-target="#billSidebar"
+        aria-label="Close">
+</button>
+
+
+
     </div>
     <div class="offcanvas-body">
 
@@ -671,27 +679,27 @@ table th {
 
         <ItemTemplate>
             <tr>
-                <td><%# Eval("CreatedDate", "{0:dd-MM-yyyy HH:mm}") %></td>
-                <td><%# Eval("BillType") %></td>
+                <td><%# Eval("TxnDate", "{0:dd-MM-yyyy HH:mm}") %></td>
+                <td><%# Eval("ServiceName") %></td>
                 <td><%# Eval("OperatorName") %></td>
                 <td><%# Eval("AccountNo") %></td>
-                <td class="beneficiary"><%# Eval("Mobile") %></td>
+                <td class="beneficiary"><%# Eval("MobileNo") %></td>
                 <td class="amount"><%# Eval("Amount") %></td>
                 <td class="status-cell">
                     <span class="badge
-                        <%# Eval("Status").ToString() == "Success" ? "bg-success" : 
+                        <%# Eval("Status").ToString() == "SUCCESS" ? "bg-success" : 
                             Eval("Status").ToString() == "Pending" ? "bg-warning text-dark" : "bg-danger" %>">
                         <%# Eval("Status") %>
                     </span>
                 </td>
-                <td class="orderid"><%# Eval("OrderId") %></td>
+                <td class="orderid"><%# Eval("TransactionId") %></td>
                <td>
                     <button type="button" class="btn btn-success btn-sm btn-receipt"
-                        data-orderid='<%# Eval("OrderId") %>'
+                        data-orderid='<%# Eval("TransactionId") %>'
                         data-operator='<%# Eval("OperatorName") %>'
-                        data-mobile='<%# Eval("Mobile") %>'
-                        data-date='<%# string.Format("{0:yyyy-MM-dd HH:mm:ss}", Eval("CreatedDate")) %>'
-                       data-type='<%# Eval("BillType") %>'
+                        data-mobile='<%# Eval("MobileNo") %>'
+                        data-date='<%# string.Format("{0:yyyy-MM-dd HH:mm:ss}", Eval("TxnDate")) %>'
+                        data-type='<%# Eval("ServiceName") %>'
                         data-amount='<%# Eval("Amount") %>'
                         data-status='<%# Eval("Status") %>'>
                         Receipt
@@ -714,7 +722,7 @@ table th {
 
      <!-- Electricity Bill Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true"
-   data-bs-backdrop="static" data-bs-keyboard="false"    >
+   data-bs-backdrop="static" data-bs-keyboard="false">
 
 <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content mt-4 mb-4 p-4">
@@ -1001,6 +1009,17 @@ table th {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('hidden.bs.offcanvas', function () {
+            // Remove stuck backdrop
+            document.querySelectorAll('.offcanvas-backdrop').forEach(b => b.remove());
+
+            // Restore body state
+            document.body.classList.remove('offcanvas-backdrop', 'modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        });
+    </script>
 
  <script>
      const rowsPerPage = 10;
