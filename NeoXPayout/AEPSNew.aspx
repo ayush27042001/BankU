@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="AEPSNew.aspx.cs" Inherits="NeoXPayout.AEPSNew" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-  
+
     <style>
         .operator-card {
             transition: background-color 0.2s, border-color 0.2s;
@@ -445,9 +445,9 @@
     <asp:Panel runat="server" ID="pnlMain">
         <button type="button" class="btn btn-receipt btn-primary hidden">Test</button>
         <button type="button" class="btn btnTxn btn-primary hidden">Testtxn</button>
-        <button class="btn btn-primary hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsLoginSidebar">
+        <%--<button class="btn btn-primary hidden " type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsLoginSidebar">
             Open AEPS Login
-        </button>
+        </button>--%>
         <button class="btn btn-primary hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsKYCModal">
             EKyc
         </button>
@@ -998,10 +998,13 @@
             </div>
 
             <div class="ms-auto">
-                <button type="button" id="checkEKYCStatus"
-                    class="btn btn-light btn-sm fw-semibold"
+                <%--<button type="button"
+                    class="btn btn-light btn-sm fw-semibold checkEKYCStatus"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#aepsEKYCModel">
+                    Check EKYC Status
+                </button>--%>
+                <button type="button" class="btn btn-light btn-sm fw-semibold checkEKYCStatus">
                     Check EKYC Status
                 </button>
                 <button type="button"
@@ -1060,12 +1063,11 @@
                     ✔Scan & Proceed
                 </button>
 
-                <button class="btn btn-outline-secondary px-4"
+                <%--<button class="btn btn-outline-secondary px-4"
                     type="button"
                     data-bs-dismiss="offcanvas">
                     Cancel
-                </button>
-
+                </button>--%>
             </div>
 
         </div>
@@ -1083,19 +1085,21 @@
             </div>
 
             <div class="ms-auto">
-                <button type="button" id="checkEKYCStatus"
-                    class="btn btn-light btn-sm fw-semibold"
+                <%-- <button type="button"
+                    class="btn btn-light btn-sm fw-semibold checkEKYCStatus"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#aepsEKYCModel">
+                    Check EKYC Status
+                </button>--%>
+                <button type="button" class="btn btn-light btn-sm fw-semibold checkEKYCStatus">
                     Check EKYC Status
                 </button>
 
                 <button type="button"
-                    class="btn btn-light btn-sm fw-semibold"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#aepsLoginSidebar">
+                    class="btn btn-light btn-sm fw-semibold btnLogin">
                     Login
                 </button>
+
             </div>
         </div>
 
@@ -1182,16 +1186,17 @@
             </div>
 
             <div class="ms-auto">
-                <button type="button" id="checkEKYCStatus"
-                    class="btn btn-light btn-sm fw-semibold"
+                <%--<button type="button"
+                    class="btn btn-light btn-sm fw-semibold checkEKYCStatus"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#aepsEKYCModel">
                     Check EKYC Status
+                </button>--%>
+                <button type="button" class="btn btn-light btn-sm fw-semibold checkEKYCStatus">
+                    Check EKYC Status
                 </button>
                 <button type="button"
-                    class="btn btn-light btn-sm fw-semibold"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#aepsLoginSidebar">
+                    class="btn btn-light btn-sm fw-semibold btnLogin">
                     Login
                 </button>
             </div>
@@ -1254,90 +1259,90 @@
     </div>
 
     <script>
-    const rowsPerPage = 10;
-    const table = document.getElementById("payoutTable");
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const pagination = document.getElementById("payoutPagination");
+        const rowsPerPage = 10;
+        const table = document.getElementById("payoutTable");
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const pagination = document.getElementById("payoutPagination");
 
-    let currentPage = 1;
-    const totalPages = Math.ceil(rows.length / rowsPerPage);
-    const maxVisiblePages = 3;
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+        const maxVisiblePages = 3;
 
-    function showPage(page) {
-        if (page < 1 || page > totalPages) return;
+        function showPage(page) {
+            if (page < 1 || page > totalPages) return;
 
-        currentPage = page;
+            currentPage = page;
 
-        rows.forEach((row, index) => {
-            row.style.display =
-                index >= (page - 1) * rowsPerPage &&
-                index < page * rowsPerPage
-                    ? ""
-                    : "none";
-        });
+            rows.forEach((row, index) => {
+                row.style.display =
+                    index >= (page - 1) * rowsPerPage &&
+                        index < page * rowsPerPage
+                        ? ""
+                        : "none";
+            });
 
-        updatePagination();
-    }
-
-    function createPageItem(text, page, isActive = false, isDisabled = false) {
-        const li = document.createElement("li");
-        li.className = "page-item";
-        if (isActive) li.classList.add("active");
-        if (isDisabled) li.classList.add("disabled");
-
-        const a = document.createElement("a");
-        a.className = "page-link";
-        a.href = "#";
-        a.innerText = text;
-
-        if (!isDisabled) {
-            a.onclick = function (e) {
-                e.preventDefault();
-                showPage(page);
-            };
+            updatePagination();
         }
 
-        li.appendChild(a);
-        return li;
-    }
+        function createPageItem(text, page, isActive = false, isDisabled = false) {
+            const li = document.createElement("li");
+            li.className = "page-item";
+            if (isActive) li.classList.add("active");
+            if (isDisabled) li.classList.add("disabled");
 
-    function updatePagination() {
-        pagination.innerHTML = "";
+            const a = document.createElement("a");
+            a.className = "page-link";
+            a.href = "#";
+            a.innerText = text;
 
-        pagination.appendChild(
-            createPageItem("Prev", currentPage - 1, false, currentPage === 1)
-        );
+            if (!isDisabled) {
+                a.onclick = function (e) {
+                    e.preventDefault();
+                    showPage(page);
+                };
+            }
 
-        let start = Math.max(1, currentPage - 1);
-        let end = Math.min(totalPages, start + maxVisiblePages - 1);
-
-        if (end - start < maxVisiblePages - 1) {
-            start = Math.max(1, end - maxVisiblePages + 1);
+            li.appendChild(a);
+            return li;
         }
 
-        if (start > 1) {
-            pagination.appendChild(createPageItem(1, 1));
-            pagination.appendChild(createPageItem("...", null, false, true));
-        }
+        function updatePagination() {
+            pagination.innerHTML = "";
 
-        for (let i = start; i <= end; i++) {
             pagination.appendChild(
-                createPageItem(i, i, i === currentPage)
+                createPageItem("Prev", currentPage - 1, false, currentPage === 1)
+            );
+
+            let start = Math.max(1, currentPage - 1);
+            let end = Math.min(totalPages, start + maxVisiblePages - 1);
+
+            if (end - start < maxVisiblePages - 1) {
+                start = Math.max(1, end - maxVisiblePages + 1);
+            }
+
+            if (start > 1) {
+                pagination.appendChild(createPageItem(1, 1));
+                pagination.appendChild(createPageItem("...", null, false, true));
+            }
+
+            for (let i = start; i <= end; i++) {
+                pagination.appendChild(
+                    createPageItem(i, i, i === currentPage)
+                );
+            }
+
+            if (end < totalPages) {
+                pagination.appendChild(createPageItem("...", null, false, true));
+                pagination.appendChild(createPageItem(totalPages, totalPages));
+            }
+
+            pagination.appendChild(
+                createPageItem("Next", currentPage + 1, false, currentPage === totalPages)
             );
         }
 
-        if (end < totalPages) {
-            pagination.appendChild(createPageItem("...", null, false, true));
-            pagination.appendChild(createPageItem(totalPages, totalPages));
-        }
-
-        pagination.appendChild(
-            createPageItem("Next", currentPage + 1, false, currentPage === totalPages)
-        );
-    }
-
-    showPage(1);
+        showPage(1);
     </script>
 
 
@@ -1667,15 +1672,13 @@
                         document.getElementById('<%= hfOperator.ClientID %>').value = operator;
                         document.getElementById('<%= hfOperationType.ClientID %>').value = operator;
 
-                        if(operator=="Balance" || operator =="Statement")
-                        {
-                            $("#ContentPlaceHolder1_txtamount").css("display","none");
-                            $("#ContentPlaceHolder1_RequiredFieldValidator2").css("display","none");
+                        if (operator == "Balance" || operator == "Statement") {
+                            $("#ContentPlaceHolder1_txtamount").css("display", "none");
+                            $("#ContentPlaceHolder1_RequiredFieldValidator2").css("display", "none");
                         }
-                        else
-                        {
-                            $("#ContentPlaceHolder1_txtamount").css("display","block");
-                            
+                        else {
+                            $("#ContentPlaceHolder1_txtamount").css("display", "block");
+
                         }
 
                         let mobileBox = document.getElementById("<%= txtMobile.ClientID %>");
@@ -1701,7 +1704,7 @@
                             document.getElementById("<%= hfTxnType.ClientID %>").value = "Transaction";
 
                         }
-                        
+
                     });
                 }
             });
@@ -1792,15 +1795,13 @@
 
         function validateAndOpenPlansSidebarTransaction() {
 
-             var operationType = document.getElementById('<%= hfOperationType.ClientID %>').value;
-             var amountValidator = document.getElementById('<%= RequiredFieldValidator2.ClientID %>');
+            var operationType = document.getElementById('<%= hfOperationType.ClientID %>').value;
+            var amountValidator = document.getElementById('<%= RequiredFieldValidator2.ClientID %>');
 
-            if(operationType=="Balance" || operationType =="Statement")
-            {
+            if (operationType == "Balance" || operationType == "Statement") {
                 amountValidator.enabled = false;
             }
-            else
-            {
+            else {
                 amountValidator.enabled = true;
             }
 
@@ -1872,75 +1873,75 @@
         }
 
 
-function resetFilters() {
+        function resetFilters() {
 
-    document.getElementById("dateFilter").value = "";
-    document.getElementById("statusFilter").value = "";
-    document.getElementById("columnFilter").value = "";
-    document.getElementById("searchBox").value = "";
-    document.getElementById("fromDate").value = "";
-    document.getElementById("toDate").value = "";
+            document.getElementById("dateFilter").value = "";
+            document.getElementById("statusFilter").value = "";
+            document.getElementById("columnFilter").value = "";
+            document.getElementById("searchBox").value = "";
+            document.getElementById("fromDate").value = "";
+            document.getElementById("toDate").value = "";
 
-    const rows = document.querySelectorAll("#payoutTable tbody tr");
-    rows.forEach(row => row.style.display = "");
-}
-
-function applyFilters() {
-
-    const dateFilter = document.getElementById("dateFilter").value;
-    const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
-    const colFilter = document.getElementById("columnFilter").value;
-    const searchValue = document.getElementById("searchBox")?.value.toLowerCase() || "";
-
-    const fromDateVal = document.getElementById("fromDate").value;
-    const toDateVal = document.getElementById("toDate").value;
-
-    const fromDate = fromDateVal ? new Date(fromDateVal) : null;
-    const toDate = toDateVal ? new Date(toDateVal) : null;
-
-    if (toDate) toDate.setHours(23, 59, 59, 999);
-
-    const rows = document.querySelectorAll("#payoutTable tbody tr");
-
-    rows.forEach(row => {
-
-        const statusText =
-            row.querySelector(".status-cell")?.innerText.toLowerCase() || "";
-
-        const dateText =
-            row.querySelector(".date-cell")?.innerText || "";
-
-        const rowDate = parseDate(dateText);
-
-        let searchText = "";
-        if (colFilter) {
-            searchText =
-                row.querySelector("." + colFilter)?.innerText.toLowerCase() || "";
-        } else {
-            searchText = row.innerText.toLowerCase();
+            const rows = document.querySelectorAll("#payoutTable tbody tr");
+            rows.forEach(row => row.style.display = "");
         }
 
-        // Existing filters
-        const matchesDatePreset =
-            dateFilter ? checkDate(dateText, dateFilter) : true;
+        function applyFilters() {
 
-        const matchesStatus =
-            statusFilter ? statusText.includes(statusFilter) : true;
+            const dateFilter = document.getElementById("dateFilter").value;
+            const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
+            const colFilter = document.getElementById("columnFilter").value;
+            const searchValue = document.getElementById("searchBox")?.value.toLowerCase() || "";
 
-        const matchesSearch =
-            searchValue ? searchText.includes(searchValue) : true;
+            const fromDateVal = document.getElementById("fromDate").value;
+            const toDateVal = document.getElementById("toDate").value;
 
-        // NEW: From–To Date filter
-        let matchesRange = true;
-        if (fromDate && rowDate < fromDate) matchesRange = false;
-        if (toDate && rowDate > toDate) matchesRange = false;
+            const fromDate = fromDateVal ? new Date(fromDateVal) : null;
+            const toDate = toDateVal ? new Date(toDateVal) : null;
 
-        row.style.display =
-            (matchesDatePreset && matchesRange && matchesStatus && matchesSearch)
-                ? ""
-                : "none";
-    });
-}
+            if (toDate) toDate.setHours(23, 59, 59, 999);
+
+            const rows = document.querySelectorAll("#payoutTable tbody tr");
+
+            rows.forEach(row => {
+
+                const statusText =
+                    row.querySelector(".status-cell")?.innerText.toLowerCase() || "";
+
+                const dateText =
+                    row.querySelector(".date-cell")?.innerText || "";
+
+                const rowDate = parseDate(dateText);
+
+                let searchText = "";
+                if (colFilter) {
+                    searchText =
+                        row.querySelector("." + colFilter)?.innerText.toLowerCase() || "";
+                } else {
+                    searchText = row.innerText.toLowerCase();
+                }
+
+                // Existing filters
+                const matchesDatePreset =
+                    dateFilter ? checkDate(dateText, dateFilter) : true;
+
+                const matchesStatus =
+                    statusFilter ? statusText.includes(statusFilter) : true;
+
+                const matchesSearch =
+                    searchValue ? searchText.includes(searchValue) : true;
+
+                // NEW: From–To Date filter
+                let matchesRange = true;
+                if (fromDate && rowDate < fromDate) matchesRange = false;
+                if (toDate && rowDate > toDate) matchesRange = false;
+
+                row.style.display =
+                    (matchesDatePreset && matchesRange && matchesStatus && matchesSearch)
+                        ? ""
+                        : "none";
+            });
+        }
 
 
 
@@ -1949,7 +1950,7 @@ function applyFilters() {
         document.getElementById("statusFilter").addEventListener("change", applyFilters);
         document.getElementById("columnFilter").addEventListener("change", applyFilters);
         document.getElementById("searchBox").addEventListener("input", applyFilters);
-        
+
 
         // --- Download CSV ---
         function downloadTable() {
