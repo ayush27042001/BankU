@@ -576,11 +576,9 @@ table th {
         data-bs-dismiss="offcanvas"
         data-bs-target="#billSidebar"
         aria-label="Close">
-</button>
+     </button>
 
-
-
-    </div>
+</div>
     <div class="offcanvas-body">
 
         <!-- Bill Form -->
@@ -654,7 +652,7 @@ table th {
         </div>
     </div>
     <asp:HiddenField ID="hfOrderId" runat="server" />
-    <asp:Label runat="server" ID="lblMessage1"></asp:Label>
+    <asp:Label runat="server" ID="lblMessage1"  class="col text-end text-danger"></asp:Label>
        <label runat="server" id="lblerror" class="col text-end text-danger"></label>
 
     <asp:Repeater ID="rptBillPayments" runat="server">
@@ -804,7 +802,7 @@ table th {
         <div class="modal-content mt-4 mb-4 p-4" id="printArea1">
 
             <!-- Modal Header -->
-            <div class="modal-header border-bottom-0">
+            <div class="modal-header border-bottom-0 no-print">
               
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -842,18 +840,18 @@ table th {
                             <tr>
                                
                                 <th>Description</th>
-                                <th>Rate</th>
+                                <th>Amount</th>
                               
-                                <th>Total</th>
+                                <th>Commission</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                
-                                <td>Recharge</td>
+                                <td>Bill Payment</td>
                                 <td>₹<asp:Label ID="payAmount" runat="server"></asp:Label></td>
                               
-                                <td>₹<asp:Label ID="Label4" runat="server"></asp:Label></td>
+                                <td>₹<asp:Label ID="payCommission" runat="server"></asp:Label></td>
                             </tr>
                         </tbody>
                     </table>
@@ -863,14 +861,11 @@ table th {
                 <div class="d-flex justify-content-end mb-3">
                     <table class="table table-bordered w-auto mb-0">
                         <tr>
-                            <td><strong>Commission</strong></td>
-                            <td>₹<asp:Label ID="payCommission" runat="server"></asp:Label></td>
+                            <td><strong>Total</strong></td>
+                            <td>₹<asp:Label ID="lblTotal" runat="server"></asp:Label></td>
                         </tr>
                       
-                        <tr>
-                            <td><strong>Total</strong></td>
-                            <td class="fw-bold text-success">₹<asp:Label ID="Label5" runat="server"></asp:Label></td>
-                        </tr>
+                       
                     </table>
                 </div>
 
@@ -895,7 +890,7 @@ table th {
 
             <!-- Modal Footer -->
             <div class="modal-footer no-print">
-                <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-success" OnClientClick="printReceipt(); return false;">Print</asp:LinkButton>
+                <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-success" OnClientClick="printReceipt1(); return false;">Print</asp:LinkButton>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
 
@@ -904,12 +899,12 @@ table th {
 </div>
 
 <!-- Receipt Modal -->
-    <div class="modal fade" id="Recharge" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="Recharge" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content mt-2 mb-2 p-4" id="printArea">
 
             <!-- Modal Header -->
-            <div class="modal-header border-bottom-0">
+            <div class="modal-header border-bottom-0 no-print">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -927,7 +922,7 @@ table th {
                 <!-- Bill To & Transaction Info -->
                 <div class="d-flex justify-content-between mb-4 border-bottom pb-3">
                     <div>
-                        <h6 class="fw-bold mb-1">Recharge To</h6>
+                        <h6 class="fw-bold mb-1">Bill Paid To</h6>
                         <div><asp:Label ID="Label2" runat="server" CssClass="text-dark fw-semibold"></asp:Label></div>
                         <div><asp:Label ID="lblOpe" runat="server" CssClass="text-muted"></asp:Label></div>
                     </div>
@@ -984,6 +979,38 @@ table th {
             <div class="modal-footer no-print">
                 <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-success" OnClientClick="printReceipt(); return false;">Print</asp:LinkButton>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="ErrorModal" tabindex="-1" aria-hidden="true"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <asp:Label ID="ErrHeader" runat="server" />
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="fw-semibold text-danger mb-2">
+                    <asp:Label ID="lblErrorMessage" runat="server" />
+                </p>
+
+                <hr />
+
+                <p><strong>Mobile Number:</strong> <asp:Label ID="ErrMobile" runat="server" /></p>
+                <p><strong>Request ID:</strong> <asp:Label ID="ErrId" runat="server" /></p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
 
         </div>
@@ -1109,7 +1136,7 @@ table th {
  </script>
 
 <script>
-    function printReceipt() {
+    function printReceipt1() {
         var printContent = document.getElementById('printArea1').innerHTML;
         var win = window.open('', '_blank');
 
