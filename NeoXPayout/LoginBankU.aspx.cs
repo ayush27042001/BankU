@@ -276,7 +276,7 @@ namespace NeoXPayout
             //string otp = Um.signupotp(number); 
             string otp = string.Empty;
 
-            if (number == "6200361373" || number == "9117750580" || number == "8969140992")
+            if (number == "6200361373" || number == "9117750580" || number == "8969140992" || number == "6393389328")
             {
                 otp = "1234";
             }

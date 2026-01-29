@@ -395,7 +395,7 @@ function ResetControl() {
     $("#btnValidateAgent").hide();
 }
 
-$("#checkEKYCStatus").click(function () {
+$(".checkEKYCStatus").click(function () {
     const payload = buildAgentEKYCStatusPayload();
     if (!payload) return;
     $(".loader-overlay").css("display", "flex");
@@ -412,8 +412,17 @@ $("#checkEKYCStatus").click(function () {
                 showSuccess(res.Message);
                 referenceKey = res.Data[0].xmllist.referenceKey;
                 $(".loader-overlay").css("display", "none");
-            } else {
+            }
+            else {
                 showFailed(res.Message);
+                if (res.Message == "You are Not Authorised, Please Register!") {
+                    var myOffcanvas = new bootstrap.Offcanvas($('#aepsRegisterModal')[0]);
+                    myOffcanvas.show();
+                }
+                else if (res.Message == "Biometric authentication already completed") {
+                    var myOffcanvas = new bootstrap.Offcanvas($('#aepsLoginSidebar')[0]);
+                    myOffcanvas.show();
+                }
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -424,6 +433,16 @@ $("#checkEKYCStatus").click(function () {
         }
     });
 
+});
+
+$(document).on("click", ".btnLogin", function () {
+    const registerEl = document.getElementById('aepsRegisterModal');
+
+    registerEl.addEventListener('hidden.bs.offcanvas', function () {
+        new bootstrap.Offcanvas('#aepsLoginSidebar').show();
+    }, { once: true });
+
+    bootstrap.Offcanvas.getInstance(registerEl)?.hide();
 });
 
 function openLoginPopup() {
@@ -973,8 +992,7 @@ function buildSignUpValidatePayload() {
     };
 }
 
-function ManageInvoicePay(Mode, response)
-{
+function ManageInvoicePay(Mode, response) {
     if (Mode == "BALANCE" || Mode == "AADHARPAY" || Mode == "WITHDRAWAL") {
 
         var TxnType = Mode == "BALANCE" ? "Balance Inquiry Invoice" : Mode == "WITHDRAWAL" ? "CASH Withdrawal Invoice" : "Aadhar Pay Invoice";
