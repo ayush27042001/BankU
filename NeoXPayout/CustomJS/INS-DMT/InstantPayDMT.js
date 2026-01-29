@@ -80,6 +80,7 @@ function openSenderSidebar() {
             }
             else {
                 showFailed(response.status);
+                $(".loader-overlay").css("display", "none");
                 return;
             }
             $(".loader-overlay").css("display", "none");
