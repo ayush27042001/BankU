@@ -161,12 +161,13 @@ namespace NeoXPayout
 
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                string query = @"SELECT *, CAST(TxnDate AS DATE) AS TxnOnlyDate FROM TxnReport  WHERE UserId = @UserId AND ServiceName = @ServiceName ORDER BY TransID DESC";
+                string query = @"SELECT *, CAST(TxnDate AS DATE) AS TxnOnlyDate FROM TxnReport  WHERE UserId = @UserId AND ServiceName = @ServiceName AND Status=@Status ORDER BY TransID DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@UserId", UserId);
                     cmd.Parameters.AddWithValue("@ServiceName", "AEPS");
+                    cmd.Parameters.AddWithValue("@Status", "SUCCESS");
                     con.Open();
 
                     SqlDataReader reader = cmd.ExecuteReader();
