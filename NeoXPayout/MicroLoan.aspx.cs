@@ -89,7 +89,7 @@ namespace NeoXPayout
                 string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
                 using (SqlConnection con = new SqlConnection(cs))
                 {
-                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage,status, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage,@status, GETDATE())";
+                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage,Status, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage,@status, GETDATE())";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@ServiceType", "Micro Loan Activation");

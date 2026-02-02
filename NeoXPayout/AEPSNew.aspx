@@ -924,7 +924,7 @@
                                 <strong>Transaction ID:</strong>
                                 <asp:Label ID="Label5" CssClass="balancerrn" runat="server"></asp:Label>
                             </div>
-                            <div><strong>Date:</strong> <span class="lblTxnDate"></span></div>
+                            <div><strong>Date:</strong> <span id="lblTxnDate" class="lblTxnDate"></span></div>
                         </div>
                     </div>
 
@@ -1995,7 +1995,7 @@
                 receiptModal.show();
             });
         });
-
+       
         // ✅ Print function
         function printReceipt() {
             var printContent = document.getElementById('printArea').innerHTML;

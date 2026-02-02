@@ -13,7 +13,7 @@
             window.print();
 
             document.body.innerHTML = originalContents;
-
+            
         }
     </script>
     <hr />   
@@ -519,13 +519,17 @@
                          String(today.getDate()).padStart(2, "0") + "-" +
                          String(today.getMonth() + 1).padStart(2, "0") + "-" +
                          today.getFullYear();
-                     ctx.font = "bold 20px Arial";
+                     ctx.font = "bold 18px Arial";
                      ctx.fillStyle = "Black";
-                     ctx.fillText(shopName, 330, 360);
-                     ctx.fillText(userKey, 330, 395);
-                     ctx.fillText(z, 330, 435);
-                     ctx.fillText(x, 330, 565);
-                     ctx.fillText(y, 330, 505);
+                     const maxWidth = 400;
+                     const lineHeight = 28;
+
+                     ctx.fillText(shopName, 300, 360);
+                     ctx.fillText(userKey, 300, 395);
+                     ctx.fillText(z, 300, 435);
+                     ctx.fillText(x, 300, 565);
+                     drawWrappedText(ctx, y, 300, 490, maxWidth, lineHeight);
+                     console.log(ctx.measureText(y).width);
 
                      ctx.font = "bold 18px Arial";
                      ctx.fillStyle = "#0A3D62";
@@ -538,6 +542,26 @@
          };
      }
 
+    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(" ");
+        let line = "";
+
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + " ";
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+
+            if (testWidth > maxWidth && line !== "") {
+                ctx.fillText(line, x, y);
+                line = words[i] + " ";
+                y += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+
+        ctx.fillText(line, x, y);
+    }
 
      function generatePDF(canvas, imagePath) {
          const { jsPDF } = window.jspdf;
