@@ -101,6 +101,25 @@ document.querySelectorAll('.operator-card').forEach(btn => {
         document.getElementById('step1').classList.add('d-none');
         document.getElementById('step2').classList.remove('d-none');
         document.getElementById('selectedOperator').innerText = this.innerText;
+        const amountValidator = document.getElementById("ContentPlaceHolder1_RequiredFieldValidator2");
+        if (selectedOperator == "Balance" || selectedOperator == "Statement") {
+            $("#ContentPlaceHolder1_txtamount").css("display", "none");
+            $("#ContentPlaceHolder1_RequiredFieldValidator2").css("display", "none");
+            ValidatorEnable(amountValidator, false);
+        }
+        else {
+            $("#ContentPlaceHolder1_txtamount").css("display", "block");
+            ValidatorEnable(amountValidator, true);
+
+        }
+
+        let mobileBox = document.getElementById("ContentPlaceHolder1_txtMobile");
+        let amountBox = document.getElementById("ContentPlaceHolder1_txtAadhar");
+        if (mobileBox) mobileBox.value = "";
+        if (amountBox) {
+            amountBox.value = "";
+            amountBox.readOnly = false;
+        }
     });
 });
 
@@ -267,6 +286,259 @@ async function captureFingerprint(deviceType = "") {
     return false;
 }
 
+
+//document.addEventListener("DOMContentLoaded", function () {
+//    let lastRechargeSidebar = null;
+//    ["TransactionSidebar"].forEach(id => {
+//        let el = document.getElementById(id);
+//        if (el) {
+//            el.addEventListener("show.bs.offcanvas", function () {
+//                lastRechargeSidebar = id;
+//                document.getElementById("ContentPlaceHolder1_hfLastSidebar").value = id;
+
+//                if (id === "TransactionSidebar") {
+
+//                    callAgentStatus();
+//                }
+
+//            });
+//        }
+//    });
+
+//    document.addEventListener("click", function (e) {
+//        if (e.target && e.target.id === "backToRecharge") {
+//            const plansEl = document.getElementById("plansSidebar");
+//            bootstrap.Offcanvas.getInstance(plansEl)?.hide();
+
+//            const returnSidebar = lastRechargeSidebar || document.getElementById("<%= hfLastSidebar.ClientID %>").value;
+//            if (returnSidebar) {
+//                const targetEl = document.getElementById(returnSidebar);
+//                if (targetEl) {
+//                    new bootstrap.Offcanvas(targetEl).show();
+
+//                    if (returnSidebar === "TransactionSidebars") {
+//                        document.getElementById("step1").classList.add("d-none");
+//                        document.getElementById("step2").classList.remove("d-none");
+
+//                        let op = document.getElementById('<%= hfOperator.ClientID %>').value;
+//                        if (op) document.getElementById("selectedOperator").innerText = "Operator: " + op;
+//                        callAgentStatus();
+//                    }
+//                }
+//            }
+//        }
+//    });
+//});
+
+document.addEventListener("DOMContentLoaded", function () {
+    let lastRechargeSidebar = null;
+
+    // --- Operator Selection ---
+    document.querySelectorAll(".operator-card").forEach(btn => {
+        btn.addEventListener("click", function () {
+            let operator = this.dataset.operator;
+            document.getElementById('ContentPlaceHolder1_hfOperator').value = operator;
+
+            if (this.closest("#TransactionSidebar")) {
+                document.getElementById("step1").classList.add("d-none");
+                document.getElementById("step2").classList.remove("d-none");
+                document.getElementById("selectedOperator").innerText = "Operator: " + operator;
+                document.getElementById('ContentPlaceHolder1_hfOperator').value = operator;
+                const amountValidator = document.getElementById("ContentPlaceHolder1_RequiredFieldValidator2");
+                if (operator == "Balance" || operator == "Statement") {
+                    $("#ContentPlaceHolder1_txtamount").css("display", "none");
+                    $("#ContentPlaceHolder1_RequiredFieldValidator2").css("display", "none");
+                    ValidatorEnable(amountValidator, false);
+                }
+                else {
+                    $("#ContentPlaceHolder1_txtamount").css("display", "block");
+                    ValidatorEnable(amountValidator, true);
+
+                }
+
+                let mobileBox = document.getElementById("ContentPlaceHolder1_txtMobile");
+                let amountBox = document.getElementById("ContentPlaceHolder1_txtAadhar");
+                if (mobileBox) mobileBox.value = "";
+                if (amountBox) {
+                    amountBox.value = "";
+                    amountBox.readOnly = false;
+                }
+            }
+        });
+    });
+
+    // --- Plan Selection ---
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".plan-btn");
+        if (!btn) return;
+
+        const amount = btn.getAttribute("data-amount") || "";
+        let returnSidebar = lastRechargeSidebar || document.getElementById("ContentPlaceHolder1_hfLastSidebar").value;
+
+        if (returnSidebar === "TransactionSidebar") {
+            let amountBox = document.getElementById("ContentPlaceHolder1_txtAadhar");
+            if (amountBox) {
+                amountBox.value = amount;
+                amountBox.readOnly = true;
+            }
+            document.getElementById("step1").classList.add("d-none");
+            document.getElementById("step2").classList.remove("d-none");
+
+            let op = document.getElementById('ContentPlaceHolder1_hfOperator').value;
+            if (op) document.getElementById("selectedOperator").innerText = "Operator: " + op;
+        }
+
+        // Close plans and reopen sidebar
+        const plansEl = document.getElementById("plansSidebar");
+        bootstrap.Offcanvas.getInstance(plansEl)?.hide();
+
+        if (returnSidebar) {
+            const targetEl = document.getElementById(returnSidebar);
+            if (targetEl) {
+                bootstrap.Offcanvas.getOrCreateInstance(targetEl).show();
+            }
+        }
+    });
+
+    // --- Back Step Button ---
+    document.getElementById("backStep").addEventListener("click", function () {
+        document.getElementById("step2").classList.add("d-none");
+        document.getElementById("step1").classList.remove("d-none");
+    });
+
+    // --- Initiate Button Validation ---
+    document.getElementById("btnInitiateTransaction").addEventListener("click", function () {
+        callAgentStatusV2(function (isSuccess) {
+            if (isSuccess) {
+                const targetEl = document.getElementById("TransactionSidebar");
+                bootstrap.Offcanvas.getOrCreateInstance(targetEl).show();
+            }
+        });
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let lastRechargeSidebar = null;
+
+    // --- Operator Selection ---
+    document.querySelectorAll(".operator-card").forEach(btn => {
+        btn.addEventListener("click", function () {
+            let operator = this.dataset.operator;
+            document.getElementById('ContentPlaceHolder1_hfOperator').value = operator;
+
+            if (this.closest("#TransactionSidebar")) {
+                document.getElementById("step1").classList.add("d-none");
+                document.getElementById("step2").classList.remove("d-none");
+                document.getElementById("selectedOperator").innerText = "Operator: " + operator;
+                document.getElementById('ContentPlaceHolder1_hfOperator').value = operator;
+                const amountValidator = document.getElementById("ContentPlaceHolder1_RequiredFieldValidator2");
+                if (operator == "Balance" || operator == "Statement") {
+                    $("#ContentPlaceHolder1_txtamount").css("display", "none");
+                    $("#ContentPlaceHolder1_RequiredFieldValidator2").css("display", "none");
+                    ValidatorEnable(amountValidator, false);
+                }
+                else {
+                    $("#ContentPlaceHolder1_txtamount").css("display", "block");
+                    ValidatorEnable(amountValidator, true);
+
+                }
+
+                let mobileBox = document.getElementById("ContentPlaceHolder1_txtMobile");
+                let amountBox = document.getElementById("ContentPlaceHolder1_txtAadhar");
+                if (mobileBox) mobileBox.value = "";
+                if (amountBox) {
+                    amountBox.value = "";
+                    amountBox.readOnly = false;
+                }
+            }
+        });
+    });
+
+    // --- Plan Selection ---
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".plan-btn");
+        if (!btn) return;
+
+        const amount = btn.getAttribute("data-amount") || "";
+        let returnSidebar = lastRechargeSidebar || document.getElementById("ContentPlaceHolder1_hfLastSidebar").value;
+
+        if (returnSidebar === "TransactionSidebar") {
+            let amountBox = document.getElementById("ContentPlaceHolder1_txtAadhar");
+            if (amountBox) {
+                amountBox.value = amount;
+                amountBox.readOnly = true;
+            }
+            document.getElementById("step1").classList.add("d-none");
+            document.getElementById("step2").classList.remove("d-none");
+
+            let op = document.getElementById('ContentPlaceHolder1_hfOperator').value;
+            if (op) document.getElementById("selectedOperator").innerText = "Operator: " + op;
+        }
+
+        // Close plans and reopen sidebar
+        const plansEl = document.getElementById("plansSidebar");
+        bootstrap.Offcanvas.getInstance(plansEl)?.hide();
+
+        if (returnSidebar) {
+            const targetEl = document.getElementById(returnSidebar);
+            if (targetEl) {
+                bootstrap.Offcanvas.getOrCreateInstance(targetEl).show();
+            }
+        }
+    });
+
+    // --- Back Step Button ---
+    document.getElementById("backStep").addEventListener("click", function () {
+        document.getElementById("step2").classList.add("d-none");
+        document.getElementById("step1").classList.remove("d-none");
+    });
+
+    // --- Initiate Button Validation ---
+    document.getElementById("btnInitiateTransaction").addEventListener("click", function () {
+        callAgentStatusV2(function (isSuccess) {
+            if (isSuccess) {
+                const targetEl = document.getElementById("TransactionSidebar");
+                bootstrap.Offcanvas.getOrCreateInstance(targetEl).show();
+            }
+        });
+    });
+});
+
+// --- Validation Function ---
+function callAgentStatusV2(callback) {
+    const payload = buildAgentStatusPayload();
+    if (!payload) return;
+
+    $(".loader-overlay").css("display", "flex");
+    $.ajax({
+        url: "https://partner.banku.co.in/api/AEPSTXN",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 30000,
+        data: JSON.stringify(payload),
+        success: function (res) {
+            console.log("AEPS Response:", res);
+            $(".loader-overlay").css("display", "none");
+
+            if (res.Status === "SUCCESS") {
+                callback(true);
+            } else {
+                showFailed(res?.Data[0]?.status || res?.Message);
+                openLoginPopup();
+                callback(false);  
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            showFailed("Network / CORS Error");
+            $(".loader-overlay").css("display", "none");
+            callback(false);
+        }
+    });
+}
+
 function callAgentStatus() {
 
     const payload = buildAgentStatusPayload();
@@ -286,7 +558,7 @@ function callAgentStatus() {
 
                 $(".loader-overlay").css("display", "none");
             } else {
-
+                showFailed(res?.Data[0]?.status || res?.Message);
                 openLoginPopup();
                 $(".loader-overlay").css("display", "none");
             }
@@ -375,7 +647,7 @@ function callAgentSignInValidate() {
                 $(".loader-overlay").css("display", "none");
 
             } else {
-                showError(res.Message);
+                showFailed(res?.Data[0]?.status || res?.Message);
                 $(".loader-overlay").css("display", "none");
                 return;
             }
@@ -414,7 +686,7 @@ $(".checkEKYCStatus").click(function () {
                 $(".loader-overlay").css("display", "none");
             }
             else {
-                showFailed(res.Message);
+                showFailed(res?.Data[0]?.status || res?.Message);
                 if (res.Message == "You are Not Authorised, Please Register!") {
                     var myOffcanvas = new bootstrap.Offcanvas($('#aepsRegisterModal')[0]);
                     myOffcanvas.show();
@@ -446,8 +718,16 @@ $(document).on("click", ".btnLogin", function () {
 });
 
 function openLoginPopup() {
-    var myOffcanvas = new bootstrap.Offcanvas($('#aepsLoginSidebar')[0]);
-    myOffcanvas.show();
+
+    const targetEl = document.getElementById("aepsLoginSidebar");
+    const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(targetEl);
+    offcanvas.show();
+}
+
+function openTranSactionpopup() {
+    const targetEl = document.getElementById("TransactionSidebar");
+    const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(targetEl);
+    offcanvas.show();
 }
 
 function CompleteAgentEKYC() {
@@ -470,9 +750,10 @@ function callDailyLogin(pidXml) {
             console.log("AEPS Response:", res);
             if (res.Status === "SUCCESS") {
                 showSuccess(res.Data[0].status);
+                openTranSactionpopup();
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Data[0].status);
+                showFailed(res?.Data[0]?.status || res?.Message);
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -501,7 +782,7 @@ function callAgentEKYC(pidXml) {
                 showSuccess(res.Message);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Message || "Transaction Failed");
+                showFailed(res?.Data[0]?.status || res.Message);
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -531,7 +812,7 @@ function callBalanceEnquiry(pidXml) {
                 ManageInvoicePay("BALANCE", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Data[0].status || "Transaction Failed");
+                showFailed(res?.Data[0]?.status || res.Message);
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -560,7 +841,7 @@ function callMinistatement(pidXml) {
                 ManageInvoicePay("MINISTATEMENT", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Data[0].status || "Transaction Failed");
+                showFailed(res?.Data[0]?.status || res.Message);
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -588,7 +869,7 @@ function callCashWidhrawal(pidXml) {
                 ManageInvoicePay("WITHDRAWAL", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Data[0].status || "Transaction Failed");
+                showFailed(res?.Data[0]?.status || res.Message);
                 $(".loader-overlay").css("display", "none");
             }
         },
@@ -617,7 +898,7 @@ function callAadharPay(pidXml) {
                 ManageInvoicePay("AADHARPAY", res);
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res.Data[0].status || "Transaction Failed");
+                showFailed(res?.Data[0]?.status || res.Message);
                 $(".loader-overlay").css("display", "none");
             }
         },
