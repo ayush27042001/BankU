@@ -316,6 +316,12 @@
   55%  { transform: rotate(180deg); } /* pause */
   100% { transform: rotate(360deg); }
 }
+.disabled-btn {
+    background-color: #cfcfcf !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
   </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -339,12 +345,12 @@
       <li>Ensures data integrity & non-repudiation</li>
     </ul>
   
-     <asp:Button 
+  <asp:Button 
     ID="btnActivate" 
     runat="server" 
-    CssClass="bnk-activate-btn" 
-    Text="Activate" 
-    OnClientClick="openSidebar('Digital Signature Service Activation'); return false;" />
+    CssClass="bnk-activate-btn disabled-btn" 
+    Text="Coming Soon (7–15 Working Days)" 
+    Enabled="false" />
 
     </div>
       

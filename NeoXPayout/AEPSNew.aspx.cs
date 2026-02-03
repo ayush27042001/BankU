@@ -157,19 +157,22 @@ namespace NeoXPayout
 
             int txnToday = 0;
             decimal totalAmount = 0;
-            int totalCount = 0;
+            int successCount = 0;
 
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                string query = @"SELECT *, CAST(TxnDate AS DATE) AS TxnOnlyDate FROM TxnReport  WHERE UserId = @UserId AND ServiceName = @ServiceName AND Status=@Status ORDER BY TransID DESC";
+                string query = @"SELECT *, CAST(TxnDate AS DATE) AS TxnOnlyDate 
+                         FROM TxnReport  
+                         WHERE UserId = @UserId 
+                         AND ServiceName = @ServiceName
+                         ORDER BY TransID DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@UserId", UserId);
                     cmd.Parameters.AddWithValue("@ServiceName", "AEPS");
-                    cmd.Parameters.AddWithValue("@Status", "SUCCESS");
-                    con.Open();
 
+                    con.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (!reader.HasRows)
@@ -178,16 +181,16 @@ namespace NeoXPayout
                         lblMessage1.Text = "No request available";
                         lblMessage1.ForeColor = System.Drawing.Color.Red;
 
-                       
                         lblTxnToday.Text = "0";
                         lblTotalValue.Text = "0";
                         lblAvgValue.Text = "0";
                         return;
                     }
-          
+
                     DataTable dt = new DataTable();
                     dt.Load(reader);
 
+                    // 🔹 Bind ALL records (Success + Failed + Pending)
                     gvRequests.Visible = true;
                     gvRequests.DataSource = dt;
                     gvRequests.DataBind();
@@ -197,19 +200,22 @@ namespace NeoXPayout
 
                     foreach (DataRow row in dt.Rows)
                     {
-                        totalCount++;
-
-                   
-                        if (row["Amount"] != DBNull.Value)
+                        // 🔹 Calculation ONLY for SUCCESS
+                        if (row["Status"] != DBNull.Value &&
+                            row["Status"].ToString() == "SUCCESS")
                         {
-                            totalAmount += Convert.ToDecimal(row["Amount"]);
-                        }
+                            successCount++;
 
-                      
-                        if (row["TxnDate"] != DBNull.Value &&
-                            Convert.ToDateTime(row["TxnDate"]).Date == today)
-                        {
-                            txnToday++;
+                            if (row["Amount"] != DBNull.Value)
+                            {
+                                totalAmount += Convert.ToDecimal(row["Amount"]);
+                            }
+
+                            if (row["TxnDate"] != DBNull.Value &&
+                                Convert.ToDateTime(row["TxnDate"]).Date == today)
+                            {
+                                txnToday++;
+                            }
                         }
                     }
                 }
@@ -217,10 +223,11 @@ namespace NeoXPayout
 
             lblTxnToday.Text = txnToday.ToString();
             lblTotalValue.Text = totalAmount.ToString("N2");
-            lblAvgValue.Text = totalCount > 0
-                ? (totalAmount / totalCount).ToString("N2")
+            lblAvgValue.Text = successCount > 0
+                ? (totalAmount / successCount).ToString("N2")
                 : "0";
         }
+
 
         protected void lnkSaveFingerprint_Click(object sender, EventArgs e)
         {

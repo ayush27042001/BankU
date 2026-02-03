@@ -15,13 +15,13 @@ namespace NeoXPayout
     {
 
         /// <summary>
-        /// btnActivateInternational control.
+        /// lblError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnActivateInternational;
+        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
         /// btnActivateNepal control.
@@ -67,15 +67,6 @@ namespace NeoXPayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUseCase;
-
-        /// <summary>
-        /// btnRequestActivation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRequestActivation;
 
         /// <summary>
         /// btnSaveActivation control.

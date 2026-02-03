@@ -156,9 +156,9 @@
 
 <div class="row g-3 mb-3 row-deck align-items-stretch">
 
-<div class="col-md-4 d-flex">
+<div class="col-md-6 d-flex">
 <div class="equal-card w-100">
-    <div class="equal-card-inner p-4 text-white"
+    <div class="equal-card-inner p-4 text-white " 
             style="background: linear-gradient(to top, var(--bs-purple));">
 
         <div class="d-flex justify-content-between align-items-center">
@@ -199,71 +199,8 @@
     </div>
 </div>
 
-
-
-<%--<asp:PlaceHolder ID="pnlOutletLimit1" runat="server" Visible="false">
-    <div class="col-md-4 col-lg-4 col-xl-4">      
-        <div class="card-body d-flex justify-content-center flex-column">
-            <div class="card-wrapper align-self-center" style="width:400px">
-                <div class="cc visa" style="height:200px; background-image: linear-gradient(to top, var(--bs-red));">
-                    <div class="card-data">
-                        <div class="type" style="font-size:large; font-weight:bold">Outlet Limit</div>
-                        <div class="circuit">
-                            <img src="BankU.png" />
-                        </div>
-                    </div>
-                    <div class="card-data" style="margin-top:35px">
-                        <h6 style="margin-top:5px">₹<asp:Label ID="lblsuccess" runat="server"></asp:Label></h6>
-                    </div>
-                    <div class="card-data" style="margin-top:105px">
-                        <asp:Label ID="Label8" class="number" runat="server" style="font-size:large"></asp:Label>
-                    </div>
-                    <div class="holder d-flex">
-                        <a class="name" href="#" style="z-index:970; position:relative;">View Total</a>
-                        <a class="name me-5" href="#" style="z-index:960; position:relative; margin-left:70px">View Used</a>
-                        <a class="name" href="#" style="z-index:950; position:relative">Add Usable</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</asp:PlaceHolder>--%>
-
-<asp:PlaceHolder ID="pnlbutton" runat="server" Visible="true">
-<div class="col-md-4 d-flex">
-    <div class="equal-card w-100">
-        <div class="equal-card-inner p-4"
-             style="background:#f2e7fb;">
-
-            <div class="d-flex justify-content-between">
-                <div class="fw-medium">Virtual Account</div>
-                <i class="bi bi-info-circle"></i>
-            </div>
-
-            <div class="fs-5 fw-bold text-danger mt-1">Inactive</div>
-
-            <div>
-                <div class="fw-medium mt-2">Account Number</div>
-                <div class="d-flex justify-content-between">
-                    <span>XXXXXXXXXXXX</span>
-                     <i class="bi bi-clipboard" style="cursor: pointer;" onclick="copyText('XXXXXXXXXXXX')"></i>
-                </div>
-
-                <div class="fw-medium mt-2">IFSC Code</div>
-                <div class="d-flex justify-content-between">
-                    <span>XXXXXXXX</span>
-                  <i class="bi bi-clipboard" style="cursor: pointer;" onclick="copyText('XXXXXXXX')"></i>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-</asp:PlaceHolder>
-
-
 <!--Promotional Carousel Card -->
-<div class="col-md-4 d-flex">
+<div class="col-md-6 d-flex">
     <div class="equal-card w-100">
         <div class="equal-card-inner overflow-hidden">
 

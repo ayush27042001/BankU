@@ -401,7 +401,7 @@
                                     <strong>Transaction ID:</strong>
                                     <asp:Label ID="Label5" CssClass="balancerrn" runat="server"></asp:Label>
                                 </div>
-                                <div><strong>Date:</strong> <span class="lblTxnDate"></span></div>
+                                <div><strong>Date:</strong> <span id="lblTxnDate" class="lblTxnDate"></span></div>
                             </div>
                         </div>
 
@@ -527,6 +527,35 @@
         $(document).ready(function () {
             callServiceStatus();
         });
+
+        // ✅ Print function
+        function printReceipt() {
+            var printContent = document.getElementById('printAreaTxn').innerHTML;
+            var win = window.open('', '_blank');
+            win.document.write(`
+            <html>
+                <head>
+                    <title>Print Receipt</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .fw-bold { font-weight: bold; }
+                        .text-dark { color: #000; }
+                        .text-success { color: green; }
+                        .text-danger { color: red; }
+                        .text-center { text-align: center; }
+                        .border-bottom { border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; }
+                        .no-print { display: none; }
+                    </style>
+                </head>
+                <body onload="window.print(); window.close();">
+                    ${printContent}
+                </body>
+            </html>
+        `);
+            win.document.close();
+        }
+
     </script>
 
 </asp:Content>

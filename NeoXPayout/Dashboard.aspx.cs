@@ -35,15 +35,15 @@ namespace NeoXPayout
                 //lblmainwallet.Text = "0.00";
                 //LoadNotification();
                 LoadWalletSummary();
-                string Acctype = (Session["AccountHolderType"]?.ToString() ?? "").Trim().ToUpper();
-                if (Acctype == "BANKU SEVA KENDRA")
-                {
-                    pnlbutton.Visible = true;
-                }
-                else
-                {
-                    pnlbutton.Visible = true;
-                }
+                //string Acctype = (Session["AccountHolderType"]?.ToString() ?? "").Trim().ToUpper();
+                //if (Acctype == "BANKU SEVA KENDRA")
+                //{
+                //    pnlbutton.Visible = true;
+                //}
+                //else
+                //{
+                //    pnlbutton.Visible = true;
+                //}
 
                 Label10.Text = "XXXX-XXXX-XXXX-" + Session["BankURTUID"].ToString();
 

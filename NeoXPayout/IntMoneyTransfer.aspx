@@ -317,15 +317,39 @@
   55%  { transform: rotate(180deg); } /* pause */
   100% { transform: rotate(360deg); }
 }
+
+
+.confirm-btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    background: #dc3545;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: 1px solid #6c757d;
+    background: #fff;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.confirm-btn:hover {
+    background: #bb2d3b;
+}
   </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
  <br> 
- 
+ <asp:Label runat="server" ID="lblError" style="margin-left:10px"></asp:Label>
 <div class="bnk-card-grid" style="margin:10px">
 
   <!-- International -->
-  <div class="bnk-card">
+  <%--<div class="bnk-card">
     <div class="bnk-card-icon">🌍</div>
     <div class="bnk-card-title">International Money Transfer Activation</div>
 
@@ -346,7 +370,7 @@
       CssClass="bnk-activate-btn"
       Text="Activate"
       OnClientClick="openSidebar('International Money Transfer'); return false;" />
-  </div>
+  </div>--%>
 
   <!-- Nepal -->
   <div class="bnk-card">
@@ -411,7 +435,7 @@
 
   <div class="bnk-alert-box">
     <strong>⚠️ Attention!</strong><br>
-    ₹ 15,000 + 18% GST <br /> <b> Sub Total:- </b> 17,700.00 <span style="font-size: x-small;"> non-refundable fee</span>
+    ₹ 1,100 + 18% GST <br /> <b> Sub Total:- </b> 1,298.00 <span style="font-size: x-small;"> non-refundable fee</span>
   </div>
 
   <label for="website-url">Enter Message</label>
@@ -424,11 +448,10 @@
         ValidationGroup="APIRequest"/>
 
   <div class="bnk-sidebar-footer">
-      <asp:Button ID="btnRequestActivation" runat="server" 
-          Text="Request Activation"
-          style="color:white; background-color:#6e007c"
-          ValidationGroup="APIRequest"
-          OnClick="btnSaveActivation_Click" />
+     <button ID="btnRequestActivation1" type="button"
+        style="color:white; background-color:#6e007c"
+        ValidationGroup="APIRequest"
+        onclick="openConfirmationModal()">Request Activation</button>
 
       <asp:Button ID="btnSaveActivation" runat="server" 
           Text="Hidden Save" 
@@ -456,7 +479,41 @@
   </div>
 </div>
 
-       	
+ <div id="confirmationModal" class="simple-modal-overlay">
+  <div class="simple-modal">
+
+    <!-- Header -->
+    <div class="simple-modal-header">
+      <h5>⚠️ Confirmation Required</h5>
+      <span class="close-btn" onclick="closeConfirmationModal()">×</span>
+    </div>
+
+    <!-- Body -->
+    <div class="simple-modal-body text-center">
+
+      <img src="https://cdn-icons-png.flaticon.com/512/595/595067.png"
+           alt="Warning" width="70" class="mb-3" />
+
+      <p class="fw-bold text-danger mb-2">
+        ₹1,298 (including GST) will be deducted from your account.
+      </p>
+
+      <p class="mb-2">This amount is <strong>non-refundable</strong>.</p>
+
+      <p class="mb-3">Do you want to continue?</p>
+
+      <!-- Actions -->
+      <div class="d-flex justify-content-center gap-3">
+        <button class="cancel-btn" type="button"
+                onclick="closeConfirmationModal()">Cancel</button>
+
+        <button class="confirm-btn" type="button"
+                onclick="confirmRequest()">Yes, Continue</button>
+      </div>
+
+    </div>
+  </div>
+</div>      	
 
 <script>
     function openSidebar(serviceType) {
@@ -468,9 +525,21 @@
     function closeSidebar() {
         document.getElementById("sidebar1").classList.remove("active");
     }
-</script>
 
-    <script>
+    function openConfirmationModal() {
+        document.getElementById("confirmationModal").style.display = "flex";
+    }
+
+    function closeConfirmationModal() {
+        document.getElementById("confirmationModal").style.display = "none";
+    }
+
+    function confirmRequest() {
+        closeConfirmationModal();
+
+        document.getElementById('<%= btnSaveActivation.ClientID %>').click();
+    }
+
         function showSuccessModal() {
             document.getElementById("successModal").style.display = "flex";
         }
@@ -481,9 +550,7 @@
             const sidebar = document.getElementById("sidebar1");
             if (sidebar) sidebar.classList.remove("active");
         }
-    </script>
 
-<script>
     function submitActivation() {
         if (typeof (Page_ClientValidate) == 'function') {
             if (!Page_ClientValidate('APIRequest')) {

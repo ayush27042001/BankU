@@ -37,7 +37,7 @@ namespace NeoXPayout
                         if (exists > 0)
                         {
                             // Already requested → set to processing
-                            btnActivate.Text = "⏳ Processing...";
+                            btnActivate.Text = "⏳ Processing (7 to 15 Working Days)...";
                             btnActivate.BackColor = System.Drawing.Color.White;
                             btnActivate.ForeColor = System.Drawing.Color.Orange;
                             btnActivate.Enabled = false;
@@ -89,7 +89,7 @@ namespace NeoXPayout
                 string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
                 using (SqlConnection con = new SqlConnection(cs))
                 {
-                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage,status, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage,@status, GETDATE())";
+                    string query = "INSERT INTO ServiceActivation (ServiceType, UserID,UserMessage,Status, CreatedAt) VALUES (@ServiceType, @UserID,@UserMessage,@status, GETDATE())";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@ServiceType", "Micro Loan Activation");
@@ -101,7 +101,7 @@ namespace NeoXPayout
                     }
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "showSuccessModal", "showSuccessModal();", true);
-                btnActivate.Text = "⏳ Processing...";
+                btnActivate.Text = "⏳ Processing (7 to 15 Working Days)...";
                 btnActivate.BackColor = System.Drawing.Color.White;
                 btnActivate.ForeColor = System.Drawing.Color.Orange;
                 btnActivate.Enabled = false;

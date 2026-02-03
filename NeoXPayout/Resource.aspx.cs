@@ -108,7 +108,7 @@ namespace NeoXPayout
             HiddenField4.Value = row["MobileNo"].ToString();
             HiddenFieldShop.Value = row["CompanyName"].ToString();
             HiddenPan.Value = row["PANNo"].ToString();
-            HiddenFieldDate.Value = Convert.ToDateTime(row["BusinessStartOn"]).ToString("dd-MM-yyyy");
+            HiddenFieldDate.Value = Convert.ToDateTime(row["RegDate"]).ToString("dd-MM-yyyy");
             HiddenField5.Value = row["FullName"].ToString();
             HiddenField8.Value = row["companyaddress"].ToString();
             //HiddenField6.Value = dt.Rows[0]["companyaddress"].ToString();

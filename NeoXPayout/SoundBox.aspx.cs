@@ -11,6 +11,7 @@ namespace NeoXPayout
 {
     public partial class SoundBox : System.Web.UI.Page
     {
+        UserManagement um = new UserManagement();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (this.Session["BankURTName"] == null || !(Session["IsMPINVerified"] is bool isVerified && isVerified))
@@ -35,7 +36,7 @@ namespace NeoXPayout
                         if (exists > 0)
                         {
                             // Already requested → set to processing
-                            btnActivate.Text = "⏳ Processing...";
+                            btnActivate.Text = "⏳ Processing (7 to 15 Working Days)...";
                             btnActivate.BackColor = System.Drawing.Color.White;
                             btnActivate.ForeColor = System.Drawing.Color.Orange;
                             btnActivate.Enabled = false;
@@ -47,8 +48,43 @@ namespace NeoXPayout
         }
         protected void btnSaveActivation_Click(object sender, EventArgs e)
         {
+            string UserId = Session["BankURTUID"].ToString();
             if (Page.IsValid)
             {
+
+                decimal amount = 4720;
+
+                decimal balance = 0;
+                decimal.TryParse(um.GetBalance(UserId), out balance);
+                if (amount > balance)
+                {
+                    lblError.Text = "Error: Insufficient balance for your account.";
+                    lblError.Attributes["class"] = "text-danger";
+                    return;
+                }
+                else
+                {
+                    Decimal NewBalance = balance - amount;
+                    string con = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
+                    using (SqlConnection conn = new SqlConnection(con))
+                    {
+
+                        string query = "insert into tbluserbalance(Old_Bal,Amount,New_Bal,TxnType,crDrType,UserId,Remarks,TxnDatetime)values(@Old_Bal,@Amount,@New_Bal,@TxnType,@crDrType,@UserId,@Remarks,GETDATE());";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Old_Bal", balance);
+                            cmd.Parameters.AddWithValue("@Amount", amount);
+                            cmd.Parameters.AddWithValue("@New_Bal", NewBalance);
+                            cmd.Parameters.AddWithValue("@TxnType", "Sound Box Request");
+                            cmd.Parameters.AddWithValue("@crDrType", "Debit");
+                            cmd.Parameters.AddWithValue("@UserId", UserId);
+                            cmd.Parameters.AddWithValue("@Remarks", "Amount Debitted from user");
+
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
                 string UserMessage = txtUseCase.Text.Trim();
                 string cs = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
                 using (SqlConnection con = new SqlConnection(cs))
@@ -65,7 +101,7 @@ namespace NeoXPayout
                     }
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "showSuccessModal", "showSuccessModal();", true);
-                btnActivate.Text = "⏳ Processing...";
+                btnActivate.Text = "⏳ Processing (7 to 15 Working Days)...";
                 btnActivate.BackColor = System.Drawing.Color.White;
                 btnActivate.ForeColor = System.Drawing.Color.Orange;
                 btnActivate.Enabled = false;
