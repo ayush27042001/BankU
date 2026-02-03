@@ -42,7 +42,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
@@ -253,7 +252,6 @@
     <Content Include="bcAuth.jpg" />
     <Content Include="BCAuthorization.jpg" />
     <Content Include="BillPayment.aspx" />
-   
     <Content Include="bin\itextsharp.dll" />
     <Content Include="bin\itextsharp.xml" />
     <Content Include="bin\Microsoft.Bcl.AsyncInterfaces.dll" />
@@ -660,6 +658,7 @@
     <Content Include="CustomJS\DMT.js" />
     <Content Include="CustomJS\CommiosnMgmt\AdminCommisionMgmt.js" />
     <Content Include="CustomJS\INS-DMT\InstantPayDMT.js" />
+    <Content Include="CustomJS\Payout\Payout.js" />
     <Content Include="DeveloperAPI.aspx" />
     <Content Include="Digitalgold.aspx" />
     <Content Include="DigitalSignature.aspx" />

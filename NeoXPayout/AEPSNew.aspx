@@ -493,10 +493,12 @@
                         <label runat="server" id="lblMessage" class="col text-end text-success"></label>
                         <label runat="server" id="lblerror" class="col text-end text-danger"></label>
                         <div class="col-md-3 text-end">
-                            <button type="button" class="btn btn-primary"
+                            <%--      <button type="button" class="btn btn-primary"
                                 data-bs-toggle="offcanvas" data-bs-target="#TransactionSidebar"
                                 style="background-color: #6e007c">
-                                Initiate AEPS Transaction</button>
+                                Initiate AEPS Transaction</button>--%>
+
+                            <button type="button" class="btn btn-primary" id="btnInitiateTransaction" style="background-color: #6e007c">Initiate AEPS Transaction </button>
                             <div class="sender-profile d-flex align-items-center ms-3" style="display: none !important">
                                 <img id="SenderProfile"
                                     class="sender-avatar"
@@ -617,7 +619,7 @@
         </div>
 
         <!-- Offcanvas Sidebar -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="TransactionSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
+        <%-- <div class="offcanvas offcanvas-end" tabindex="-1" id="TransactionSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
             <asp:HiddenField ID="hfOperator" runat="server" />
             <div class="offcanvas-header" style="background-color: whitesmoke">
                 <h5 class="offcanvas-title">AEPS Transaction</h5>
@@ -698,6 +700,68 @@
 
                 </div>
 
+            </div>
+        </div>--%>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="TransactionSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
+            <asp:HiddenField ID="hfOperator" runat="server" />
+            <div class="offcanvas-header" style="background-color: whitesmoke">
+                <h5 class="offcanvas-title">AEPS Transaction</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <!-- STEP 1: Select Operator -->
+                <div id="step1">
+                    <h6>Select Operator</h6>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="Statement">Mini Statement </button>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="Balance">Balance Enquiry </button>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="Withdraw">Cash Withdrawal </button>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="AadharPay">Aadhar Pay </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- STEP 2: Fill Details -->
+                <div id="step2" class="d-none">
+                    <h6 id="selectedOperator"></h6>
+                    <asp:Label runat="server" ID="lblError1" CssClass=" text-danger"></asp:Label>
+                    <div class="mb-3">
+                        <asp:DropDownList ID="ddlCircle" runat="server" CssClass="form-control"></asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvCircle" runat="server" ControlToValidate="ddlCircle" InitialValue="" ErrorMessage="Please select a Bank" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+                    </div>
+                    <div class="mb-3">
+                        <asp:TextBox ID="txtAadhar" runat="server" CssClass="form-control" placeholder="Aadhar Number" TextMode="Number"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvAmount" runat="server" ControlToValidate="txtAadhar" ErrorMessage="Aadhar is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+                    </div>
+                    <div class="mb-3">
+                        <asp:TextBox ID="txtamount" runat="server" CssClass="form-control" placeholder="Amount" TextMode="Number"></asp:TextBox>
+                        <asp:RequiredFieldValidator
+                            ID="RequiredFieldValidator2"
+                            runat="server"
+                            ControlToValidate="txtamount"
+                            ErrorMessage="Amount is required"
+                            CssClass="text-danger"
+                            Display="Dynamic"
+                            ValidationGroup="BankPayoutGroup" />
+
+                    </div>
+                    <div class="mb-3">
+                        <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Mobile Number"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtMobile" ErrorMessage="Mobile number is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="button" class="btn btn-outline-secondary" id="backStep">⬅ Back</button>
+                        <asp:LinkButton runat="server" CssClass="btn btn-primary" Style="background-color: #6e007c" ID="btnTransaction" ValidationGroup="BankPayoutGroup" OnClientClick="return validateAndOpenPlansSidebarTransaction();"> Scan </asp:LinkButton>
+                    </div>
+                    <asp:HiddenField ID="hfOperationType" runat="server" />
+                </div>
             </div>
         </div>
 
@@ -1063,11 +1127,10 @@
                     ✔Scan & Proceed
                 </button>
 
-                <%--<button class="btn btn-outline-secondary px-4"
-                    type="button"
-                    data-bs-dismiss="offcanvas">
+                <button class="btn btn-outline-secondary px-4"
+                    type="button" onclick="DismissModal()">
                     Cancel
-                </button>--%>
+                </button>
             </div>
 
         </div>
@@ -1259,6 +1322,14 @@
     </div>
 
     <script>
+
+        function DismissModal() {
+            const targetEl = document.getElementById("aepsLoginSidebar");
+            const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(targetEl);
+            offcanvas.hide();
+        }
+
+
         const rowsPerPage = 10;
         const table = document.getElementById("payoutTable");
         const tbody = table.querySelector("tbody");
@@ -1657,7 +1728,7 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+       <%-- document.addEventListener("DOMContentLoaded", function () {
             let lastRechargeSidebar = null;
 
             document.querySelectorAll(".operator-card").forEach(btn => {
@@ -1693,21 +1764,7 @@
             });
 
 
-            ["TransactionSidebar"].forEach(id => {
-                let el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener("show.bs.offcanvas", function () {
-                        lastRechargeSidebar = id;
-                        document.getElementById("<%= hfLastSidebar.ClientID %>").value = id;
 
-                        if (id === "TransactionSidebar") {
-                            document.getElementById("<%= hfTxnType.ClientID %>").value = "Transaction";
-
-                        }
-
-                    });
-                }
-            });
 
 
             // --- Plan Selection ---
@@ -1744,35 +1801,14 @@
             });
 
             // --- Back Button in Plans Sidebar ---
-            document.addEventListener("click", function (e) {
-                if (e.target && e.target.id === "backToRecharge") {
-                    const plansEl = document.getElementById("plansSidebar");
-                    bootstrap.Offcanvas.getInstance(plansEl)?.hide();
 
-                    const returnSidebar = lastRechargeSidebar || document.getElementById("<%= hfLastSidebar.ClientID %>").value;
-                    if (returnSidebar) {
-                        const targetEl = document.getElementById(returnSidebar);
-                        if (targetEl) {
-                            new bootstrap.Offcanvas(targetEl).show();
-
-                            if (returnSidebar === "TransactionSidebars") {
-                                document.getElementById("step1").classList.add("d-none");
-                                document.getElementById("step2").classList.remove("d-none");
-
-                                let op = document.getElementById('<%= hfOperator.ClientID %>').value;
-                                if (op) document.getElementById("selectedOperator").innerText = "Operator: " + op;
-                            }
-                        }
-                    }
-                }
-            });
 
             // --- Back Step Buttons ---
             document.getElementById("backStep").addEventListener("click", function () {
                 document.getElementById("step2").classList.add("d-none");
                 document.getElementById("step1").classList.remove("d-none");
             });
-        });
+        });--%>
 
 
     </script>
@@ -1786,37 +1822,36 @@
                 }
             }
 
+            const plansEl = document.getElementById('plansSidebar');
+            bootstrap.Offcanvas.getOrCreateInstance(plansEl).show();
 
-            var mySidebar = new bootstrap.Offcanvas(document.getElementById('plansSidebar'));
-            mySidebar.show();
 
             return false;
         }
 
         function validateAndOpenPlansSidebarTransaction() {
 
-            var operationType = document.getElementById('<%= hfOperationType.ClientID %>').value;
+            var operationType = document.getElementById('ContentPlaceHolder1_hfOperator').value;
             var amountValidator = document.getElementById('<%= RequiredFieldValidator2.ClientID %>');
 
-            if (operationType == "Balance" || operationType == "Statement") {
-                amountValidator.enabled = false;
-            }
-            else {
-                amountValidator.enabled = true;
+            if (operationType === "Balance" || operationType === "Statement") {
+                ValidatorEnable(amountValidator, false); // ✅ correct way
+            } else {
+                ValidatorEnable(amountValidator, true);
             }
 
-            if (typeof (Page_ClientValidate) == 'function') {
+            if (typeof (Page_ClientValidate) === 'function') {
                 if (!Page_ClientValidate('BankPayoutGroup')) {
                     return false;
                 }
             }
 
-
-            var mySidebar = new bootstrap.Offcanvas(document.getElementById('plansSidebar'));
-            mySidebar.show();
+            const plansEl = document.getElementById('plansSidebar');
+            bootstrap.Offcanvas.getOrCreateInstance(plansEl).show();
 
             return false;
         }
+
 
     </script>
 

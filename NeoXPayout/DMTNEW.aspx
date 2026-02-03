@@ -108,9 +108,6 @@
                         <button class="action primary" type="button" onclick="openSenderSidebar()">
                             Verify
                         </button>
-                        <button class="action secondary" type="button" onclick="openSenderAvail()">
-                            Avail
-                        </button>
                         <button class="action ghost" type="button" onclick="clearInput()">
                             Cancel
                         </button>
