@@ -317,6 +317,12 @@
   55%  { transform: rotate(180deg); } /* pause */
   100% { transform: rotate(360deg); }
 }
+.disabled-btn {
+    background-color: #cfcfcf !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
   </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -341,16 +347,17 @@
       </ul>
   
       <asp:Button 
-        ID="btnActivate" 
-        runat="server" 
-        CssClass="bnk-activate-btn" 
-        Text="Activate" 
-        OnClientClick="openSidebar('FixedDeposit Service Activation'); return false;" />
+    ID="btnActivate" 
+    runat="server" 
+    CssClass="bnk-activate-btn disabled-btn" 
+    Text="Coming Soon (7–15 Working Days)" 
+    Enabled="false" />
+
 
     </div>    
     </div>
 
-  <div class="bnk-sidebar" id="sidebar1" >
+<div class="bnk-sidebar" id="sidebar1" >
     <button class="bnk-close-btn" type="button" onclick="closeSidebar()">&times;</button>
     <h3 id="bnk-sidebar-title"></h3>
   <p style="margin-bottom: 10px; color: #555;">
@@ -388,7 +395,8 @@
       <a href="#">View Business Model</a>
     </div>
   </div>
-    <div id="successModal" class="simple-modal-overlay">
+
+<div id="successModal" class="simple-modal-overlay">
   <div class="simple-modal">
     <div class="simple-modal-header">
       <h5>Request Added Successfully</h5>
@@ -404,7 +412,7 @@
   </div>
 </div>
 
-  <script>
+<script>
     function openSidebar(title) {
         document.getElementById("bnk-sidebar-title").innerText = title;
         document.getElementById("sidebar1").classList.add("active");
@@ -426,7 +434,7 @@
         if (sidebar) sidebar.classList.remove("active");
     }
 </script>
-  <script>
+<script>
         function submitActivation() {
             // Trigger ASP.NET Page_ClientValidate
             if (typeof (Page_ClientValidate) == 'function') {

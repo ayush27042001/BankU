@@ -37,7 +37,7 @@ namespace NeoXPayout
                         if (exists > 0)
                         {
                             // Already requested → set to processing
-                            btnActivate.Text = "⏳ Processing...";
+                            btnActivate.Text = "⏳ Processing (7 to 15 Working Days)...";
                             btnActivate.BackColor = System.Drawing.Color.White;
                             btnActivate.ForeColor = System.Drawing.Color.Orange;
                             btnActivate.Enabled = false;
@@ -101,7 +101,7 @@ namespace NeoXPayout
                     }
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "showSuccessModal", "showSuccessModal();", true);
-                btnActivate.Text = "⏳ Processing...";
+                btnActivate.Text = "⏳ Processing (7 to 15 Working Days)...";
                 btnActivate.BackColor = System.Drawing.Color.White;
                 btnActivate.ForeColor = System.Drawing.Color.Orange;
                 btnActivate.Enabled = false;

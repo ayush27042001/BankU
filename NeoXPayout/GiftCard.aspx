@@ -357,10 +357,10 @@
     <h3 id="bnk-sidebar-title"></h3>
     <p style="margin-bottom: 10px; color: #555;">Activate Gift Card services and start offering digital & physical gift cards to your customers.</p>
 
-  <div class="bnk-alert-box">
+<%--  <div class="bnk-alert-box">
     <strong>⚠️ Attention!</strong><br>
     ₹ 5,000 + 18% GST <br /> <b> Sub Total:- </b> 5,900.00 <span style="font-size: x-small;"> non-refundable fee</span>
-  </div>  
+  </div>  --%>
 
     <label for="website-url">Enter Message</label>
        <asp:TextBox ID="txtUseCase" runat="server" Rows="4" placeholder="Enter your Message" CssClass="form-control" />

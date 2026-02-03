@@ -313,8 +313,14 @@
 @keyframes spin-stop {
   0%   { transform: rotate(0deg); }
   45%  { transform: rotate(180deg); }
-  55%  { transform: rotate(180deg); } /* pause */
+  55%  { transform: rotate(180deg); }
   100% { transform: rotate(360deg); }
+}
+.disabled-btn {
+    background-color: #cfcfcf !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
 }
   </style>
 </asp:Content>
@@ -339,12 +345,14 @@
       <li>Increase Customer Footfall with Essential Services</li>
     </ul>
 
-    <asp:Button 
-      ID="btnActivate" 
-      runat="server" 
-      CssClass="bnk-activate-btn" 
-      Text="Activate" 
-      OnClientClick="openSidebar('Train Ticket Service Activation'); return false;" />
+  
+  <asp:Button 
+    ID="btnActivate" 
+    runat="server" 
+    CssClass="bnk-activate-btn disabled-btn" 
+    Text="Coming Soon (7–15 Working Days)" 
+    Enabled="false" />
+
   </div>
 
 </div>

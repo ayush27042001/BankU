@@ -359,10 +359,10 @@
     Activate Announcement services and keep your customers updated with timely alerts and promotions.
   </p>
 
-    <div class="bnk-alert-box">
+ <%--   <div class="bnk-alert-box">
       <strong>⚠️ Attention!</strong><br>
       ₹ 10,000 + 18% GST <br /> <b> Sub Total:- </b> 11,900.00 <span style="font-size: x-small;"> non-refundable fee</span>
-    </div>
+    </div>--%>
 
     <label for="website-url">Enter Message</label>
        <asp:TextBox ID="txtUseCase" runat="server" Rows="4" placeholder="Enter your Message" CssClass="form-control" />

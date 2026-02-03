@@ -354,11 +354,11 @@
     Activate Credit Card Bill Payment services and enable your customers pay their credit card bills quickly and securely.  
   </p>
 
-  <div class="bnk-alert-box">
+ <%-- <div class="bnk-alert-box">
     <strong>⚠️ Attention!</strong><br>
     ₹ 15,000 + 18% GST <br /> <b> Sub Total:- </b> 17,700.00 
     <span style="font-size: x-small;"> non-refundable fee</span>
-  </div>
+  </div>--%>
 
   <label for="website-url">Enter Message</label>
   <asp:TextBox ID="txtUseCase" runat="server" Rows="4" placeholder="Enter your Message" CssClass="form-control" />

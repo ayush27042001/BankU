@@ -446,6 +446,7 @@
         style="color:white; background-color:#6e007c"
         ValidationGroup="APIRequest"
        OnClientClick="return openConfirmationModal();" />--%>
+
       <button ID="btnRequestActivation1" type="button"
         style="color:white; background-color:#6e007c"
         ValidationGroup="APIRequest"
@@ -459,6 +460,7 @@
       <a href="#">View Business Model</a>
   </div>
 </div>
+
 <div id="successModal" class="simple-modal-overlay">
   <div class="simple-modal">
     <div class="simple-modal-header">
@@ -550,7 +552,6 @@
         if (sidebar) sidebar.classList.remove("active");
     }
 </script>
-
 <script>
     function submitActivation() {
       
