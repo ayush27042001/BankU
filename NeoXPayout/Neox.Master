@@ -370,8 +370,8 @@
                                             <path d="M10 18h4"></path>
                                         </svg>
                                         <span class="ms-2">Train Ticket</span>
-                                    </a>--%>
-                                </li>
+                                    </a>
+                                </li>--%>
 
                                 <!-- Credit Check -->
                                 <li>
@@ -657,7 +657,7 @@
                                 </li>
 
                                 <!-- Logistics -->
-                             <%--   <li>
+                            <%--<li>
                                     <a href="Logistics.aspx" aria-label="Logistics" data-bs-toggle="tooltip"
                                         data-bs-title="Logistics" data-bs-placement="right">
                                         <!-- Truck Icon -->
@@ -793,7 +793,7 @@
                                         <span class="ms-2">Announcement</span>
                                     </a>
                                 </li>
-                                <%--<li>
+                              <%--  <li>
                                     <a href="Calling.aspx" aria-label="Call" data-bs-toggle="tooltip"
                                         data-bs-title="Call" data-bs-placement="right">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
