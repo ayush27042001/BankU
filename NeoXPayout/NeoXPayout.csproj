@@ -43,8 +43,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.6.2\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.5, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.5\lib\net461\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -252,20 +255,13 @@
     <Content Include="bcAuth.jpg" />
     <Content Include="BCAuthorization.jpg" />
     <Content Include="BillPayment.aspx" />
-    <Content Include="bin\itextsharp.dll" />
-    <Content Include="bin\itextsharp.xml" />
-    <Content Include="bin\Microsoft.Bcl.AsyncInterfaces.dll" />
-    <Content Include="bin\Microsoft.Bcl.AsyncInterfaces.xml" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+
     <Content Include="bin\Microsoft.Win32.Primitives.dll" />
     <Content Include="bin\NeoXPayout.dll" />
     <Content Include="bin\NeoXPayout.pdb" />
     <Content Include="bin\netstandard.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
-    <Content Include="bin\RestSharp.dll" />
-    <Content Include="bin\RestSharp.xml" />
+
+    
     <Content Include="bin\roslyn\csc.exe" />
     <Content Include="bin\roslyn\csi.exe" />
     <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
@@ -303,8 +299,7 @@
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
     <Content Include="bin\System.AppContext.dll" />
-    <Content Include="bin\System.Buffers.dll" />
-    <Content Include="bin\System.Buffers.xml" />
+
     <Content Include="bin\System.Collections.Concurrent.dll" />
     <Content Include="bin\System.Collections.dll" />
     <Content Include="bin\System.Collections.NonGeneric.dll" />
@@ -344,11 +339,9 @@
     <Content Include="bin\System.Linq.Expressions.dll" />
     <Content Include="bin\System.Linq.Parallel.dll" />
     <Content Include="bin\System.Linq.Queryable.dll" />
-    <Content Include="bin\System.Memory.dll" />
-    <Content Include="bin\System.Memory.xml" />
+
     <Content Include="bin\System.Net.Http.dll" />
-    <Content Include="bin\System.Net.Http.Formatting.dll" />
-    <Content Include="bin\System.Net.Http.Formatting.xml" />
+
     <Content Include="bin\System.Net.NameResolution.dll" />
     <Content Include="bin\System.Net.NetworkInformation.dll" />
     <Content Include="bin\System.Net.Ping.dll" />
@@ -359,8 +352,7 @@
     <Content Include="bin\System.Net.WebHeaderCollection.dll" />
     <Content Include="bin\System.Net.WebSockets.Client.dll" />
     <Content Include="bin\System.Net.WebSockets.dll" />
-    <Content Include="bin\System.Numerics.Vectors.dll" />
-    <Content Include="bin\System.Numerics.Vectors.xml" />
+
     <Content Include="bin\System.ObjectModel.dll" />
     <Content Include="bin\System.Reflection.dll" />
     <Content Include="bin\System.Reflection.Extensions.dll" />
@@ -368,8 +360,7 @@
     <Content Include="bin\System.Resources.Reader.dll" />
     <Content Include="bin\System.Resources.ResourceManager.dll" />
     <Content Include="bin\System.Resources.Writer.dll" />
-    <Content Include="bin\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="bin\System.Runtime.CompilerServices.Unsafe.xml" />
+
     <Content Include="bin\System.Runtime.CompilerServices.VisualC.dll" />
     <Content Include="bin\System.Runtime.dll" />
     <Content Include="bin\System.Runtime.Extensions.dll" />
@@ -391,25 +382,19 @@
     <Content Include="bin\System.Security.SecureString.dll" />
     <Content Include="bin\System.Text.Encoding.dll" />
     <Content Include="bin\System.Text.Encoding.Extensions.dll" />
-    <Content Include="bin\System.Text.Encodings.Web.dll" />
-    <Content Include="bin\System.Text.Encodings.Web.xml" />
-    <Content Include="bin\System.Text.Json.dll" />
-    <Content Include="bin\System.Text.Json.xml" />
+
+
     <Content Include="bin\System.Text.RegularExpressions.dll" />
     <Content Include="bin\System.Threading.dll" />
     <Content Include="bin\System.Threading.Overlapped.dll" />
     <Content Include="bin\System.Threading.Tasks.dll" />
-    <Content Include="bin\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="bin\System.Threading.Tasks.Extensions.xml" />
+
     <Content Include="bin\System.Threading.Tasks.Parallel.dll" />
     <Content Include="bin\System.Threading.Thread.dll" />
     <Content Include="bin\System.Threading.ThreadPool.dll" />
     <Content Include="bin\System.Threading.Timer.dll" />
     <Content Include="bin\System.ValueTuple.dll" />
-    <Content Include="bin\System.Web.Http.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.xml" />
-    <Content Include="bin\System.Web.Http.xml" />
+
     <Content Include="bin\System.Xml.ReaderWriter.dll" />
     <Content Include="bin\System.Xml.XDocument.dll" />
     <Content Include="bin\System.Xml.XmlDocument.dll" />
