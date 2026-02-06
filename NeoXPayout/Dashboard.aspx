@@ -73,8 +73,6 @@
     color: #888;
 }
 
-</style>
-<style>
 .equal-card {
     height: 100%;
     display: flex;
@@ -191,13 +189,74 @@
             </div>
 
             <div class="d-flex justify-content-between mt-auto">
-                <a href="ReportBanku.aspx" class="text-white">View Statement</a>
+                <a href="Settlement.aspx" class="text-white">View Statement</a>
                 <a href="AddFund.aspx" class="text-white">Add Money</a>
             </div>
 
         </div>
     </div>
 </div>
+
+<%--<asp:PlaceHolder ID="pnlOutletLimit1" runat="server" Visible="false">
+    <div class="col-md-4 col-lg-4 col-xl-4">      
+        <div class="card-body d-flex justify-content-center flex-column">
+            <div class="card-wrapper align-self-center" style="width:400px">
+                <div class="cc visa" style="height:200px; background-image: linear-gradient(to top, var(--bs-red));">
+                    <div class="card-data">
+                        <div class="type" style="font-size:large; font-weight:bold">Outlet Limit</div>
+                        <div class="circuit">
+                            <img src="BankU.png" />
+                        </div>
+                    </div>
+                    <div class="card-data" style="margin-top:35px">
+                        <h6 style="margin-top:5px">₹<asp:Label ID="lblsuccess" runat="server"></asp:Label></h6>
+                    </div>
+                    <div class="card-data" style="margin-top:105px">
+                        <asp:Label ID="Label8" class="number" runat="server" style="font-size:large"></asp:Label>
+                    </div>
+                    <div class="holder d-flex">
+                        <a class="name" href="#" style="z-index:970; position:relative;">View Total</a>
+                        <a class="name me-5" href="#" style="z-index:960; position:relative; margin-left:70px">View Used</a>
+                        <a class="name" href="#" style="z-index:950; position:relative">Add Usable</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:PlaceHolder>--%>
+
+<%--<asp:PlaceHolder ID="pnlbutton" runat="server" Visible="true">
+<div class="col-md-4 d-flex">
+    <div class="equal-card w-100">
+        <div class="equal-card-inner p-4"
+             style="background:#f2e7fb;">
+
+            <div class="d-flex justify-content-between">
+                <div class="fw-medium">Virtual Account</div>
+                <i class="bi bi-info-circle"></i>
+            </div>
+
+            <div class="fs-5 fw-bold text-danger mt-1">Inactive</div>
+
+            <div>
+                <div class="fw-medium mt-2">Account Number</div>
+                <div class="d-flex justify-content-between">
+                    <span>XXXXXXXXXXXX</span>
+                     <i class="bi bi-clipboard" style="cursor: pointer;" onclick="copyText('XXXXXXXXXXXX')"></i>
+                </div>
+
+                <div class="fw-medium mt-2">IFSC Code</div>
+                <div class="d-flex justify-content-between">
+                    <span>XXXXXXXX</span>
+                  <i class="bi bi-clipboard" style="cursor: pointer;" onclick="copyText('XXXXXXXX')"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</asp:PlaceHolder>--%>
+
 
 <!--Promotional Carousel Card -->
 <div class="col-md-6 d-flex">
@@ -241,12 +300,42 @@
   </a>
 </div>
 
+
+<asp:PlaceHolder ID="pnlBsk" runat="server" Visible="false">
+
 <div class="col-4">
-  <a href="Calling.aspx" class="quick-touch-card" style="background:#e9e3ff;color:#580069;">
-    <i class="bi bi-telephone-forward-fill"></i>
-    <span>Call</span>
+  <a href="DMTNEW.aspx" class="quick-touch-card" style="background:#e9e3ff;color:#580069;">
+  <i class="bi bi-currency-rupee"></i>
+    <span>DMT</span>
   </a>
 </div>
+
+<div class="col-4">
+  <a href="AEPSNew.aspx" class="quick-touch-card">
+   <i class="bi bi-fingerprint"></i>
+    <span>AEPS</span>
+  </a>
+</div>
+
+</asp:PlaceHolder>
+
+<asp:PlaceHolder ID="pnlElse" runat="server" Visible="false">
+
+<div class="col-4">
+  <a href="SoundBox.aspx" class="quick-touch-card" style="background:#e9e3ff;color:#580069;">
+<i class="bi bi-volume-up-fill"></i>
+    <span>Sound Box</span>
+  </a>
+</div>
+
+<div class="col-4">
+  <a href="POS.aspx" class="quick-touch-card">
+   <i class="bi bi-credit-card-fill"></i>
+    <span>POS</span>
+  </a>
+</div>
+
+</asp:PlaceHolder>
 
 <div class="col-4">
   <a href="BillPayment.aspx" class="quick-touch-card">
@@ -262,12 +351,6 @@
   </a>
 </div>
 
-<div class="col-4">
-  <a href="Logistics.aspx" class="quick-touch-card">
-    <i class="bi bi-truck"></i>
-    <span>Logistics</span>
-  </a>
-</div>
 
 <div class="col-4">
   <a href="Shopping.aspx" class="quick-touch-card">

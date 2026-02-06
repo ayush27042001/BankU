@@ -114,7 +114,7 @@
 								<div class="row g-4">
 
 									<div class="col-xl-4 col-lg-5">
-                                        <div class="card border-0 shadow-sm rounded-4">
+                                        <div class="card border-1 shadow-sm rounded-4">
                                             <div class="card-body p-4">
                                               <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <h5 class="card-title fw-semibold mb-1 text-dark">Personal Information</h5>
@@ -186,7 +186,7 @@
 
 
 									<div class="col-xl-4 col-lg-5">
-                                        <div class="card border-0 shadow-sm rounded-4">
+                                        <div class="card border-1 shadow-sm rounded-4">
                                             <div class="card-body p-4">
                                                   <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <h5 class="card-title fw-semibold mb-1 text-dark">Business Details</h5>
@@ -251,7 +251,7 @@
 
 
 									 <div class="col-xl-4 col-lg-5">
-                                        <div class="card border-0 shadow-sm rounded-4">
+                                        <div class="card border-1 shadow-sm rounded-4">
                                             <div class="card-body p-4">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <h5 class="card-title fw-semibold mb-0 text-dark">Bank Account</h5>
@@ -299,6 +299,43 @@
                                                 </div>
                                             </div>
                                         </div>
+                                         <div class="card border-1 shadow-sm rounded-4 mt-3">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5 class="card-title fw-semibold mb-0 text-dark">KYC</h5>
+                                                     <asp:Panel runat="server" ID="pnlUpload">
+                                                        <button ID="btnkyc" Class="btn btn-sm" type="button"
+                                                        style="background-color: purple; color: #fff; border: none;" onclick="openkycModal()">Upload</button>
+                                                     </asp:Panel>
+                                                </div>
+                                                <asp:Label runat="server" ID="lblKycStatus" CssClass=" text-danger"></asp:Label>
+                                                <p class="text-muted small mb-4">Provide your documents for kyc.</p>
+
+                                                <div class="d-flex flex-column gap-3">
+
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">Aadhaar Card</small>
+                                                        <asp:Label ID="aadhar" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">PAN Card</small>
+                                                        <asp:Label ID="pan" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">GST Certificate</small>
+                                                        <asp:Label ID="gst" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">Photo</small>
+                                                        <asp:Label ID="img" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
 
@@ -310,6 +347,71 @@
 				</div>
 			</div>
 		</div>
+
+<div class="modal fade" id="kycModal" tabindex="-1" aria-labelledby="kycModalLabel" aria-hidden="true"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-3">
+      
+      <!-- Modal Header -->
+      <div class="modal-header text-white border-0" style="background-color:purple">
+        <h5 class="modal-title w-100 text-center" id="kycModalLabel">
+          Upload Documents
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+		  <div class="mb-3">
+			<label class="form-label fw-semibold">Aadhaar Card</label>
+             <asp:FileUpload ID="fuAadhaar" runat="server" CssClass="form-control" />
+              	<asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server"
+			      ControlToValidate="fuAadhaar"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Aadhar Card is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+		  </div>
+
+		  <div class="mb-3">
+			 <label class="form-label fw-semibold">PAN Card</label>
+             <asp:FileUpload ID="fuPan" runat="server" CssClass="form-control" />
+              <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server"
+			      ControlToValidate="fuPan"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Pan Card is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+		  </div>
+		 		 
+         <div class=" mb-3">
+            <label class="form-label fw-semibold">Photo</label>
+            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control" />
+              <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server"
+			      ControlToValidate="fuPhoto"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Photo is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+         </div>
+
+           <div class=" mb-3">
+			 <label class="form-label fw-semibold">
+                GST Certificate <span class="text-muted">(Optional)</span>
+            </label>
+            <asp:FileUpload ID="fuGst" runat="server" CssClass="form-control" />
+		  </div>
+		  <!-- Add Button -->
+		
+		 <div class="mt-3">
+                <asp:Button ID="btnSubmitKyc" runat="server" Text="Submit KYC" ValidationGroup="uploadDoc" style="background-color: purple; color: #fff; border: none;"
+                    CssClass="btn btn-primary w-100" OnClick="btnSubmitKyc_Click" />
+            </div>
+		</div>
+
+
+    </div>
+  </div>
+</div>
+
 <!-- Add Bank Account Modal -->
 <div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true"
      data-bs-backdrop="static" data-bs-keyboard="false">
@@ -395,7 +497,7 @@
   </div>
 </div>
 
- <div id="ViewBankModal" style="position: fixed; top: 0; right: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: none; align-items: flex-start; justify-content: flex-end;">
+<div id="ViewBankModal" style="position: fixed; top: 0; right: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: none; align-items: flex-start; justify-content: flex-end;">
 
      <div style="background: white; width: 500px; height: 100vh; box-shadow: -2px 0 12px rgba(0,0,0,0.15); padding: 16px; position: relative;">
             <!-- Header with Back -->
@@ -729,7 +831,10 @@
         document.getElementById('ViewBankModal').style.display = 'flex';
         return false;
     }
-
+    function openkycModal() {
+        var myModal = new bootstrap.Modal(document.getElementById('kycModal'));
+        myModal.show();
+    }
     function openAddBankModal() {
 
     

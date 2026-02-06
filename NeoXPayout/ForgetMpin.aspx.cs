@@ -39,9 +39,16 @@ namespace NeoXPayout
             {
                 Response.Redirect("LoginBankU.aspx");
             }
+            if (string.IsNullOrWhiteSpace(txtNewMPIN.Text) || string.IsNullOrWhiteSpace(txtConfirmMPIN.Text))
+            {
+
+                lblerror.Text = "MPIN and Confirm MPIN are required.";
+                return;
+            }
+
             if (txtNewMPIN.Text == txtConfirmMPIN.Text)
             {
-                otp = um.signupotp("7988234554");
+                otp = um.signupotp(number);
                 if (otp != "-1")
                 {
                     Session["OTP"] = otp;

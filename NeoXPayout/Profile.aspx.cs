@@ -33,10 +33,10 @@ namespace NeoXPayout
                 getProfileImage();
                 LoadPreviousRequests();
             }
-            
+
         }
-        
-        public void getProfileImage() 
+
+        public void getProfileImage()
         {
             string userId = Session["BankURTUID"].ToString();
             string sql = "SELECT ProfileImage FROM Registration WHERE RegistrationId = @RegistrationId";
@@ -58,7 +58,7 @@ namespace NeoXPayout
         }
         public void getpaymentdetails()
         {
-           
+
             string UserId = this.Session["BankURTUID"].ToString();
 
             if (string.IsNullOrEmpty(UserId))
@@ -90,9 +90,9 @@ namespace NeoXPayout
                 string VoterIDCard = row["VoterIDCard"]?.ToString()?.Trim();
 
                 if (!string.IsNullOrEmpty(VoterIDCard))
-                    btnAddVoter.Visible = false; 
+                    btnAddVoter.Visible = false;
                 else
-                    btnAddVoter.Visible = true; 
+                    btnAddVoter.Visible = true;
 
                 lblName.Text = row["FullName"]?.ToString() ?? "";
                 lblEmail.Text = row["Email"]?.ToString() ?? "";
@@ -133,8 +133,40 @@ namespace NeoXPayout
                     ? "XXXXXX" + account.Substring(account.Length - 4)
                     : account;
                 lblAccountType.Text = row["AccountHolderType"]?.ToString() ?? "";
+
+               string aadharimg = row["aadharUpload"]?.ToString() ?? "";
+               string panimg = row["panUpload"]?.ToString() ?? "";
+                string photoimg = row["photoUpload"]?.ToString() ?? "";
+                string gstimg = row["gstUpload"]?.ToString() ?? "";
+
+                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) &&  !string.IsNullOrEmpty(photoimg))
+                {
+                    aadhar.Text = "Uploaded";
+                    pan.Text = "Uploaded";
+                    img.Text = "Uploaded";
+
+                    if (!string.IsNullOrEmpty(gstimg))
+                        gst.Text = "Uploaded";
+                    else
+                        gst.Text = "Not Uploaded";
+                    pnlUpload.Visible = false;  
+                    lblKycStatus.Text = "✅ KYC Completed";
+                    lblKycStatus.CssClass = "text-success fw-semibold";
+                }
+                else
+                {
+                    aadhar.Text = string.IsNullOrEmpty(aadharimg) ? "Not Uploaded" : "Uploaded";
+                    pan.Text = string.IsNullOrEmpty(panimg) ? "Not Uploaded" : "Uploaded";
+                    img.Text = string.IsNullOrEmpty(photoimg) ? "Not Uploaded" : "Uploaded";
+                    gst.Text = string.IsNullOrEmpty(gstimg) ? "Not Uploaded" : "Uploaded";
+
+                    lblKycStatus.Text = "❌ KYC Not Completed";
+                    lblKycStatus.CssClass = "text-danger fw-semibold";
+                }
+
+
                 lblIFSC.Text = row["IFSC"]?.ToString() ?? "";
-                lblIfsc1.Text= row["IFSC"]?.ToString() ?? "";
+                lblIfsc1.Text = row["IFSC"]?.ToString() ?? "";
                 string bankAccount = row["BankAccount"]?.ToString()?.Trim();
                 addAccount.Visible = string.IsNullOrEmpty(bankAccount);
                 //DOB.Text = Convert.ToDateTime(dt.Rows[0]["DOB"]).ToString("dd-MM-yyyy");
@@ -146,21 +178,21 @@ namespace NeoXPayout
 
         protected void AddBank_Click(object sender, EventArgs e)
         {
-            string BankAcc= txtAccountNumber.Text;
+            string BankAcc = txtAccountNumber.Text;
             string IFSC = txtIFSC.Text;
             string Name = Session["BankURTName"].ToString();
             string Phone = Session["BankURTMobileno"].ToString();
-            string Status =verifyBankAccount(BankAcc, IFSC, Name, Phone);
-            if(Status== "SUCCESS")
+            string Status = verifyBankAccount(BankAcc, IFSC, Name, Phone);
+            if (Status == "SUCCESS")
             {
                 getpaymentdetails();
                 UserBankDetails();
                 ScriptManager.RegisterStartupScript(this, this.GetType(),
                      "showSuccessModal", "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();", true);
             }
-            else 
+            else
             {
-                lblError.Text = "Bank Validation Failed. "+ Status;
+                lblError.Text = "Bank Validation Failed. " + Status;
             }
         }
         public string verifyBankAccount(string BankAcc, string IFSC, string Name, string Phone)
@@ -197,9 +229,9 @@ namespace NeoXPayout
                     {
                         string AccHolderName = CleanAccountHolderName(json["name_at_bank"]?.ToString());
                         string BankName = json["bank_name"]?.ToString();
-                        
+
                         int count = GetUserBankCount(UserId);
-                        
+
                         if (BankAccountAlreadyFilled())
                         {
                             if (count >= 5)
@@ -211,11 +243,11 @@ namespace NeoXPayout
                             SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
 
                             cmdfr12.Parameters.AddWithValue("@AccountNo", BankAcc);
-                            cmdfr12.Parameters.AddWithValue("@IFSC", IFSC);                       
+                            cmdfr12.Parameters.AddWithValue("@IFSC", IFSC);
                             cmdfr12.Parameters.AddWithValue("@BankName", BankName);
                             cmdfr12.Parameters.AddWithValue("@AccHolder", AccHolderName);
                             cmdfr12.Parameters.AddWithValue("@UserId", UserId);
-                            
+
                             con.Open();
                             int rowsAffected = cmdfr12.ExecuteNonQuery();
                             con.Close();
@@ -229,8 +261,8 @@ namespace NeoXPayout
                                 return "Error updating details. Try again later.";
                             }
                         }
-                        else 
-                        { 
+                        else
+                        {
                             string sqlfr12 = "UPDATE Registration SET BankAccount = @BankAccount, IFSC = @IFSC, AccountHolderType = @AccountHolderType, AccHolder=@AccHolder, BankName=@BankName WHERE RegistrationId = @RegistrationId";
                             SqlCommand cmdfr12 = new SqlCommand(sqlfr12, con);
                             cmdfr12.Parameters.AddWithValue("@BankAccount", BankAcc);
@@ -239,19 +271,19 @@ namespace NeoXPayout
                             cmdfr12.Parameters.AddWithValue("@BankName", BankName);
                             cmdfr12.Parameters.AddWithValue("@AccHolder", AccHolderName);
                             cmdfr12.Parameters.AddWithValue("@RegistrationId", UserId);
-                           
+
                             con.Open();
                             int rowsAffected = cmdfr12.ExecuteNonQuery();
                             con.Close();
 
-                                if (rowsAffected > 0)
-                                {
-                                    return "SUCCESS";
-                                }
-                                else
-                                {
-                                     return "Error updating details. Try again later.";
-                                }
+                            if (rowsAffected > 0)
+                            {
+                                return "SUCCESS";
+                            }
+                            else
+                            {
+                                return "Error updating details. Try again later.";
+                            }
                         }
 
                     }
@@ -398,8 +430,8 @@ namespace NeoXPayout
         }
         protected void SaveImage_Click(object sender, EventArgs e)
         {
-            lblMessage.Text = ""; 
-            lblMessage.CssClass = "mt-2 d-block fw-bold"; 
+            lblMessage.Text = "";
+            lblMessage.CssClass = "mt-2 d-block fw-bold";
 
             if (profileUpload.HasFile)
             {
@@ -503,7 +535,7 @@ namespace NeoXPayout
                     cmdfr12.Parameters.AddWithValue("@BusinessStartOn", date);
                     cmdfr12.Parameters.AddWithValue("@CompanyAddress", address);
                     cmdfr12.Parameters.AddWithValue("@RegistrationId", UserId);
-                 
+
                     con.Open();
                     int rowsAffected = cmdfr12.ExecuteNonQuery();
                     con.Close();
@@ -548,7 +580,7 @@ namespace NeoXPayout
                 Um.LogApiCall(UserId, body, Apiresponse, "VerifyVoterProfile");
                 var json = JObject.Parse(Apiresponse);
                 string status = json["status"]?.ToString();
-                string VoterName= json["name"]?.ToString().ToUpper();
+                string VoterName = json["name"]?.ToString().ToUpper();
                 if (status == "VALID")
                 {
                     if (UserName == VoterName)
@@ -565,14 +597,14 @@ namespace NeoXPayout
                         ScriptManager.RegisterStartupScript(this, this.GetType(),
                         "showSuccessModal", "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();", true);
                     }
-                    else 
+                    else
                     {
                         lblVoterErr.Text = "Use your own valid Voter Id.";
                     }
                 }
                 else
                 {
-                    lblVoterErr.Text ="Use your valid Voter Id.";
+                    lblVoterErr.Text = "Use your valid Voter Id.";
                 }
             }
             catch
@@ -585,7 +617,7 @@ namespace NeoXPayout
         {
             if (!Page.IsValid) return;
 
-          
+
 
             string userId = Session["BankURTUID"].ToString();
             string detailType = ddlDetailType.SelectedValue;
@@ -623,7 +655,7 @@ namespace NeoXPayout
                 });
                 $('#UpdateModal').modal('hide');
             ", true);
-                }
+        }
 
         private void LoadPreviousRequests()
         {
@@ -657,6 +689,121 @@ namespace NeoXPayout
                 }
             }
         }
+        public void getkycdetails()
+        {
 
+            string UserId = this.Session["BankURTUID"].ToString();
+
+            if (string.IsNullOrEmpty(UserId))
+            {
+                // Optional: Show message or redirect
+                return;
+            }
+
+            string query = "SELECT aadharUpload, panUpload, photoUpload, gstUpload FROM Registration WHERE RegistrationId = @UserId";
+
+            SqlCommand mcom = new SqlCommand(query, con);
+            mcom.Parameters.AddWithValue("@UserId", UserId);
+            SqlDataAdapter mda = new SqlDataAdapter(mcom);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+               
+                string aadharimg = row["aadharUpload"]?.ToString() ?? "";
+                string panimg = row["panUpload"]?.ToString() ?? "";
+                string photoimg = row["photoUpload"]?.ToString() ?? "";
+                string gstimg = row["gstUpload"]?.ToString() ?? "";
+
+                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) && !string.IsNullOrEmpty(photoimg))
+                {
+                    aadhar.Text = "Uploaded";
+                    pan.Text = "Uploaded";
+                    img.Text = "Uploaded";
+
+                    if (!string.IsNullOrEmpty(gstimg))
+                        gst.Text = "Uploaded";
+                    else
+                        gst.Text = "Not Uploaded";
+                    pnlUpload.Visible = false;
+                    lblKycStatus.Text = "✅ KYC Completed";
+                    lblKycStatus.CssClass = "text-success fw-semibold";
+                }
+                else
+                {
+                    aadhar.Text = string.IsNullOrEmpty(aadharimg) ? "Not Uploaded" : "Uploaded";
+                    pan.Text = string.IsNullOrEmpty(panimg) ? "Not Uploaded" : "Uploaded";
+                    img.Text = string.IsNullOrEmpty(photoimg) ? "Not Uploaded" : "Uploaded";
+                    gst.Text = string.IsNullOrEmpty(gstimg) ? "Not Uploaded" : "Uploaded";
+
+                    lblKycStatus.Text = "❌ KYC Not Completed";
+                    lblKycStatus.CssClass = "text-danger fw-semibold";
+                }
+
+            }
+
+        }
+        protected void btnSubmitKyc_Click(object sender, EventArgs e)
+        {
+            if (!fuAadhaar.HasFile || !fuPan.HasFile || !fuPhoto.HasFile)
+            {
+                lblKycStatus.Text = "Please upload Aadhaar, PAN and Photo.";
+                lblKycStatus.CssClass = "text-danger fw-semibold";
+                return;
+            }
+
+            string userId = Session["BankURTUID"].ToString(); 
+            string folderPath = "~/KYC/";
+            string serverPath = Server.MapPath(folderPath);
+
+            if (!Directory.Exists(serverPath))
+                Directory.CreateDirectory(serverPath);
+
+            string aadhaarFile = "Aadhaar_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuAadhaar.FileName);
+            string panFile = "PAN_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuPan.FileName);
+            string photoFile = "Photo_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuPhoto.FileName);
+            string gstFile = null;
+            
+            fuAadhaar.SaveAs(serverPath + aadhaarFile);
+            fuPan.SaveAs(serverPath + panFile);
+            fuPhoto.SaveAs(serverPath + photoFile);
+
+            if (fuGst.HasFile)
+            {
+                gstFile = "GST_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuGst.FileName);
+                fuGst.SaveAs(serverPath + gstFile);
+            }
+
+           
+            string aadhaarUrl = folderPath + aadhaarFile;
+            string panUrl = folderPath + panFile;
+            string photoUrl = folderPath + photoFile;
+            string gstUrl = gstFile != null ? folderPath + gstFile : null;
+
+            // ---- DB Update ----
+            using (SqlConnection con = new SqlConnection(
+                ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, photoUpload = @Photo, gstUpload = @Gst WHERE RegistrationId = @UserId";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Aadhaar", aadhaarUrl);
+                    cmd.Parameters.AddWithValue("@Pan", panUrl);
+                    cmd.Parameters.AddWithValue("@Photo", photoUrl);
+                    cmd.Parameters.AddWithValue("@Gst", (object)gstUrl ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            getkycdetails();
+            // ---- Success ----
+            lblKycStatus.Text = "KYC Completed Successfully";
+            lblKycStatus.CssClass = "text-success fw-semibold";
+        }
     }
 }

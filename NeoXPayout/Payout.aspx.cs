@@ -15,11 +15,12 @@ namespace NeoXPayout
 {
     public partial class Payout : System.Web.UI.Page
     {
+
         string connStr = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
         UserManagement Um = new UserManagement();
         protected void Page_Load(object sender, EventArgs e)
         {
-   
+
             if (Session["BankURTName"] == null || !(Session["IsMPINVerified"] is bool isVerified && isVerified))
             {
                 Response.Redirect("LoginBankU.aspx");
@@ -28,11 +29,11 @@ namespace NeoXPayout
             {
                 pnlMain.Visible = false;
                 pnlError.Visible = true;
-               
+
                 return;
             }
 
-            if (!IsPostBack) 
+            if (!IsPostBack)
             {
                 string UserId = Session["BankURTUID"].ToString();
                 string BankURTName = Session["BankURTName"].ToString();
@@ -41,8 +42,9 @@ namespace NeoXPayout
                 hdnUserName.Value = BankURTName;
                 hdnUserMob.Value = MobNO;
                 getReport();
+                GetBanks();
                 DebitAcc.Text = Session["mobileno"].ToString();
-            }   
+            }
         }
 
         private bool IsRechargeServiceActive()
@@ -66,6 +68,104 @@ namespace NeoXPayout
                 }
             }
         }
+        protected void GetBanks()
+        {
+            string userId = Session["BankURTUID"]?.ToString();
+
+            ddlBankAcc.Items.Clear();
+            ddlBankAcc.Items.Add(new ListItem("Select Your Account", ""));
+
+            bool bankFound = false;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                con.Open();
+
+                /* 1️ From UserBanks table */
+                string queryUserBanks = @"SELECT AccountNo, IFSC, BankName 
+                                  FROM UserBanks 
+                                  WHERE UserId = @UserId";
+
+                using (SqlCommand cmd = new SqlCommand(queryUserBanks, con))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            bankFound = true;
+
+                            string accountNo = reader["AccountNo"].ToString();
+                            string ifsc = reader["IFSC"].ToString();
+                            string bankName = reader["BankName"].ToString();
+
+                            ddlBankAcc.Items.Add(
+                                new ListItem(
+                                    bankName + " - " + MaskAccount(accountNo),
+                                    accountNo + "|" + ifsc
+                                )
+                            );
+                        }
+                    }
+                }
+
+                /* 2️ From Registration table */
+                string queryReg = @"SELECT BankAccount, IFSC, BankName 
+                            FROM Registration 
+                            WHERE RegistrationId = @UserId 
+                              AND BankAccount IS NOT NULL 
+                              AND BankAccount <> ''";
+
+                using (SqlCommand cmd = new SqlCommand(queryReg, con))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            bankFound = true;
+
+                            string accountNo = reader["BankAccount"].ToString();
+                            string ifsc = reader["IFSC"].ToString();
+                            string bankName = reader["BankName"].ToString();
+
+                            ddlBankAcc.Items.Add(
+                                new ListItem(
+                                    bankName + " - " + MaskAccount(accountNo),
+                                    accountNo + "|" + ifsc
+                                )
+                            );
+                        }
+                    }
+                }
+            }
+
+            /*  No bank found anywhere*/
+            if (!bankFound)
+            {
+                ddlBankAcc.Items.Clear();
+                pnlAdd.Visible = true;
+                ddlBankAcc.Items.Add(new ListItem("Please add bank account", ""));
+                ddlBankAcc.Enabled = false;
+            }
+            else
+            {
+                ddlBankAcc.Enabled = true;
+            }
+        }
+        private string MaskAccount(string accountNo)
+        {
+            if (string.IsNullOrEmpty(accountNo))
+                return "";
+
+            if (accountNo.Length > 4)
+                return new string('X', accountNo.Length - 4) + accountNo.Substring(accountNo.Length - 4);
+
+            return accountNo;
+        }
+
 
         [System.Web.Services.WebMethod]
         public static string GetBalance()
@@ -74,6 +174,29 @@ namespace NeoXPayout
             UserManagement Um1 = new UserManagement();
             string balance = Um1.GetBalance(userid);
             return "₹ " + balance;
+        }
+
+        [System.Web.Services.WebMethod]
+        public static bool ValidateBank(string AccNo)
+        {
+            string userid = HttpContext.Current.Session["BankURTUID"].ToString();
+            if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(AccNo))
+                return false;
+            string connStr = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
+
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                string query = @"SELECT COUNT(1) FROM UserBanks WHERE UserId=@UserId AND AccountNo=@AccountNo";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userid);
+                    cmd.Parameters.AddWithValue("@AccountNo", AccNo);
+                    con.Open();
+
+                    return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                }
+            }
         }
 
         //protected void BankPayout_Click(object sender, EventArgs e)
@@ -139,7 +262,7 @@ namespace NeoXPayout
 
         //        using (SqlCommand cmd = new SqlCommand(query, conn))
         //        {
-                   
+
         //            cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
         //            cmd.Parameters.AddWithValue("@BeneficiaryName", beneName);
         //            cmd.Parameters.AddWithValue("@IFSC", ifsc);
@@ -229,10 +352,10 @@ namespace NeoXPayout
         {
             string userId = Session["BankURTUID"].ToString();
             decimal balance = 0;
-            decimal.TryParse(Um.GetBalance(userId), out balance); 
+            decimal.TryParse(Um.GetBalance(userId), out balance);
 
             //string payoutTo = txtUPIPayoutTo.Text.Trim(); 
-            string upiId = txtUPIID.Text.Trim(); 
+            string upiId = txtUPIID.Text.Trim();
             decimal amount;
             decimal.TryParse(txtUPIAmount.Text.Trim(), out amount);
             string remarks = txtUPIRemarks.Text.Trim();
@@ -256,10 +379,10 @@ namespace NeoXPayout
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    
-                    cmd.Parameters.AddWithValue("@AccountNumber", upiId); 
+
+                    cmd.Parameters.AddWithValue("@AccountNumber", upiId);
                     //cmd.Parameters.AddWithValue("@BeneficiaryName", payoutTo); 
-                    cmd.Parameters.AddWithValue("@IFSC", "NA"); 
+                    cmd.Parameters.AddWithValue("@IFSC", "NA");
                     cmd.Parameters.AddWithValue("@Amount", amount);
                     cmd.Parameters.AddWithValue("@Mode", "UPI");
                     cmd.Parameters.AddWithValue("@Type", "UPI");
@@ -271,7 +394,7 @@ namespace NeoXPayout
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
-            }        
+            }
             lblMessage.InnerText = "UPI payout request saved successfully!";
             Response.Redirect(Request.Url.AbsolutePath, false);
 
@@ -308,17 +431,10 @@ namespace NeoXPayout
             // 🔹 Get today's summary
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                string summaryQuery = @"
-                SELECT 
-                    COUNT(*) AS TxnCount, 
-                    ISNULL(SUM(Amount),0) AS TotalValue, 
-                    ISNULL(AVG(Amount),0) AS AvgValue
-                FROM TxnReport 
-                WHERE UserId = @UserId 
-                  AND CAST(TxnDate AS DATE) = CAST(GETDATE() AS DATE)  AND Status = 'SUCCESS'";
-
+                string summaryQuery = @"SELECT COUNT(*) AS TxnCount, ISNULL(SUM(Amount),0) AS TotalValue, ISNULL(AVG(Amount),0) AS AvgValue FROM TxnReport WHERE UserId = @UserId AND ServiceName=@ServiceName AND CAST(TxnDate AS DATE) = CAST(GETDATE() AS DATE)  AND Status = 'SUCCESS'";
                 SqlCommand summaryCmd = new SqlCommand(summaryQuery, con);
                 summaryCmd.Parameters.AddWithValue("@UserId", UserId);
+                summaryCmd.Parameters.AddWithValue("@ServiceName", "SINGLE_PAYOUT");
 
                 con.Open();
                 SqlDataReader reader = summaryCmd.ExecuteReader();
@@ -332,5 +448,5 @@ namespace NeoXPayout
             }
         }
 
-    }    
+    }
 }
