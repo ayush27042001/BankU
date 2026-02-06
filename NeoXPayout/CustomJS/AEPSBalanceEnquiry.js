@@ -407,14 +407,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // --- Initiate Button Validation ---
-    document.getElementById("btnInitiateTransaction").addEventListener("click", function () {
-        callAgentStatusV2(function (isSuccess) {
-            if (isSuccess) {
-                const targetEl = document.getElementById("TransactionSidebar");
-                bootstrap.Offcanvas.getOrCreateInstance(targetEl).show();
-            }
-        });
-    });
+    //document.getElementById("btnInitiateTransaction").addEventListener("click", function () {
+    //    callAgentStatusV2(function (isSuccess) {
+    //        if (isSuccess) {
+    //            const targetEl = document.getElementById("TransactionSidebar");
+    //            bootstrap.Offcanvas.getOrCreateInstance(targetEl).show();
+    //        }
+    //    });
+    //});
 });
 
 
@@ -487,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-
+    
     // --- Back Step Button ---
     document.getElementById("backStep").addEventListener("click", function () {
         document.getElementById("step2").classList.add("d-none");

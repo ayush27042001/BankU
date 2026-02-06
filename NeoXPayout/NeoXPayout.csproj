@@ -162,6 +162,7 @@
     <Content Include="Admin\ViewFeature.aspx" />
     <Content Include="Admin\ViewFeatureMap.aspx" />
     <Content Include="Admin\ViewInvoice.aspx" />
+    <Content Include="Admin\ViewKyc.aspx" />
     <Content Include="Admin\ViewMasterProvider.aspx" />
     <Content Include="Admin\ViewProduct.aspx" />
     <Content Include="Admin\ViewServiceProvider.aspx" />
@@ -255,13 +256,10 @@
     <Content Include="bcAuth.jpg" />
     <Content Include="BCAuthorization.jpg" />
     <Content Include="BillPayment.aspx" />
-
     <Content Include="bin\Microsoft.Win32.Primitives.dll" />
     <Content Include="bin\NeoXPayout.dll" />
     <Content Include="bin\NeoXPayout.pdb" />
     <Content Include="bin\netstandard.dll" />
-
-    
     <Content Include="bin\roslyn\csc.exe" />
     <Content Include="bin\roslyn\csi.exe" />
     <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
@@ -299,7 +297,6 @@
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
     <Content Include="bin\System.AppContext.dll" />
-
     <Content Include="bin\System.Collections.Concurrent.dll" />
     <Content Include="bin\System.Collections.dll" />
     <Content Include="bin\System.Collections.NonGeneric.dll" />
@@ -339,9 +336,7 @@
     <Content Include="bin\System.Linq.Expressions.dll" />
     <Content Include="bin\System.Linq.Parallel.dll" />
     <Content Include="bin\System.Linq.Queryable.dll" />
-
     <Content Include="bin\System.Net.Http.dll" />
-
     <Content Include="bin\System.Net.NameResolution.dll" />
     <Content Include="bin\System.Net.NetworkInformation.dll" />
     <Content Include="bin\System.Net.Ping.dll" />
@@ -352,7 +347,6 @@
     <Content Include="bin\System.Net.WebHeaderCollection.dll" />
     <Content Include="bin\System.Net.WebSockets.Client.dll" />
     <Content Include="bin\System.Net.WebSockets.dll" />
-
     <Content Include="bin\System.ObjectModel.dll" />
     <Content Include="bin\System.Reflection.dll" />
     <Content Include="bin\System.Reflection.Extensions.dll" />
@@ -360,7 +354,6 @@
     <Content Include="bin\System.Resources.Reader.dll" />
     <Content Include="bin\System.Resources.ResourceManager.dll" />
     <Content Include="bin\System.Resources.Writer.dll" />
-
     <Content Include="bin\System.Runtime.CompilerServices.VisualC.dll" />
     <Content Include="bin\System.Runtime.dll" />
     <Content Include="bin\System.Runtime.Extensions.dll" />
@@ -382,19 +375,15 @@
     <Content Include="bin\System.Security.SecureString.dll" />
     <Content Include="bin\System.Text.Encoding.dll" />
     <Content Include="bin\System.Text.Encoding.Extensions.dll" />
-
-
     <Content Include="bin\System.Text.RegularExpressions.dll" />
     <Content Include="bin\System.Threading.dll" />
     <Content Include="bin\System.Threading.Overlapped.dll" />
     <Content Include="bin\System.Threading.Tasks.dll" />
-
     <Content Include="bin\System.Threading.Tasks.Parallel.dll" />
     <Content Include="bin\System.Threading.Thread.dll" />
     <Content Include="bin\System.Threading.ThreadPool.dll" />
     <Content Include="bin\System.Threading.Timer.dll" />
     <Content Include="bin\System.ValueTuple.dll" />
-
     <Content Include="bin\System.Xml.ReaderWriter.dll" />
     <Content Include="bin\System.Xml.XDocument.dll" />
     <Content Include="bin\System.Xml.XmlDocument.dll" />
@@ -2482,6 +2471,13 @@
     </Compile>
     <Compile Include="Admin\ViewInvoice.aspx.designer.cs">
       <DependentUpon>ViewInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ViewKyc.aspx.cs">
+      <DependentUpon>ViewKyc.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewKyc.aspx.designer.cs">
+      <DependentUpon>ViewKyc.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ViewMasterProvider.aspx.cs">
       <DependentUpon>ViewMasterProvider.aspx</DependentUpon>

@@ -40,7 +40,7 @@
                             <th>Status</th>
                             <th>Account Type</th>
                             <th>MPIN</th>
-                            <%--<th>Action</th>--%>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,7 +63,7 @@
  
                                     <td><%# Eval("AccountType") %></td>
                                     <td><%# Eval("MPIN") %></td>
-                                    <%--<td><a href="EditUser.aspx?id=<%# Eval("RegistrationId") %>" class="btn btn-danger">Edit</a></td>--%>                           
+                                    <td><a href="ViewKyc.aspx?id=<%# Eval("RegistrationId") %>" class="btn btn-danger">View Kyc</a></td>                           
                                 </tr>
                         </ItemTemplate>
                         </asp:Repeater>                                         
