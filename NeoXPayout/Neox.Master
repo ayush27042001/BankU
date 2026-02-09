@@ -308,7 +308,7 @@
                                 </li>
 
                                 <!-- Current Account Opening -->
-                                <li>
+                              <%--  <li>
                                     <a href="CurrentAccOpen.aspx">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -317,7 +317,7 @@
                                         </svg>
                                         <span class="ms-2">Current Account Opening</span>
                                     </a>
-                                </li>
+                                </li>--%>
 
                                 <!-- PAN Cards -->
                                 <li>
@@ -347,7 +347,7 @@
                                 </li>
 
                                 <!-- Ayushman Cards -->
-                                <li>
+                               <%-- <li>
                                     <a href="AyushmanCard.aspx">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -357,7 +357,7 @@
                                         </svg>
                                         <span class="ms-2">Ayushman Cards</span>
                                     </a>
-                                </li>
+                                </li>--%>
 
                                 <!-- Train Ticket -->
                                <%-- <li>
@@ -419,7 +419,7 @@
                                 </li>
 
                                 <!-- Bulk Payout -->
-                                <li>
+                               <%-- <li>
                                     <a href="BulkPayoutActivation.aspx" aria-label="Bulk Payout" data-bs-toggle="tooltip"
                                         data-bs-title="Bulk Payout" data-bs-placement="right">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -432,10 +432,10 @@
                                         </svg>
                                         <span class="ms-2">Bulk Payout</span>
                                     </a>
-                                </li>
+                                </li>--%>
 
                                 <!-- Scheduled Payout -->
-                                <li>
+                               <%-- <li>
                                     <a href="SchedulePayout.aspx" aria-label="Scheduled Payout" data-bs-toggle="tooltip"
                                         data-bs-title="Scheduled Payout" data-bs-placement="right">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -449,7 +449,7 @@
                                         </svg>
                                         <span class="ms-2">Scheduled Payout</span>
                                     </a>
-                                </li>
+                                </li>--%>
 
                             </ul>
                         </li>
@@ -869,7 +869,7 @@
                                         <span class="ms-2">Business Wallet</span>
                                     </a>
                                 </li>
-                                <li>
+                             <%--   <li>
                                     <a href="OrderReport.aspx" aria-label="Orders" data-bs-toggle="tooltip"
                                         data-bs-title="Orders" data-bs-placement="right">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -883,7 +883,7 @@
                                         </svg>
                                         <span class="ms-2">Collect Orders</span>
                                     </a>
-                                </li>
+                                </li>--%>
                                <%-- <li>
                                     <a href="BankAccountReport.aspx" aria-label="Bank" data-bs-toggle="tooltip"
                                         data-bs-title="Bank" data-bs-placement="right">
@@ -1184,11 +1184,11 @@
                                             <i class="bi bi-person me-2"></i>My Profile
                                         </a>
                                     </li>
-                                    <li class="mb-1">
+                                 <%--   <li class="mb-1">
                                         <a class="dropdown-item rounded-pill" href="Profile.aspx">
                                             <i class="bi bi-gear me-2"></i>Settings
                                         </a>
-                                    </li>
+                                    </li>--%>
                                     <li class="mb-1">
                                         <a class="dropdown-item rounded-pill" href="Notification.aspx">
                                             <i class="bi bi-bell me-2"></i>Notifications
@@ -1275,7 +1275,7 @@
                         </div>
 
                         <div style="position: absolute; bottom: 16px; left: 0; right: 0; text-align: center;">
-                            <a href="mailto:help@banku.co.in" target="_blank" style="color: purple">Contact Helpdesk</a>
+                            <a href="mailto:help@banku.co.in"  style="color: purple">Contact Helpdesk</a>
                         </div>
                     </div>
                 </div>
@@ -1364,7 +1364,7 @@
 
                             <!-- Fixed footer -->
                             <div style="width: 100%; position: absolute; padding: 12px; text-align: center; border-top: 1px solid #eee; background: white; position: sticky; bottom: 0; left: 0;">
-                                <a href="mail:help@banku.co.in" style="color: purple; text-decoration: none;" target="_blank">Contact Helpdesk</a>
+                                <a href="mailto:help@banku.co.in" style="color: purple; text-decoration: none;" >Contact Helpdesk</a>
                             </div>
 
                         </div>

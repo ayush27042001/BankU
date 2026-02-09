@@ -123,7 +123,7 @@ namespace NeoXPayout
                 }
                 else
                 {
-                    lblmsg.Text = "OTP Not Send "+ message;
+                    lblmsg.Text = "Error "+ message;
                     ScriptManager.RegisterStartupScript(
                 this,
                 this.GetType(),

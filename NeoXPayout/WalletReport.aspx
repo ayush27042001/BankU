@@ -1,5 +1,32 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="WalletReport.aspx.cs" Inherits="NeoXPayout.WalletReport" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+    .modern-thead {
+    background: #F5F6FA;
+    color: #6B7280;
+}
+
+.modern-table tbody tr {
+    border-bottom: 1px solid #EEF0F5;
+    transition: all 0.2s ease;
+}
+
+
+.row-selectable {
+    cursor: pointer;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+}
+
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+ </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <hr />
@@ -43,42 +70,62 @@
 
                                         </div>
                                    </div>
-                                   <table id="payoutTable"
-                                        class="table align-middle table-hover  table-body table-responsive w-100">
-                                        <thead style="background-color:#F5F6FA">
-                                             <tr class="small text-muted text-uppercase">
-                                                 
-                            <th>Sr No.</th>
-                            <th>Type</th>
-                            <th>Transaction Type</th>
-                            <th>Old Balance</th>
-                            <th>Amount</th>
-                            <th>New Balance</th>
-                            <th>Txn Date</th>
-                            
-                          
-                            <th>Remarks</th>
-                           
-                                             </tr>
-                                        </thead>
-                                        <tbody>
-                     <asp:Repeater runat="server" ID="rptProduct">
-                      <ItemTemplate>
-                          <tr class="row-selectable">
-                            <td><%# Container.ItemIndex + 1 %></td>
-                            <td><%# Eval("CrDrType") %></td>
-                            <td><%# Eval("TxnType") %></td>
-                            <td>₹<%#string.Format("{0:n2}",Eval("Old_Bal")) %></td>
-                            <td>₹<%#string.Format("{0:n2}",Eval("Amount")) %></td>
-                            <td>₹<%#string.Format("{0:n2}",Eval("New_Bal")) %></td>    
-                            <td data-order='<%# Eval("TxnDatetime","{0:yyyyMMdd}") %>'><%# Eval("TxnDatetime") %></td>                                              
-                            <td><%# Eval("Remarks") %></td>                      
-                          </tr>
-                         </ItemTemplate>
-                        </asp:Repeater>
-                                            
-                                        </tbody>
-                                   </table>
+                                   <div class="table-responsive rounded-4 shadow-sm bg-white">
+    <table id="payoutTable"
+           class="table table-borderless align-middle mb-0 modern-table w-100">
+
+        <thead class="modern-thead">
+            <tr class="small text-uppercase fw-semibold">
+                <th>#</th>
+                <th>Type</th>
+                <th>Txn Type</th>
+                <th>Old Bal</th>
+                <th>Amount</th>
+                <th>New Bal</th>
+                <th>Date</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <asp:Repeater runat="server" ID="rptProduct">
+                <ItemTemplate>
+                    <tr class="row-selectable">
+                        <td class="text-muted"><%# Container.ItemIndex + 1 %></td>
+
+                        <td>
+                            <span class="badge rounded-pill 
+                                <%# Eval("CrDrType").ToString() == "Credit" ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger" %>">
+                                <%# Eval("CrDrType") %>
+                            </span>
+                        </td>
+
+                        <td class="fw-medium"><%# Eval("TxnType") %></td>
+
+                        <td class="text-muted">₹<%# string.Format("{0:n2}", Eval("Old_Bal")) %></td>
+
+                        <td class="fw-semibold text-primary">
+                            ₹<%# string.Format("{0:n2}", Eval("Amount")) %>
+                        </td>
+
+                        <td class="fw-semibold">
+                            ₹<%# string.Format("{0:n2}", Eval("New_Bal")) %>
+                        </td>
+
+                        <td data-order='<%# Eval("TxnDatetime","{0:yyyyMMdd}") %>'>
+                            <%# Eval("TxnDatetime","{0:dd MMM yyyy}") %>
+                        </td>
+
+                        <td class="text-muted text-truncate" style="max-width:180px;">
+                            <%# Eval("Remarks") %>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+            </asp:Repeater>
+        </tbody>
+    </table>
+</div>
+
                                   <nav class="mt-3">
                     <ul class="pagination justify-content-end" id="payoutPagination"></ul>
                 </nav>

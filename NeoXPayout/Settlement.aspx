@@ -1,5 +1,35 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="Settlement.aspx.cs" Inherits="NeoXPayout.Settlement" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .modern-thead {
+    background: #F5F6FA;
+    color: #6B7280;
+}
+
+.modern-table tbody tr {
+    border-bottom: 1px solid #EEF0F5;
+    transition: all 0.2s ease;
+}
+
+.modern-table tbody tr:hover {
+    background: #F9FAFB;
+   
+}
+
+.row-selectable {
+    cursor: pointer;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+}
+
+.font-monospace {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
   <hr />
@@ -41,42 +71,73 @@
                                             <asp:Label runat="server" CssClass="text-danger" ID="Label1"></asp:Label>
                                         </div>
                                    </div>
-                                   <table id="payoutTable"
-                                        class="table align-middle table-hover  table-body table-responsive w-100">
-                                        <thead style="background-color:#F5F6FA">
-                                          <tr class="small text-muted text-uppercase">                                                 
-                                            <th>ID</th>                                       
-                                            <th>Service</th>
-                                            <th>Operator Name</th>
-                                            <th>Amount</th>
-                                                                                   
-                                            <th>Account No</th>
-                                               <th>Transaction Id</th>
-                                               <th>Ref Id</th>
-                                            <th>Status</th>
-                                              <th>Txn Date</th>  
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                         <asp:Repeater runat="server" ID="rptProduct">
-                                          <ItemTemplate>
-                                              <tr class="row-selectable">
-                                               <td><%# Container.ItemIndex + 1 %></td>                                              
-                                                <td><%# Eval("ServiceName") %></td>
-                                                <td><%# Eval("OperatorName") %></td>
-                                                <td>₹<%#string.Format("{0:n2}",Eval("Amount")) %></td>                                                                        
-                                                <td><%# Eval("AccountNo") %></td> 
-                                                <td><%# Eval("TransactionID") %></td>
-                                                    <td><%# Eval("BRID") %></td>
-                                                <td><span style='color: <%# Eval("Status").ToString() == "FAILED" ? "red" :
-                                               Eval("Status").ToString() == "SUCCESS" ? "green" : "orange" %>;  font-weight:600;'><%# Eval("Status") %></span>
-                                              </td> 
-                                                    <td data-order='<%# Eval("TxnDate","{0:yyyyMMdd}") %>'><%# Eval("TxnDate") %></td>
-                                              </tr>
-                                             </ItemTemplate>
-                                            </asp:Repeater>                                           
-                                        </tbody>
-                                   </table>
+                                  <div class="table-responsive rounded-4 shadow-sm bg-white">
+    <table id="payoutTable"
+           class="table table-borderless align-middle mb-0 modern-table w-100">
+
+        <thead class="modern-thead">
+            <tr class="small text-uppercase fw-semibold">
+                <th>#</th>
+                <th>Service</th>
+                <th>Operator</th>
+                <th>Amount</th>
+                <th>Account No</th>
+                <th>Txn ID</th>
+                <th>Ref ID</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <asp:Repeater runat="server" ID="rptProduct">
+                <ItemTemplate>
+                    <tr class="row-selectable">
+                        <td class="text-muted"><%# Container.ItemIndex + 1 %></td>
+
+                        <td class="fw-medium">
+                            <%# Eval("ServiceName") %>
+                        </td>
+
+                        <td class="text-muted">
+                            <%# Eval("OperatorName") %>
+                        </td>
+
+                        <td class="fw-semibold text-primary">
+                            ₹<%# string.Format("{0:n2}", Eval("Amount")) %>
+                        </td>
+
+                        <td class="font-monospace">
+                            <%# Eval("AccountNo") %>
+                        </td>
+
+                        <td class="font-monospace text-muted">
+                            <%# Eval("TransactionID") %>
+                        </td>
+
+                        <td class="font-monospace text-muted">
+                            <%# Eval("BRID") %>
+                        </td>
+
+                        <td>
+                            <span class="badge rounded-pill
+                                <%# Eval("Status").ToString() == "SUCCESS" ? "bg-success-subtle text-success" :
+                                    Eval("Status").ToString() == "FAILED" ? "bg-danger-subtle text-danger" :
+                                    "bg-warning-subtle text-warning" %>">
+                                <%# Eval("Status") %>
+                            </span>
+                        </td>
+
+                        <td data-order='<%# Eval("TxnDate","{0:yyyyMMdd}") %>'>
+                            <%# Eval("TxnDate","{0:dd MMM yyyy}") %>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+            </asp:Repeater>
+        </tbody>
+    </table>
+</div>
+
                                    <nav class="mt-3">
                     <ul class="pagination justify-content-end" id="payoutPagination"></ul>
                 </nav>

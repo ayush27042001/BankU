@@ -89,7 +89,8 @@
             <li><a href="AddUser.aspx" class="d-block py-1">➤ Add User</a></li>
             <li><a href="ViewUser.aspx" class="d-block py-1">➤ View User</a></li>
             <li><a href="UserLog.aspx" class="d-block py-1">➤ View User Log</a></li>
-              <li><a href="RegisteredUser.aspx" class="d-block py-1">➤ Registered Users</a></li>
+            <li><a href="rmManagement.aspx" class="d-block py-1">➤ Rm Management</a></li>
+            <li><a href="RegisteredUser.aspx" class="d-block py-1">➤ Registered Users</a></li>
             <li><a href="userSessionLog.aspx" class="d-block py-1">➤ Active User Session</a></li>
             <li><a href="ProfileRequest.aspx" class="d-block py-1">➤ Profile request</a></li>
         </ul>
