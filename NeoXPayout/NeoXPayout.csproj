@@ -148,6 +148,7 @@
     <Content Include="Admin\PayoutReport.aspx" />
     <Content Include="Admin\ProfileRequest.aspx" />
     <Content Include="Admin\RegisteredUser.aspx" />
+    <Content Include="Admin\rmManagement.aspx" />
     <Content Include="Admin\ServiceProvider.aspx" />
     <Content Include="Admin\SettlementReport.aspx" />
     <Content Include="Admin\SystemUpdate.aspx" />
@@ -2366,6 +2367,13 @@
     </Compile>
     <Compile Include="Admin\RegisteredUser.aspx.designer.cs">
       <DependentUpon>RegisteredUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\rmManagement.aspx.cs">
+      <DependentUpon>rmManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\rmManagement.aspx.designer.cs">
+      <DependentUpon>rmManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ServiceProvider.aspx.cs">
       <DependentUpon>ServiceProvider.aspx</DependentUpon>

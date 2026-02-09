@@ -303,12 +303,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="#" style="color: #6e007c;">Single Payouts</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="BulkPayoutActivation.aspx" style="color: #6e007c;">Bulk Payouts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="SchedulePayout.aspx" style="color: #6e007c;">Scheduled Payouts</a>
-                        </li>
+                      
                     </ul>
                 </div>
             </div>

@@ -1,376 +1,260 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Neox.Master" AutoEventWireup="true" CodeBehind="PanCard.aspx.cs" Inherits="NeoXPayout.PanCard" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    :root {
-      --purple: #6e007c;
-      --bg: #f9fafb;
-      --text-dark: #1f2937;
-      --text-light: #6b7280;
-      --card-bg: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
-
-    /* Header */
-    .bnk-main-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 20px 0;
-      padding: 20px;
-      background-color: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .bnk-left-header {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .bnk-left-header h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-
-    .bnk-dropdown select {
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      font-size: 14px;
-      background-color: white;
-      cursor: pointer;
-    }
-
-    .bnk-right-header {
-      display: flex;
-      gap: 10px;
-    }
-
-    .bnk-outline-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      background-color: white;
-      color: var(--text-dark);
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .bnk-outline-btn:hover {
-      background-color: #f3f4f6;
-    }
-
-    .bnk-primary-btn {
-      padding: 10px 16px;
-      background-color: var(--purple);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .bnk-primary-btn:hover {
-      background-color: #6e007c;
-    }
-
-    /* Card Grid */
-    .bnk-card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 4px;
-    }
-
-    .bnk-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .bnk-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    }
-
-    .bnk-card-icon {
-      background-color: #ede9fe;
-      color: var(--purple);
-      border-radius: 10px;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .bnk-card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-
-    .bnk-card-desc {
-      font-size: 0.9rem;
-      color: var(--text-light);
-    }
-
-    .bnk-activate-btn {
-      align-self: flex-end;
-      background-color: var(--purple);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .bnk-activate-btn:hover {
-      background-color: #6e007c;
-    }
   
-    .bnk-sidebar {
-      position: fixed;
-      top: 120px;
-      right: -420px;
-      width: 360px;
-      height: calc(100% - 80px);
-      background-color: #ffffff;
-      box-shadow: -2px 0 16px rgba(0, 0, 0, 0.1);
-      transition: right 0.3s ease-in-out;
-      padding: 24px;
-      z-index: 999;
-      overflow-y: auto;
-      border-radius: 16px 0 0 16px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    .bnk-sidebar.active {
-      right: 0; 
-    }
-   
-    .bnk-sidebar h3 {
-      margin-bottom: 10px;
-      color: var(--purple);
-      font-size: 1.2rem;
-    }
-
-    .bnk-close-btn {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      color: var(--text-dark);
-    }
-
-    .bnk-alert-box {
-      background-color: #eef2ff;
-      border-left: 4px solid var(--purple);
-      padding: 10px 12px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: #333;
-    }
-
-    label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: block;
-      font-size: 14px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-
-    .bnk-sidebar-footer {
-      margin-top: 20px;
-    }
-
-    .bnk-sidebar-footer button {
-      width: 100%;
-      padding: 12px;
-      background-color: var(--purple);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .bnk-sidebar-footer a {
-      color: var(--purple);
-      text-decoration: underline;
-      display: block;
-      margin-top: 12px;
-      text-align: center;
-      font-size: 14px;
-    }
-    .request-btn {
-    background-color: orange;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
+<style>
+:root{
+  --purple:#6e007c;
+  --bg:#f3f4f6;
+  --card:#ffffff;
+  --muted:#6b7280;
 }
 
-.request-btn:disabled {
-    opacity: 0.8;
-    cursor: not-allowed;
-}
-     .spinner {
-  display: inline-block;
-  animation: spin-stop 3s ease-in-out infinite;
+body{
+  font-family:'Inter',sans-serif;
+/*  background:
+    radial-gradient(circle at top left, #e9d5ff, transparent 40%),
+    radial-gradient(circle at bottom right, #fbcfe8, transparent 40%),
+    var(--bg);*/
 }
 
-@keyframes spin-stop {
-  0%   { transform: rotate(0deg); }
-  45%  { transform: rotate(180deg); }
-  55%  { transform: rotate(180deg); } /* pause */
-  100% { transform: rotate(360deg); }
+/* Main rounded body */
+.pan-wrapper{
+  max-width:1100px;
+  margin:40px auto;
+  padding:32px 28px;
+  border-radius:28px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 25px 55px rgba(0,0,0,0.15);
+  justify-content:flex-start;
 }
-  </style>
+
+/* Title */
+.pan-title{
+  text-align:start;
+  margin-bottom:30px;
+}
+
+.pan-title h1{
+  font-weight:700;
+  background:linear-gradient(90deg,#6f42c1,#9b59b6);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* Cards grid – 2 column */
+.bnk-card-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:24px;
+}
+
+@media(max-width:768px){
+  .bnk-card-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Card */
+.bnk-card{
+  background:rgba(255,255,255,0.9);
+  border-radius:20px;
+  padding:28px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.4);
+  box-shadow:
+    0 12px 25px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  transition:all .35s ease;
+}
+
+.bnk-card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 22px 45px rgba(110,0,124,0.22);
+  border-color:rgba(110,0,124,0.35);
+}
+
+/* Icon */
+.bnk-card-icon{
+  width:54px;
+  height:54px;
+  border-radius:14px;
+  background:#ede9fe;
+  color:var(--purple);
+  font-size:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:14px;
+}
+
+/* Text */
+.bnk-card-title{
+  font-size:1.25rem;
+  font-weight:600;
+}
+
+.bnk-card-desc{
+  color:var(--muted);
+  font-size:0.95rem;
+  margin-bottom:10px;
+}
+
+/* Sidebar */
+.bnk-sidebar{
+  position:fixed;
+  top:100px;
+  right:-420px;
+  width:360px;
+  height:calc(100% - 100px);
+  background:#fff;
+  box-shadow:-6px 0 35px rgba(0,0,0,.18);
+  transition:.35s;
+  padding:24px;
+  z-index:999;
+  border-radius:22px 0 0 22px;
+}
+
+.bnk-sidebar.active{
+  right:0;
+}
+
+.bnk-close-btn{
+  position:absolute;
+  right:18px;
+  top:14px;
+  background:none;
+  border:none;
+  font-size:22px;
+}
+
+.bnk-alert-box{
+  background:#eef2ff;
+  border-left:4px solid var(--purple);
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:16px;
+  font-size:14px;
+}
+
+.bnk-primary-btn{
+  width:100%;
+  background:var(--purple);
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  font-weight:600;
+}
+</style>
+
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:HiddenField ID="hfPanServiceCode" runat="server" />
 
-<div class="bnk-main-header">
-    <div class="bnk-left-header">
-        <h2>PAN Card Services</h2>
-    </div>
+<div class="pan-wrapper">
 
-    <div class="bnk-right-header">
-        <button class="bnk-outline-btn" type="button"
-                onclick="openSidebar('PAN Creation', '5024')">
-            🆕 PAN Creation
-        </button>
+  <div class="pan-title">
+    <h1>PAN Card</h1>
+  </div>
 
-        <button class="bnk-outline-btn" type="button"
-                onclick="openSidebar('PAN Correction', '5025')">
-            ✏️ PAN Correction
-        </button>
-    </div>
-</div>
-<div class="bnk-sidebar" id="sidebar1">
-    <button class="bnk-close-btn" type="button" onclick="closeSidebar()">&times;</button>
+  <div class="bnk-card-grid">
 
-    <h3 id="bnk-sidebar-title"></h3>
-    <p style="color:#555; font-size:14px">
-        Fill the details to proceed with PAN application.
-    </p>
-
-    <div class="bnk-alert-box">
-        <strong>⚠️ Charges</strong><br />
-        ₹ 5,000 + 18% GST <br />
-        <small>Non-refundable</small>
-    </div>
-
-    <!-- Name -->
-    <label>Applicant Name</label>
-    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" />
-    <asp:RequiredFieldValidator runat="server"
-        ControlToValidate="txtName"
-        ErrorMessage="Name required"
-        CssClass="text-danger"
-        ValidationGroup="PAN" />
-
-    <!-- Mobile -->
-    <label>Mobile Number</label>
-    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" MaxLength="10" />
-    <asp:RequiredFieldValidator runat="server"
-        ControlToValidate="txtMobile"
-        ErrorMessage="Mobile number required"
-        CssClass="text-danger"
-        ValidationGroup="PAN" />
-
-    <!-- Mode -->
-    <label>PAN Mode</label>
-    <asp:DropDownList ID="ddlMode" runat="server" CssClass="form-select">
-        <asp:ListItem Text="-- Select Mode --" Value="" />
-        <asp:ListItem Text="EKYC (Without Signature)" Value="EKYC" />
-        <asp:ListItem Text="ESIGN (With Signature & Photo)" Value="ESIGN" />
-    </asp:DropDownList>
-    <asp:RequiredFieldValidator runat="server"
-        ControlToValidate="ddlMode"
-        InitialValue=""
-        ErrorMessage="Select PAN mode"
-        CssClass="text-danger"
-        ValidationGroup="PAN" />
-
-    <!-- Submit -->
-    <div class="bnk-sidebar-footer">
-        <asp:LinkButton ID="lnkSubmitPan"
-            runat="server"
-            CssClass="bnk-primary-btn w-100 text-center"
-            ValidationGroup="PAN"
-            OnClick="lnkSubmitPan_Click">
-            Submit PAN Request
-        </asp:LinkButton>
-    </div>
-</div>
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
-         data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg rounded-3 text-center">
-      
-          <!-- Modal Header -->
-          <div class="modal-header  text-white border-0" style="background-color:purple">
-            <h5 class="modal-title w-100" id="successModalLabel">Request Added Successful</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-      
-          <!-- Modal Body -->
-          <div class="modal-body">
-            <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" 
-                 alt="Success" class="mb-3" width="80" height="80" />
-            <h6 class="fw-semibold">Your request has been added successfully!</h6>
-            <button type="button" class="btn w-100" data-bs-dismiss="modal" style="background-color:purple; color:white">OK</button>
-          </div>
-      
-        </div>
+    <!-- PAN CREATION -->
+    <div class="bnk-card" onclick="openSidebar('PAN Card Creation')">
+      <div class="bnk-card-icon">🆕</div>
+      <div class="bnk-card-title">PAN Card Creation</div>
+      <div class="bnk-card-desc">
+        Apply for a new PAN card using eKYC or eSign process.
       </div>
+      <ul class="text-muted small">
+        <li>Instant Application</li>
+        <li>eKYC / eSign</li>
+        <li>Fast Processing</li>
+      </ul>
     </div>
-       	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- PAN CORRECTION -->
+    <div class="bnk-card" onclick="openSidebar('PAN Card Correction')">
+      <div class="bnk-card-icon">✏️</div>
+      <div class="bnk-card-title">PAN Card Correction</div>
+      <div class="bnk-card-desc">
+        Correct or update details in existing PAN card.
+      </div>
+      <ul class="text-muted small">
+        <li>Name / DOB Correction</li>
+        <li>Address Update</li>
+        <li>eSign Supported</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="bnk-sidebar" id="sidebar1">
+
+  <button type="button" class="bnk-close-btn" onclick="closeSidebar()">&times;</button>
+
+  <h5 id="bnk-sidebar-title" class="mb-3"></h5>
+
+  <div class="bnk-alert-box">
+  <b>Charges:</b><br />
+  <span id="panCharge">107</span> rs<br />
+  <small>Non-refundable</small>
+</div>
+
+
+  <label>Applicant Name</label>
+  <asp:TextBox ID="txtApplicantName" runat="server"
+    CssClass="form-control mb-2" Placeholder="Enter Applicant Name" />
+    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtApplicantName"
+    ErrorMessage="Applicant Name is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="pancard"/>
+
+  <label>Mobile Number</label>
+  <asp:TextBox ID="txtMobile" runat="server"
+    CssClass="form-control mb-2" Placeholder="Enter Mobile Number"
+    MaxLength="10" />
+    <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtMobile"
+    ErrorMessage="Mobile Number is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="pancard"/>
+
+  <label>PAN Mode</label>
+  <asp:DropDownList ID="ddlPanMode" runat="server" CssClass="form-control">
+    <asp:ListItem Text="-- Select Mode --" Value="" />
+    <asp:ListItem Text="eKYC" Value="EKYC" />
+    <asp:ListItem Text="eSign" Value="ESIGN" />
+  </asp:DropDownList>
+      <asp:RequiredFieldValidator ID="rfvmode" runat="server" ControlToValidate="ddlPanMode"
+    ErrorMessage="Mode is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="pancard"/>
+
+  <asp:Button ID="btnSubmit" runat="server"
+    Text="Submit Request" ValidationGroup="pancard"
+    CssClass="bnk-primary-btn mt-3"
+    OnClick="btnSaveActivation_Click"
+ />
+</div>
+
 <script>
-    function openSidebar(title, serviceCode) {
+    function openSidebar(title) {
+
         document.getElementById("bnk-sidebar-title").innerText = title;
-        document.getElementById("<%= hfPanServiceCode.ClientID %>").value = serviceCode;
+
+        // 🔹 price logic
+        var price = 107; // default
+
+        if (title === "PAN Card Creation") {
+            price = 105;
+        }
+        else if (title === "PAN Card Correction") {
+            price = 107;
+        }
+
+        document.getElementById("panCharge").innerText = price;
+
         document.getElementById("sidebar1").classList.add("active");
     }
 
@@ -378,5 +262,6 @@
         document.getElementById("sidebar1").classList.remove("active");
     }
 </script>
+
 
 </asp:Content>
