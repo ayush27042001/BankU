@@ -7,65 +7,92 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NeoXPayout
+namespace NeoXPayout.Admin
 {
 
 
-    public partial class Dashboard
+    public partial class ViewKyc
     {
 
         /// <summary>
-        /// Label3 control.
+        /// UserName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UserName;
 
         /// <summary>
-        /// Label10 control.
+        /// imgAadhar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label10;
+        protected global::System.Web.UI.WebControls.Image imgAadhar;
 
         /// <summary>
-        /// pnlBsk control.
+        /// lblAadharStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder pnlBsk;
+        protected global::System.Web.UI.WebControls.Label lblAadharStatus;
 
         /// <summary>
-        /// pnlElse control.
+        /// imgPan control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder pnlElse;
+        protected global::System.Web.UI.WebControls.Image imgPan;
 
         /// <summary>
-        /// lblMoneyIn control.
+        /// lblPanStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMoneyIn;
+        protected global::System.Web.UI.WebControls.Label lblPanStatus;
 
         /// <summary>
-        /// lblMoneyOut control.
+        /// imgPhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMoneyOut;
+        protected global::System.Web.UI.WebControls.Image imgPhoto;
+
+        /// <summary>
+        /// lblPhotoStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPhotoStatus;
+
+        /// <summary>
+        /// imgGst control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgGst;
+
+        /// <summary>
+        /// lblGstStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGstStatus;
     }
 }

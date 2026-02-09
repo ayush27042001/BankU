@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
+ <style>
         .nav-tabs .nav-link.active {
             border-color: transparent transparent #0d6efd;
             border-width: 0 0 3px;
@@ -286,10 +286,10 @@
             justify-content: center;
         }
     </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
-    <hr />
+  <hr />
     <div class="loader-overlay">
         <div class="spinner-border text-purple" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -376,8 +376,7 @@
                         <tr>
                             <th>#</th>
                             <th>Status</th>
-                            <th>Order ID</th>
-                            <th>From</th>
+                            <th>Order ID</th>                        
                             <th>Beneficiary Name</th>
                             <th>Beneficiary Account</th>
                             <th>IFSC</th>
@@ -397,10 +396,9 @@
                                     <td class="toggle-btn" style="cursor: pointer;">+</td>
                                     <td class="status-cell"><span class="status-success"><%# Eval("Status") %></span></td>
                                     <td class="orderid"><%# Eval("TransID") %></td>
-                                    <td>🏦</td>
                                     <td class="beneficiary"><%# Eval("BeneName") %></td>
                                     <td><%# Eval("AccountNo") %></td>
-                                    <td> IFSC: <%# Eval("IfscCode") %></td>
+                                    <td><%# Eval("IfscCode") %></td>
                                     <td class="amount"><%# Eval("OldBal") %></td>
                                     <td class="amount"><%# Eval("Amount") %></td>
                                     <td class="amount"><%# Eval("Surcharge") %></td>
@@ -431,9 +429,9 @@
                 <!-- Select Debit Account -->
                 <div class="mb-3">
                     <asp:TextBox ID="DebitAcc" runat="server" CssClass="form-control" Placeholder="Select Debit Account" ReadOnly="true"></asp:TextBox>
-
+                 
                     <div class="d-inline-flex align-items-center mt-2">
-                        <button type="button" id="btnCheckBalance" class="btn btn-link small" style="color: #6e007c">
+                        <button type="button" id="btnCheckBalance" class="btn btn-link small" style="color: #6e007c; text-decoration:none">
                             Check Balance
                         </button>
                         <span id="lblBalance" class="ms-2 text-success"></span>
@@ -453,18 +451,48 @@
                 <!-- Bank Form -->
                 <div class="method-content" id="bank">
 
+                  <div class="mb-3 d-flex align-items-start gap-2">
+
+                    <!-- Dropdown -->
+                    <div class="flex-grow-1">
+                        <asp:DropDownList 
+                            runat="server" 
+                            CssClass="form-control" 
+                            ID="ddlBankAcc" 
+                            onchange="fillBankDetails(this)">
+                        </asp:DropDownList>
+
+                        <asp:RequiredFieldValidator 
+                            ID="rfddl" 
+                            runat="server" 
+                            ControlToValidate="ddlBankAcc"
+                            ErrorMessage="Select Account" 
+                            CssClass="text-danger" 
+                            Display="Dynamic" 
+                            ValidationGroup="BankPayoutGroup" />
+                    </div>
+
+                    <!-- Add Button (Right Side) -->
+                    <asp:Panel ID="pnlAdd" runat="server" Visible="false">
+                        <a href="Profile.aspx"
+                           class="btn btn-success "
+                           style="background-color:#6e007c; padding: 10px; color:#fff;">
+                            Add
+                        </a>
+                    </asp:Panel>
+
+                </div>
+
 
                     <div class="mb-3">
-                        <asp:TextBox ID="txtAccount" runat="server" CssClass="form-control" placeholder="Account Number"></asp:TextBox>
+                        <asp:TextBox ID="txtAccount" runat="server" CssClass="form-control" placeholder="Account Number" ReadOnly="true"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvAccount" runat="server" ControlToValidate="txtAccount"
                             ErrorMessage="Account Number is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
                     </div>
 
-
-
                     <div class="row mb-3">
                         <div class="col-md-9">
-                            <asp:TextBox ID="txtIFSC" runat="server" CssClass="form-control" placeholder="IFSC Code"></asp:TextBox>
+                            <asp:TextBox ID="txtIFSC" runat="server" CssClass="form-control" placeholder="IFSC Code" ReadOnly="true"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvIFSC" runat="server" ControlToValidate="txtIFSC"
                                 ErrorMessage="IFSC Code is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
                         </div>
@@ -558,7 +586,7 @@
 
         <div class="modal fade" id="InvoiceTrnx" tabindex="-1" aria-labelledby="InvoiceTrnxModel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content mt-2 mb-2 p-4" id="printAreaTxn">
+                <div class="modal-content mt-2 mb-2 p-4" id="printArea">
 
                     <!-- Modal Header -->
                     <div class="modal-header border-bottom-0">
@@ -728,6 +756,23 @@
      </html>
  `);
             win.document.close();
+        }
+        function fillBankDetails(ddl) {
+
+            var value = ddl.value;
+
+            if (value === "") {
+                document.getElementById('<%= txtAccount.ClientID %>').value = "";
+            document.getElementById('<%= txtIFSC.ClientID %>').value = "";
+            return;
+        }
+
+        var parts = value.split('|');
+
+        if (parts.length === 2) {
+            document.getElementById('<%= txtAccount.ClientID %>').value = parts[0];
+                document.getElementById('<%= txtIFSC.ClientID %>').value = parts[1];
+            }
         }
     </script>
     <script src="CustomJS/Payout/Payout.js"></script>
@@ -931,4 +976,5 @@
         }
 
     </script>
+
 </asp:Content>
