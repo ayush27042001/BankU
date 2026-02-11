@@ -6,12 +6,9 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace NeoXPayout.Admin
+namespace NeoXPayout.RMPanel
 {
     public partial class TxnReport : System.Web.UI.Page
     {
@@ -22,9 +19,9 @@ namespace NeoXPayout.Admin
         DataSet ds = new DataSet();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (this.Session["AdminName"] == null)
+            if (this.Session["RmID"] == null)
             {
-                Response.Redirect("Default.aspx");
+                Response.Redirect("LoginRm.aspx");
             }
             else
             {
@@ -41,15 +38,20 @@ namespace NeoXPayout.Admin
 
         public void getdetails(bool reset = false)
         {
-           
-
+            if (Session["RmID"] == null)
+            {
+                Response.Redirect("LoginRm.aspx");
+                return;
+            }
+            string rmId = Session["RmID"].ToString();
             using (SqlConnection con = new SqlConnection(connStr))
             {
+
                 string query;
 
                 if (reset)
                 {
-                    query = "SELECT * FROM TxnReport ORDER BY TxnDate DESC";
+                    query = @"SELECT T.*  FROM TxnReport T INNER JOIN Registration R ON T.UserId = R.RegistrationId  WHERE R.RmId = @RmId ";
                 }
                 else
                 {
@@ -60,16 +62,14 @@ namespace NeoXPayout.Admin
                         rptProduct.Visible = false;
                         return;
                     }
+                query = @"SELECT T.*  FROM TxnReport T INNER JOIN Registration R ON T.UserId = R.RegistrationId  WHERE R.RmId = @RmId AND (@SearchDate IS NULL OR CONVERT(date, T.TxnDate) = @SearchDate) ";
 
-                    query = @"SELECT * FROM TxnReport                   
-                      Where CONVERT(date, TxnDate) = @SearchDate
-                      ORDER BY TxnDate DESC";
                 }
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    
 
+                    cmd.Parameters.AddWithValue("@RmId", rmId);
                     if (!reset)
                         cmd.Parameters.AddWithValue("@SearchDate", txtfrom.Text);
 
@@ -94,12 +94,12 @@ namespace NeoXPayout.Admin
 
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
-            getdetails(false);  
+            getdetails(false);
         }
         protected void btnReset_Click(object sender, EventArgs e)
         {
             txtfrom.Text = "";
-            getdetails(true);  
+            getdetails(true);
         }
 
     }
