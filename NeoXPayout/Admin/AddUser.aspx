@@ -497,7 +497,7 @@
                                             <asp:LinkButton ID="LinkButton1" runat="server" class="btn btn-purple" ValidationGroup="Add" OnClick="LinkButton1_Click">Add Users</asp:LinkButton>
 
 											<%--<button class="btn btn-primary">Save</button>--%>
-											<a href="Dashboard.aspx" class="btn btn-outline-secondary">Cancel </a>
+											<a href="DashboardAdmin.aspx" class="btn btn-outline-secondary">Cancel </a>
                                             <br />
                                             <asp:Label ID="Label1" runat="server" Font-Bold="True" ForeColor="Red"></asp:Label>
 										</div>

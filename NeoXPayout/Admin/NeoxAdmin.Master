@@ -95,7 +95,27 @@
             <li><a href="ProfileRequest.aspx" class="d-block py-1">➤ Profile request</a></li>
         </ul>
     </li>
-
+<li class="nav-item">
+        <a href="#manageRmSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="svg-stroke" width="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M5 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M19 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M19 8v5a5 5 0 0 1 -5 5h-3l3 -3m0 6l-3 -3"></path>
+                <path d="M5 16v-5a5 5 0 0 1 5 -5h3l-3 -3m0 6l3 -3"></path>
+            </svg>
+            <span class="mx-3">Manage RM</span>
+            <i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul class="collapse list-unstyled ps-4" id="manageRmSubmenu">
+            <li><a href="AddRm.aspx" class="d-block py-1">➤ Add RM</a></li>
+            <li><a href="ViewRm.aspx" class="d-block py-1">➤ View RM</a></li>
+         
+            <li><a href="rmManagement.aspx" class="d-block py-1">➤ User Rm Management</a></li>
+           
+        </ul>
+    </li>
 
 
     <!-- Configuration Dropdown -->

@@ -62,7 +62,7 @@ namespace NeoXPayout.Admin
                 ConfigurationManager.ConnectionStrings["BankUConnectionString"].ToString()))
             {
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT * FROM RmDetail", con))
+                    "SELECT * FROM RmDetail where Status='Active'", con))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     da.Fill(dt);
