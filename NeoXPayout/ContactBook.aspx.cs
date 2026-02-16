@@ -171,7 +171,7 @@ namespace NeoXPayout
             string number = getcontactNumber(HiddenField1.Value);
             string UserId = Session["BankURTUID"].ToString();
 
-            using (con)
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {
                 con.Open();
 
