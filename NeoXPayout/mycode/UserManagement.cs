@@ -127,6 +127,176 @@ using System.Web;
             return "-1";
         }
     }
+
+    public string verifyPanCF(string pan, string UserId)
+    {
+
+
+        try
+        {
+            string Apiresponse = string.Empty;
+            string url = "https://api.cashfree.com/verification/pan";
+            string body = "{\"pan\":\"" + pan + "\",\"name\":\"Gurav\"}";
+
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("x-client-id", "CF898769D0DKQJG3BM1S73FBE6OG");
+            request.AddHeader("x-client-secret", "cfsk_ma_prod_7a7157c5ac1ae3a067ec8c23080ff94d_e50a26d4");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            Apiresponse = response.Content;
+            LogApiCall(UserId, body, Apiresponse, "VerifyPan ContactBook");
+
+            var json = JObject.Parse(Apiresponse);
+            string valid = json["valid"]?.ToString();
+            string type = json["type"]?.ToString().ToUpper();
+            if (valid == "True" && type == "INDIVIDUAL")
+            {
+                string Name = json["registered_name"]?.ToString().ToUpper();
+                return Name;
+            }
+            else
+            {
+                return "-1";
+            }
+        }
+        catch
+        {
+            return "-1";
+        }
+    }
+
+    public string verifyCIN(string VerfID, string CIN, string bankUrtuId, string name)
+    {
+        try
+        {
+            string Apiresponse = string.Empty;
+            string url = "https://api.cashfree.com/verification/cin";
+            string body = "{\"verification_id\":\"" + VerfID + "\",\"cin\":\"" + CIN + "\"}";
+
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("x-client-id", "CF898769D0DKQJG3BM1S73FBE6OG");
+            request.AddHeader("x-client-secret", "cfsk_ma_prod_7a7157c5ac1ae3a067ec8c23080ff94d_e50a26d4");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            Apiresponse = response.Content;
+            LogApiCall(bankUrtuId, body, Apiresponse, "verifyCIN Contactbook");
+            var json = JObject.Parse(Apiresponse);
+            string status = json["status"]?.ToString()?.ToUpper();
+            if (status == "VALID")
+            {
+
+                JArray directors = (JArray)json["director_details"];
+                foreach (var director in directors)
+                {
+                    string directorName = director["name"]?.ToString()?.ToUpper();
+                    if (directorName == name)
+                    {
+                        return "1";
+                    }
+                }
+                return "-1";
+            }
+            else
+            {
+                return "-1";
+            }
+        }
+        catch
+        {
+            return "-1";
+        }
+    }
+
+    public string verifyGST(string GST, string bussName, string bankUrtuId)
+    {      
+        try
+        {
+            string Apiresponse = string.Empty;
+            string url = "https://api.cashfree.com/verification/gstin";
+            string body = "{\"GSTIN\":\"" + GST + "\",\"business_name\":\"" + bussName + "\"}";
+
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("x-client-id", "CF898769D0DKQJG3BM1S73FBE6OG");
+            request.AddHeader("x-client-secret", "cfsk_ma_prod_7a7157c5ac1ae3a067ec8c23080ff94d_e50a26d4");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            Apiresponse = response.Content;
+            LogApiCall(bankUrtuId, body, Apiresponse, "verifyGST Contactbook");
+            // Parse the response to get reference_id
+            var json = JObject.Parse(Apiresponse);
+            string valid = json["valid"]?.ToString();
+
+            if (valid == "True")
+            {
+               
+                return "1";
+            }
+            else
+            {
+                return "-1";
+            }
+        }
+        catch
+        {
+            return "-1";
+        }
+    }
+    public string verifyBankAccount(string BankAcc, string IFSC, string Name, string Phone,string bankUrtuId)
+    {     
+        try
+        {
+            string Apiresponse = string.Empty;
+            string url = "https://api.cashfree.com/verification/bank-account/sync";
+            string body = "{\"bank_account\":\"" + BankAcc + "\",\"ifsc\":\"" + IFSC + "\",\"name\":\"" + Name + "\",\"phone\":\"" + Phone + "\"}";
+
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("x-client-id", "CF898769D0DKQJG3BM1S73FBE6OG");
+            request.AddHeader("x-client-secret", "cfsk_ma_prod_7a7157c5ac1ae3a067ec8c23080ff94d_e50a26d4");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", body, RestSharp.ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            Apiresponse = response.Content;
+            LogApiCall(bankUrtuId, body, Apiresponse, "verifyBankAccount");
+            // Parse the response to get reference_id
+            var json = JObject.Parse(Apiresponse);
+            string status = json["account_status"]?.ToString();
+           
+            string AccHolder = json["name_at_bank"]?.ToString().ToUpper();
+            if (status == "VALID" && (Name == AccHolder ))
+            {
+                string AccHolderName = json["name_at_bank"]?.ToString();
+                string BankName = json["bank_name"]?.ToString();              
+                return "SUCCESS";
+            }
+            else
+            {
+                return "-1";
+            }
+        }
+        catch
+        {
+            return "-1";
+        }
+    }
     public string GetBalance(string UserId) 
     {
        
