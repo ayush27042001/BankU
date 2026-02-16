@@ -13,7 +13,7 @@ namespace NeoXPayout
 {
     public partial class ContactBook : System.Web.UI.Page
     {
-        SqlConnection cn = new SqlConnection("Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100");
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString);
         SqlCommand com = new SqlCommand();
         SqlDataAdapter da = new SqlDataAdapter();
         UserManagement Um = new UserManagement();
@@ -27,10 +27,12 @@ namespace NeoXPayout
             {
                 if (!IsPostBack)
                 {
+                    
                     getdetails();
                     FillBankNames();
                     getdetails1();
                     getdetails3();
+                    LoadAddress();
                 }
             }
         }
@@ -79,7 +81,7 @@ namespace NeoXPayout
             string Id = Session["BankURTUID"]?.ToString();
             string query = "select * from  AddContact where UserId = @UserId";
 
-            SqlCommand mcom = new SqlCommand(query, cn);
+            SqlCommand mcom = new SqlCommand(query, con);
             mcom.Parameters.AddWithValue("@UserId", Id);
             //mcom.Parameters.AddWithValue("@TimeStampFrom", txtfrom.Text + " 00:00:00.000");
             //mcom.Parameters.AddWithValue("@TimeStamp", txtto.Text + " 23:59:59.000");
@@ -99,14 +101,14 @@ namespace NeoXPayout
                 rptProduct.DataBind();
             }
 
-            cn.Close();
+            con.Close();
         }
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
-            cn.Open();
+            con.Open();
             string userId = Session["BankURTUID"]?.ToString();
             string sql = "insert into AddContact(UserId,ContactType,ContactPersonName,CompanyName,PhoneNumber,Email)values(@UserId,@ContactType,@ContactPersonName,@CompanyName,@PhoneNumber,@Email)";
-            SqlCommand cmd = new SqlCommand(sql, cn);
+            SqlCommand cmd = new SqlCommand(sql, con);
             cmd.Parameters.AddWithValue("@UserId", userId);
             cmd.Parameters.AddWithValue("@ContactType", ddlcontacttype.SelectedValue);
             cmd.Parameters.AddWithValue("@ContactPersonName", txtcontactperson.Text);
@@ -114,7 +116,7 @@ namespace NeoXPayout
             cmd.Parameters.AddWithValue("@PhoneNumber", txtphone.Text);
             cmd.Parameters.AddWithValue("@Email", txtemail.Text);
             cmd.ExecuteNonQuery();
-            cn.Close();
+            con.Close();
             Response.Redirect("Dashboard.aspx");
 
         }
@@ -131,29 +133,45 @@ namespace NeoXPayout
                 lblEmail.Text = data[3];
                 HiddenField1.Value = data[4];
 
-                // Avatar = initials (first letters of name)
-                if (!string.IsNullOrEmpty(data[0]))
+                if (data.Length > 0 && !string.IsNullOrWhiteSpace(data[0]))
                 {
-                    var names = data[0].Split(' ');
-                    string initials = string.Join("", names.Select(n => n[0])).ToUpper();
-                    lblAvatar.InnerText = initials;
+                    string fullName = data[0].Trim();
+
+                    var names = fullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    string initials = "";
+
+                    foreach (var name in names)
+                    {
+                        initials += name[0];
+                    }
+
+                    lblAvatar.InnerText = initials.ToUpper();
                 }
+
+
                 getdetails1();
                 getdetails2();
                 getdetails3();
+                LoadAddress();
             }
         }
 
         protected void LinkButton2_Click(object sender, EventArgs e)
         {
             string paymentMethod = ddlPaymentMethod.SelectedValue;
-            string connStr = "Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100";
-
-            // 👇  Current vendor id/email session se lo
+            if (string.IsNullOrEmpty(HiddenField1.Value))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert",
+                    "alert('User ID not found! Please select a contact first.');", true);
+                return;
+            }
             string Id = HiddenField1.Value;
-            //  or  string vendorId = Session["CurrentVendorId"].ToString();
+            string contactname = getcontactname(HiddenField1.Value);
+            string number = getcontactNumber(HiddenField1.Value);
+            string UserId = Session["BankURTUID"].ToString();
 
-            using (SqlConnection con = new SqlConnection(connStr))
+            using (con)
             {
                 con.Open();
 
@@ -162,31 +180,39 @@ namespace NeoXPayout
 
                 if (paymentMethod == "UPI")
                 {
-                    cmd.CommandText = @"INSERT INTO PaymentAccounts
-                (VendorId, PaymentMethod, UPIID)
-                VALUES (@VendorId, @PaymentMethod, @UPIID)";
+                    cmd.CommandText = @"INSERT INTO PaymentAccounts (VendorId, PaymentMethod, UPIID) VALUES (@VendorId, @PaymentMethod, @UPIID)";
                     cmd.Parameters.AddWithValue("@VendorId", Id);
                     cmd.Parameters.AddWithValue("@PaymentMethod", "UPI");
                     cmd.Parameters.AddWithValue("@UPIID", txtUpiId.Text.Trim());
                 }
                 else if (paymentMethod == "Bank")
                 {
-                    cmd.CommandText = @"INSERT INTO PaymentAccounts
-                (VendorId, PaymentMethod, AccountNumber, BankName, IFSC, BeneficiaryName)
-                VALUES (@VendorId, @PaymentMethod, @AccountNumber, @BankName, @IFSC, @BeneficiaryName)";
-                    cmd.Parameters.AddWithValue("@VendorId", Id);
-                    cmd.Parameters.AddWithValue("@PaymentMethod", "Bank");
-                    cmd.Parameters.AddWithValue("@AccountNumber", txtAccountNumber.Text.Trim());
-                    cmd.Parameters.AddWithValue("@BankName", ddlBankName.SelectedValue);
-                    cmd.Parameters.AddWithValue("@IFSC", txtIFSC.Text.Trim());
-                    cmd.Parameters.AddWithValue("@BeneficiaryName", txtBeneficiaryName.Text.Trim());
+                    if (Um.verifyBankAccount(txtAccountNumber.Text.Trim(), txtIFSC.Text.Trim(), contactname, number, UserId) == "SUCCESS")
+                    {
+                        cmd.CommandText = @"INSERT INTO PaymentAccounts
+                        (VendorId, PaymentMethod, AccountNumber, BankName, IFSC, BeneficiaryName)
+                        VALUES (@VendorId, @PaymentMethod, @AccountNumber, @BankName, @IFSC, @BeneficiaryName)";
+                        cmd.Parameters.AddWithValue("@VendorId", Id);
+                        cmd.Parameters.AddWithValue("@PaymentMethod", "Bank");
+                        cmd.Parameters.AddWithValue("@AccountNumber", txtAccountNumber.Text.Trim());
+                        cmd.Parameters.AddWithValue("@BankName", ddlBankName.SelectedValue);
+                        cmd.Parameters.AddWithValue("@IFSC", txtIFSC.Text.Trim());
+                        cmd.Parameters.AddWithValue("@BeneficiaryName", txtBeneficiaryName.Text.Trim());
+                        ShowMessage("Payment account added successfully!", true);
+                        getdetails1();
+                    }
+                    else 
+                    {
+                        ShowMessage("Invalid Bank Account or name mismatch.", false);
+                        return;
+                    }
                 }
 
                 cmd.ExecuteNonQuery();
             }
-
-            ScriptManager.RegisterStartupScript(this, GetType(),
-                "alert", "alert('Payment account added successfully!');", true);
+           
+            return;
+           
         }
 
         public void getdetails1()
@@ -194,11 +220,8 @@ namespace NeoXPayout
             string Id = HiddenField1.Value;
             string query = "select * from  PaymentAccounts where VendorId = @VendorId";
 
-            SqlCommand mcom = new SqlCommand(query, cn);
+            SqlCommand mcom = new SqlCommand(query, con);
             mcom.Parameters.AddWithValue("@VendorId", Id);
-            //mcom.Parameters.AddWithValue("@TimeStampFrom", txtfrom.Text + " 00:00:00.000");
-            //mcom.Parameters.AddWithValue("@TimeStamp", txtto.Text + " 23:59:59.000");
-            //mcom.Parameters.AddWithValue("@Status", "PENDING");
             SqlDataAdapter mda = new SqlDataAdapter(mcom);
             DataTable dt = new DataTable();
             mda.Fill(dt);
@@ -214,34 +237,213 @@ namespace NeoXPayout
                 rptPaymentAccounts.DataBind();
             }
 
-            cn.Close();
+            con.Close();
         }
 
         protected void LinkButton3_Click(object sender, EventArgs e)
         {
-            int userId = Convert.ToInt32(HiddenField1.Value); // ✅ string → int
-
-            string connStr = "Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100";
-
-            using (SqlConnection con = new SqlConnection(connStr))
+            try
             {
-                con.Open();
+                if (string.IsNullOrEmpty(HiddenField1.Value))
+                {
+                    ShowMessage("User ID not found!", false);
+                    return;
+                }
 
-                string query = @"UPDATE AddContact 
-                         SET PAN=@PAN, CIN=@CIN, GSTIN=@GSTIN, TAN=@TAN, UDYAM=@UDYAM 
-                         WHERE ID=@UserId";
+                if (Session["BankURTUID"] == null)
+                {
+                    ShowMessage("Session expired.", false);
+                    return;
+                }
 
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = userId;
-                cmd.Parameters.AddWithValue("@PAN", txtPAN.Text);
-                cmd.Parameters.AddWithValue("@CIN", txtCIN.Text);
-                cmd.Parameters.AddWithValue("@GSTIN", txtGSTIN.Text);
-                cmd.Parameters.AddWithValue("@TAN", txtTAN.Text);
-                cmd.Parameters.AddWithValue("@UDYAM", txtUDYAM.Text);
+                int userId;
+                if (!int.TryParse(HiddenField1.Value, out userId))
+                {
+                    ShowMessage("Invalid User ID.", false);
+                    return;
+                }
 
-                cmd.ExecuteNonQuery();
+                string externalRef = "BankU" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                string UserId = Session["BankURTUID"].ToString();
+                string contactname = getcontactname(HiddenField1.Value);
 
+                if (string.IsNullOrWhiteSpace(txtPAN.Text) &&
+                    string.IsNullOrWhiteSpace(txtCIN.Text) &&
+                    string.IsNullOrWhiteSpace(txtGSTIN.Text))
+                {
+                    ShowMessage("Please enter at least one field (PAN, CIN or GSTIN).", false);
+                    return;
+                }
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+                {
+                    con.Open();
+
+                    bool anySuccess = false;
+
+                    // 🔹 Get existing values from DB (IMPORTANT)
+                    string query = "SELECT PAN, CIN, GSTIN FROM AddContact WHERE ID=@ID";
+                    SqlCommand checkCmd = new SqlCommand(query, con);
+                    checkCmd.Parameters.AddWithValue("@ID", userId);
+
+                    SqlDataReader reader = checkCmd.ExecuteReader();
+
+                    string dbPAN = "", dbCIN = "", dbGSTIN = "";
+
+                    if (reader.Read())
+                    {
+                        dbPAN = reader["PAN"].ToString();
+                        dbCIN = reader["CIN"].ToString();
+                        dbGSTIN = reader["GSTIN"].ToString();
+                    }
+                    reader.Close();
+
+                    // ================= PAN =================
+                    if (!string.IsNullOrEmpty(txtPAN.Text.Trim()))
+                    {
+                        if (!string.IsNullOrEmpty(dbPAN))
+                        {
+                            // Already exists → skip
+                        }
+                        else
+                        {
+                            string panflag = Um.verifyPanCF(txtPAN.Text.Trim(), UserId);
+
+                            if (panflag != "-1" &&
+                                panflag.Equals(contactname, StringComparison.OrdinalIgnoreCase))
+                            {
+                                UpdateField(con, "PAN", txtPAN.Text.Trim(), userId);
+                                anySuccess = true;
+                            }
+                            else
+                            {
+                                ShowMessage("PAN verification failed.", false);
+                                return;
+                            }
+                        }
+                    }
+
+                    // ================= CIN =================
+                    if (!string.IsNullOrEmpty(txtCIN.Text.Trim()))
+                    {
+                        if (!string.IsNullOrEmpty(dbCIN))
+                        {
+                            // skip
+                        }
+                        else
+                        {
+                            string cinflag = Um.verifyCIN(externalRef, txtCIN.Text.Trim(), UserId, contactname);
+
+                            if (cinflag == "1")
+                            {
+                                UpdateField(con, "CIN", txtCIN.Text.Trim(), userId);
+                                anySuccess = true;
+                            }
+                            else
+                            {
+                                ShowMessage("Invalid CIN", false);
+                                return;
+                            }
+                        }
+                    }
+
+                    // ================= GSTIN =================
+                    if (!string.IsNullOrEmpty(txtGSTIN.Text.Trim()))
+                    {
+                        if (!string.IsNullOrEmpty(dbGSTIN))
+                        {
+                            // skip
+                        }
+                        else
+                        {
+                            UpdateField(con, "GSTIN", txtGSTIN.Text.Trim(), userId);
+                            anySuccess = true;
+                        }
+                    }
+
+                    // ================= FINAL =================
+                    if (anySuccess)
+                    {
+                        ShowMessage("Details added successfully", true);
+                        getdetails2();
+                    }
+                    else
+                    {
+                        getdetails2();
+                        ShowMessage("Nothing new to update (already added)", false);
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                ShowMessage("Error: " + ex.Message, false);
+            }
+        }
+
+        private void UpdateField(SqlConnection con, string field, string value, int userId)
+        {
+            string query = $"UPDATE AddContact SET {field}=@value WHERE ID=@UserId";
+
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("@value", value);
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = userId;
+                cmd.ExecuteNonQuery();
+            }
+        }
+        private void ShowMessage(string message, bool isSuccess)
+        {
+            lblErr.Text = message;
+            lblErr.CssClass = isSuccess ? "text-success" : "text-danger";
+        }
+
+        public string getcontactname(string contactid)
+        {
+            string name = "";
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = "SELECT ContactPersonName FROM AddContact WHERE ID = @ID";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Add("@ID", SqlDbType.VarChar).Value = contactid;
+
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        name = result.ToString().ToUpper();
+                    }
+                }
+            }
+
+            return name;
+        }
+
+        public string getcontactNumber(string contactid)
+        {
+            string number = "";
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = "SELECT PhoneNumber FROM AddContact WHERE ID = @ID";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Add("@ID", SqlDbType.VarChar).Value = contactid;
+
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        number = result.ToString().ToUpper();
+                    }
+                }
+            }
+
+            return number;
         }
 
         public void getdetails2()
@@ -249,7 +451,7 @@ namespace NeoXPayout
             string Id = HiddenField1.Value;
             string query = "select * from  AddContact where ID = @ID";
 
-            SqlCommand mcom = new SqlCommand(query, cn);
+            SqlCommand mcom = new SqlCommand(query, con);
             mcom.Parameters.AddWithValue("@ID", Id);
             //mcom.Parameters.AddWithValue("@TimeStampFrom", txtfrom.Text + " 00:00:00.000");
             //mcom.Parameters.AddWithValue("@TimeStamp", txtto.Text + " 23:59:59.000");
@@ -266,16 +468,36 @@ namespace NeoXPayout
                 txtGSTIN.Text = dt.Rows[0]["GSTIN"].ToString();
                 txtTAN.Text = dt.Rows[0]["TAN"].ToString();
                 txtUDYAM.Text = dt.Rows[0]["UDYAM"].ToString();
+                bool isExists =
+               !string.IsNullOrEmpty(txtPAN.Text) &&
+               !string.IsNullOrEmpty(txtCIN.Text) &&
+               !string.IsNullOrEmpty(txtGSTIN.Text);
+
+                if (isExists)
+                {
+                    LinkButton3.Enabled = false;
+                    LinkButton3.Text = "Already Added";
+                   
+                }
+                else
+                {
+                    LinkButton3.Enabled = true;
+                    LinkButton3.Text = "ADD";
+                }
             }
         }
 
         protected void LinkButton4_Click(object sender, EventArgs e)
         {
-            int userId = Convert.ToInt32(HiddenField1.Value); // ✅ string → int
-
-            string connStr = "Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100";
-
-            using (SqlConnection con = new SqlConnection(connStr))
+           
+            if (string.IsNullOrEmpty(HiddenField1.Value))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert",
+                    "alert('User ID not found! Please select a contact first.');", true);
+                return;
+            }
+            int userId = Convert.ToInt32(HiddenField1.Value); 
+            using (con)
             {
                 con.Open();
 
@@ -291,18 +513,59 @@ namespace NeoXPayout
                 cmd.Parameters.AddWithValue("@Pincode", txtPincode.Text);
 
                 cmd.ExecuteNonQuery();
-                ScriptManager.RegisterStartupScript(this, this.GetType(),
-        "OpenOffcanvas", "var myOffcanvas = new bootstrap.Offcanvas(document.getElementById('addAddressSidebar')); myOffcanvas.show();", true);
+                LoadAddress();
+                ShowMessage("Address Added Successfully.", true);
+
+            }
+        }
+        public void LoadAddress()
+        {
+            if (string.IsNullOrEmpty(HiddenField1.Value)) return;
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = "SELECT FullName, Phone, Address, Pincode FROM AddContact WHERE ID=@ID";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@ID", HiddenField1.Value);
+
+                con.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    string name = dr["FullName"].ToString();
+
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        // ✅ Show Address
+                        pnlAddressEmpty.Visible = false;
+                        pnlAddressDisplay.Visible = true;
+
+                        Label1.Text = name;
+                        Label2.Text = dr["Phone"].ToString();
+                        lblAddress.Text = dr["Address"].ToString();
+                        lblPincode.Text = dr["Pincode"].ToString();
+                    }
+                    else
+                    {
+                        // ❌ No Address
+                        pnlAddressEmpty.Visible = true;
+                        pnlAddressDisplay.Visible = false;
+                    }
+                }
             }
         }
 
         protected void LinkButton5_Click(object sender, EventArgs e)
         {
-            int userId = Convert.ToInt32(HiddenField1.Value); // ✅ string → int
-
-            string connStr = "Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100";
-
-            using (SqlConnection con = new SqlConnection(connStr))
+            if (string.IsNullOrEmpty(HiddenField1.Value))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert",
+                    "alert('User ID not found! Please select a contact first.');", true);
+                return;
+            }
+            int userId = Convert.ToInt32(HiddenField1.Value);
+            using (con)
             {
                 con.Open();
 
@@ -326,11 +589,8 @@ namespace NeoXPayout
             string Id = HiddenField1.Value;
             string query = "select * from  AddContact where ID = @ID";
 
-            SqlCommand mcom = new SqlCommand(query, cn);
+            SqlCommand mcom = new SqlCommand(query, con);
             mcom.Parameters.AddWithValue("@ID", Id);
-            //mcom.Parameters.AddWithValue("@TimeStampFrom", txtfrom.Text + " 00:00:00.000");
-            //mcom.Parameters.AddWithValue("@TimeStamp", txtto.Text + " 23:59:59.000");
-            //mcom.Parameters.AddWithValue("@Status", "PENDING");
             SqlDataAdapter mda = new SqlDataAdapter(mcom);
             DataTable dt = new DataTable();
             mda.Fill(dt);
@@ -344,10 +604,12 @@ namespace NeoXPayout
                 txtphn.Text = dt.Rows[0]["PhoneNumber"].ToString();
                 txtemailid.Text = dt.Rows[0]["Email"].ToString();
             }
+           
         }
 
         protected void LinkButton6_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(HiddenField1.Value)) return;
             string Mobile = Session["BankURTMobileno"] as string;
             SendOTP(Mobile);
 
@@ -381,7 +643,7 @@ namespace NeoXPayout
         {
             string enteredOtp = TextBox2.Text;
             string storedOtp = Session["OTP"] as string;
-            string mobile = TextBox1.Text.Trim();
+            //string mobile = TextBox1.Text.Trim();
 
             if (string.IsNullOrEmpty(storedOtp))
             {
@@ -394,10 +656,11 @@ namespace NeoXPayout
                 lblOTPStatus.CssClass = "text-success";
                 lblOTPStatus.Text = "OTP verified! Logging you in…";
 
-                Session["mobileno"] = mobile;
+                //Session["mobileno"] = mobile;
+                if (string.IsNullOrEmpty(HiddenField1.Value)) return;
                 int ID = Convert.ToInt32(HiddenField1.Value);
-                string connStr = "Data Source=103.205.142.34,1433;Initial Catalog=BankUIndia_db;Persist Security Info=True;User ID=BankUIndia_db;Password=Chandan@80100";
-                using (SqlConnection con = new SqlConnection(connStr))
+             
+                using (con)
                 {
                     con.Open();
                     string query = "DELETE FROM AddContact WHERE ID = @ID";

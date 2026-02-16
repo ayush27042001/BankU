@@ -96,6 +96,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.Label lblOTPStatus;
 
         /// <summary>
+        /// lblErr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErr;
+
+        /// <summary>
         /// rptPaymentAccounts control.
         /// </summary>
         /// <remarks>
@@ -114,6 +123,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.TextBox txtPAN;
 
         /// <summary>
+        /// revPAN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revPAN;
+
+        /// <summary>
         /// txtCIN control.
         /// </summary>
         /// <remarks>
@@ -123,13 +141,13 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.TextBox txtCIN;
 
         /// <summary>
-        /// txtGSTIN control.
+        /// revCIN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGSTIN;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCIN;
 
         /// <summary>
         /// txtTAN control.
@@ -141,6 +159,33 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.TextBox txtTAN;
 
         /// <summary>
+        /// revTAN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revTAN;
+
+        /// <summary>
+        /// txtGSTIN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGSTIN;
+
+        /// <summary>
+        /// revGSTIN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revGSTIN;
+
+        /// <summary>
         /// txtUDYAM control.
         /// </summary>
         /// <remarks>
@@ -150,6 +195,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.TextBox txtUDYAM;
 
         /// <summary>
+        /// revUDYAM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revUDYAM;
+
+        /// <summary>
         /// LinkButton3 control.
         /// </summary>
         /// <remarks>
@@ -157,6 +211,60 @@ namespace NeoXPayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton3;
+
+        /// <summary>
+        /// pnlAddressEmpty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlAddressEmpty;
+
+        /// <summary>
+        /// pnlAddressDisplay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlAddressDisplay;
+
+        /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+
+        /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// lblAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAddress;
+
+        /// <summary>
+        /// lblPincode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPincode;
 
         /// <summary>
         /// txtFullName control.
@@ -348,6 +456,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.TextBox txtUpiId;
 
         /// <summary>
+        /// rfvUpi control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUpi;
+
+        /// <summary>
         /// txtAccountNumber control.
         /// </summary>
         /// <remarks>
@@ -355,6 +472,15 @@ namespace NeoXPayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAccountNumber;
+
+        /// <summary>
+        /// rfvAcc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvAcc;
 
         /// <summary>
         /// ddlBankName control.
@@ -366,6 +492,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.DropDownList ddlBankName;
 
         /// <summary>
+        /// rfvBank control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBank;
+
+        /// <summary>
         /// txtIFSC control.
         /// </summary>
         /// <remarks>
@@ -373,6 +508,15 @@ namespace NeoXPayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtIFSC;
+
+        /// <summary>
+        /// rfvIFSC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvIFSC;
 
         /// <summary>
         /// txtBeneficiaryName control.
@@ -384,6 +528,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.TextBox txtBeneficiaryName;
 
         /// <summary>
+        /// rfvName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvName;
+
+        /// <summary>
         /// LinkButton2 control.
         /// </summary>
         /// <remarks>
@@ -391,14 +544,5 @@ namespace NeoXPayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
-
-        /// <summary>
-        /// btnAddWithoutVerify control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddWithoutVerify;
     }
 }

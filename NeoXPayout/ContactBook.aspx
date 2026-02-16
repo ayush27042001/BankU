@@ -7,7 +7,7 @@
     background: linear-gradient(90deg, #6a1b9a, #8e24aa);
     color: #fff;
     padding: 18px 25px;
-    border-radius: 12px 12px 0 0;
+   
     display: flex;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
@@ -43,10 +43,9 @@
   height: 600px;
 }
 .custom-header {
-  background: linear-gradient(90deg, #9c3cc9, #b966e0); /* purple का हल्का gradient */
+  background: linear-gradient(90deg, #9c3cc9, #b966e0); 
   padding: 15px 20px;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 .custom-header h5 {
@@ -54,7 +53,7 @@
   font-size: 18px;
 }
   .custom-header .btn-close {
-    filter: invert(1); /* white cross */
+    filter: invert(1);
   }
 .search-box {
   display: flex;
@@ -497,7 +496,7 @@
         <i class="bi bi-pencil-square cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#updateContactSidebar"></i>
         <asp:LinkButton ID="LinkButton6" runat="server" OnClick="LinkButton6_Click"> <i class="bi bi-trash cursor-pointer"></i></asp:LinkButton>
         <asp:Label ID="lblOTPStatus" runat="server" ></asp:Label>
-      <i class="bi bi-box-arrow-up-right"></i>
+    <%--  <i class="bi bi-box-arrow-up-right"></i>--%>
     </div>
   </div>
 </div>
@@ -526,7 +525,7 @@
   </div>
       <!-- Tab Content -->
   <div class="tab-content mt-4 text-center">
-
+ <asp:Label runat="server" ID="lblErr" CssClass=" text-danger"></asp:Label>
     <!-- Payment Accounts -->
     <div id="payment" class="tab-pane fade show active">
 
@@ -588,25 +587,77 @@
       <i class="bi bi-card-checklist me-2 text-primary"></i> Registration Information
     </h5>
       <div class="row g-3">
-    <div class="col-md-6">
-        <asp:TextBox ID="txtPAN" runat="server" CssClass="form-control rounded-pill" placeholder="PAN"></asp:TextBox>
-    </div>
-    <div class="col-md-6">
-        <asp:TextBox ID="txtCIN" runat="server" CssClass="form-control rounded-pill" placeholder="CIN"></asp:TextBox>
-    </div>
-    <div class="col-md-4">
-        <asp:TextBox ID="txtGSTIN" runat="server" CssClass="form-control rounded-pill" placeholder="GSTIN"></asp:TextBox>
-    </div>
-    <div class="col-md-4">
-        <asp:TextBox ID="txtTAN" runat="server" CssClass="form-control rounded-pill" placeholder="TAN"></asp:TextBox>
-    </div>
-    <div class="col-md-4">
-        <asp:TextBox ID="txtUDYAM" runat="server" CssClass="form-control rounded-pill" placeholder="UDYAM"></asp:TextBox>
-    </div>
-</div>
+         
+            <!-- PAN -->
+            <div class="col-md-6">
+                <asp:TextBox ID="txtPAN" runat="server" CssClass="form-control rounded-pill" placeholder="PAN"></asp:TextBox>
+                <asp:RegularExpressionValidator 
+                    ID="revPAN" 
+                    runat="server" 
+                    ControlToValidate="txtPAN" ValidationGroup="doc"
+                    ValidationExpression="^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
+                    ErrorMessage="Invalid PAN Format (ABCDE1234F)"
+                    CssClass="text-danger"
+                    Display="Dynamic" />
+            </div>
+
+            <!-- CIN -->
+            <div class="col-md-6">
+                <asp:TextBox ID="txtCIN" runat="server" CssClass="form-control rounded-pill" placeholder="CIN"></asp:TextBox>
+                <asp:RegularExpressionValidator 
+                    ID="revCIN" 
+                    runat="server" 
+                    ControlToValidate="txtCIN" ValidationGroup="doc"
+                    ValidationExpression="^[LU]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$"
+                    ErrorMessage="Invalid CIN Format"
+                    CssClass="text-danger"
+                    Display="Dynamic" />
+            </div>
+           
+            <!-- TAN -->
+            <div class="col-md-4" hidden>
+                <asp:TextBox ID="txtTAN" runat="server" CssClass="form-control rounded-pill" placeholder="TAN"></asp:TextBox>
+                <asp:RegularExpressionValidator 
+                    ID="revTAN" 
+                    runat="server" 
+                    ControlToValidate="txtTAN"  ValidationGroup="doc"
+                    ValidationExpression="^[A-Z]{4}[0-9]{5}[A-Z]{1}$"
+                    ErrorMessage="Invalid TAN Format"
+                    CssClass="text-danger"
+                    Display="Dynamic" />
+            </div>
+
+           <!-- GSTIN -->
+            <div class="col-md-4">
+                <asp:TextBox ID="txtGSTIN" runat="server" CssClass="form-control rounded-pill" placeholder="GSTIN"></asp:TextBox>
+                <asp:RegularExpressionValidator 
+                    ID="revGSTIN" 
+                    runat="server" 
+                    ControlToValidate="txtGSTIN"  ValidationGroup="doc"
+                    ValidationExpression="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}Z[A-Z0-9]{1}$"
+                    ErrorMessage="Invalid GSTIN Format"
+                    CssClass="text-danger"
+                    Display="Dynamic" />
+            </div>
+
+            <!-- UDYAM -->
+            <div class="col-md-4" hidden>
+                <asp:TextBox ID="txtUDYAM" runat="server" CssClass="form-control rounded-pill" placeholder="UDYAM"></asp:TextBox>
+                <asp:RegularExpressionValidator 
+                    ID="revUDYAM" 
+                    runat="server" 
+                    ControlToValidate="txtUDYAM" ValidationGroup="doc"                    
+                    ValidationExpression="^UDYAM-[A-Z]{2}-[0-9]{2}-[0-9]{7}$"
+                    ErrorMessage="Invalid UDYAM Format (UDYAM-XX-00-0000000)"
+                    CssClass="text-danger"
+                    Display="Dynamic" />
+            </div>
+
+        </div>
+
 
       <div class="text-center mt-4">
-          <asp:LinkButton ID="LinkButton3" runat="server" class="btn custom-btn rounded-pill px-4" OnClick="LinkButton3_Click"><i class="bi bi-plus-lg me-1"></i> Add</asp:LinkButton>
+          <asp:LinkButton ID="LinkButton3" runat="server"  ValidationGroup="doc" class="btn custom-btn rounded-pill px-4" OnClick="LinkButton3_Click"><i class="bi bi-plus-lg me-1"></i> Add</asp:LinkButton>
       </div>
   </div>
 </div>
@@ -642,20 +693,36 @@
 </div>
 
     <!-- Address -->
-    <div id="address" class="tab-pane fade">
-  <div class="card glass-card shadow-lg border-0 p-4 text-center">
-    <div class="icon-box mx-auto mb-3">
-      <i class="bi bi-geo-alt-fill"></i>
-    </div>
-     
-    <p class="text-muted">Include a contact address so that mailing and communicating is simple and quick.</p>
-   <button class="add-btn w-100 mt-3" 
-        data-bs-toggle="offcanvas" 
-        data-bs-target="#addAddressSidebar">
-    <i class="bi bi-plus-lg me-1"></i> Add Address
-</button>
-  </div>
-</div>
+   <div id="address" class="tab-pane fade">
+          <div class="card glass-card shadow-lg border-0 p-4 text-center">
+
+            <asp:Panel ID="pnlAddressEmpty" runat="server">
+                <div class="icon-box mx-auto mb-3">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+
+                <p class="text-muted">
+                    Include a contact address so that mailing and communicating is simple and quick.
+                </p>
+
+                <button class="add-btn w-100 mt-3" type="button"
+                    data-bs-toggle="offcanvas" 
+                    data-bs-target="#addAddressSidebar">
+                    <i class="bi bi-plus-lg me-1"></i> Add Address
+                </button>
+            </asp:Panel>
+
+            <!-- ✅ Address Display Panel -->
+            <asp:Panel ID="pnlAddressDisplay" runat="server" Visible="false">
+                <h5 class="fw-bold mb-2"><asp:Label ID="Label1" runat="server"></asp:Label></h5>
+                <p class="mb-1"><asp:Label ID="Label2" runat="server"></asp:Label></p>
+                <p class="mb-1"><asp:Label ID="lblAddress" runat="server"></asp:Label></p>
+                <p class="mb-0"><asp:Label ID="lblPincode" runat="server"></asp:Label></p>
+            </asp:Panel>
+
+          </div>
+        </div>
+
 
     <!-- Notes -->
     <%--<div id="notes" class="tab-pane fade">
@@ -667,12 +734,8 @@
 </div>
 
 
-    <!-- Sidebar (Bootstrap Offcanvas) Address -->
-
-<!-- Sidebar (Bootstrap Offcanvas) -->
 <!-- Offcanvas Sidebar -->
-<!-- Offcanvas Sidebar -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="addAddressSidebar">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="addAddressSidebar"  data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title text-gradient fw-bold">Add New Address</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
@@ -700,15 +763,14 @@
         <asp:TextBox ID="txtPincode" runat="server" CssClass="form-control form-control-lg" Placeholder="Enter pincode"></asp:TextBox>
     </div>
 
-    <asp:LinkButton ID="LinkButton4" runat="server" CssClass="add-btn w-100 py-2" OnClick="LinkButton4_Click">
+    <asp:LinkButton ID="LinkButton4" runat="server" style="text-decoration:none" CssClass="add-btn w-100 py-2" OnClick="LinkButton4_Click">
         Save Address
     </asp:LinkButton>
     
   </div>
 </div>
 
-     <!-- Sidebar Add COntact -->
-  <!-- Sidebar -->
+<!-- Sidebar -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="addContactSidebar" 
      data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="offcanvas-header custom-header">
@@ -755,10 +817,9 @@
     </asp:LinkButton>
   </div>
 </div>
-    <!-- Button -->
 
-    <!-- Sidebar (Bootstrap Offcanvas) Edit -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="updateContactSidebar">
+<!-- Sidebar (Bootstrap Offcanvas) Edit -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="updateContactSidebar" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title fw-bold">Update Contact</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
@@ -801,8 +862,8 @@
   </div>
 </div>
 
-    <!-- OTP Modal -->
-<div class="modal fade" id="otpModal" tabindex="-1">
+<!-- OTP Modal -->
+<div class="modal fade" id="otpModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content rounded-4 border-0 shadow-lg">
       
@@ -818,12 +879,12 @@
       <!-- Body -->
       <div class="modal-body text-center">
         <p class="fw-bold mb-3">Enter your 4-digit iPIN to confirm</p>
-       <div class="d-flex justify-content-center gap-2 mb-3">
-    <asp:TextBox ID="TextBox2" runat="server" 
+        <div class="d-flex justify-content-center gap-2 mb-3">
+        <asp:TextBox ID="TextBox2" runat="server" 
         CssClass="form-control otp-input text-center fw-bold shadow-sm"
         MaxLength="4"
         placeholder="Enter OTP"></asp:TextBox>
-</div>
+      </div>
         <small class="text-muted"><a href="#" class="text-decoration-none">Forgot iPIN?</a></small>
       </div>
       
@@ -859,38 +920,84 @@
     </div>
 
     <!-- UPI Section -->
-    <div id="upiSection" style="display:none;">
+  <div id="upiSection" style="display:none;">
       <div class="mb-3">
         <asp:TextBox ID="txtUpiId" runat="server" CssClass="form-control" Placeholder="Enter UPI ID"></asp:TextBox>
+
+        <asp:RequiredFieldValidator ID="rfvUpi" runat="server" ControlToValidate="txtUpiId" ErrorMessage="UPI ID is required" CssClass="text-danger" ValidationGroup="UPIGroup" Display="Dynamic" />
       </div>
     </div>
+
 
     <!-- Bank Section -->
     <div id="bankSection">
-      <div class="mb-3">
-        <asp:TextBox ID="txtAccountNumber" runat="server" CssClass="form-control" Placeholder="Account Number"></asp:TextBox>
-      </div>
+  <div class="mb-3">
+    <asp:TextBox ID="txtAccountNumber" runat="server" CssClass="form-control" Placeholder="Account Number"></asp:TextBox>
 
-      <div class="mb-3">
-        <asp:DropDownList ID="ddlBankName" runat="server" CssClass="form-select"></asp:DropDownList>
-      </div>
+    <asp:RequiredFieldValidator 
+        ID="rfvAcc" 
+        runat="server" 
+        ControlToValidate="txtAccountNumber"
+        ErrorMessage="Account Number is required"
+        CssClass="text-danger"
+        ValidationGroup="BankGroup"
+        Display="Dynamic" />
+  </div>
 
-      <div class="mb-3">
-        <asp:TextBox ID="txtIFSC" runat="server" CssClass="form-control" Placeholder="IFSC"></asp:TextBox>
-      </div>
+  <div class="mb-3">
+    <asp:DropDownList ID="ddlBankName" runat="server" CssClass="form-select"></asp:DropDownList>
 
-      <div class="mb-3">
-        <asp:TextBox ID="txtBeneficiaryName" runat="server" CssClass="form-control" Placeholder="Beneficiary Name"></asp:TextBox>
-      </div>
-    </div>
+    <asp:RequiredFieldValidator 
+        ID="rfvBank" 
+        runat="server" 
+        ControlToValidate="ddlBankName"
+        InitialValue=""
+        ErrorMessage="Select Bank"
+        CssClass="text-danger"
+        ValidationGroup="BankGroup"
+        Display="Dynamic" />
+  </div>
+
+  <div class="mb-3">
+    <asp:TextBox ID="txtIFSC" runat="server" CssClass="form-control" Placeholder="IFSC"></asp:TextBox>
+
+    <asp:RequiredFieldValidator 
+        ID="rfvIFSC" 
+        runat="server" 
+        ControlToValidate="txtIFSC"
+        ErrorMessage="IFSC is required"
+        CssClass="text-danger"
+        ValidationGroup="BankGroup"
+        Display="Dynamic" />
+  </div>
+
+  <div class="mb-3">
+    <asp:TextBox ID="txtBeneficiaryName" runat="server" CssClass="form-control" Placeholder="Beneficiary Name"></asp:TextBox>
+
+    <asp:RequiredFieldValidator 
+        ID="rfvName" 
+        runat="server" 
+        ControlToValidate="txtBeneficiaryName"
+        ErrorMessage="Beneficiary Name is required"
+        CssClass="text-danger"
+        ValidationGroup="BankGroup"
+        Display="Dynamic" />
+  </div>
+</div>
+
 
     <!-- Buttons -->
-      <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn verify-btn w-100 mb-3 rounded-pill shadow-sm" OnClick="LinkButton2_Click" >Verify & Add</asp:LinkButton>
+   <asp:LinkButton 
+    ID="LinkButton2" 
+    runat="server" 
+    CssClass="btn verify-btn w-100 mb-3 rounded-pill shadow-sm" 
+    OnClick="LinkButton2_Click"
+    OnClientClick="return setValidationGroup();">
+    Verify & Add
+</asp:LinkButton>
+
     
     <div class="small-text text-center mb-2">(verification charges applicable)</div>
-
-    <asp:Button ID="btnAddWithoutVerify" runat="server" Text="Add without Verifying" CssClass="btn noverify-btn w-100 rounded-pill shadow-sm" />
-    <div class="small-text text-center">(no charges)</div>
   </div>
 </div>
 
@@ -915,24 +1022,38 @@
              });
          });
      </script>
-    <script>
-        function togglePaymentFields(dropdown) {
-            var value = dropdown.value;
-            if (value === "UPI") {
-                document.getElementById("upiSection").style.display = "block";
-                document.getElementById("bankSection").style.display = "none";
-            } else {
-                document.getElementById("upiSection").style.display = "none";
-                document.getElementById("bankSection").style.display = "block";
-            }
+<script>
+    function togglePaymentFields(dropdown) {
+        var value = dropdown.value;
+
+        if (value === "UPI") {
+            document.getElementById("upiSection").style.display = "block";
+            document.getElementById("bankSection").style.display = "none";
+        } else {
+            document.getElementById("upiSection").style.display = "none";
+            document.getElementById("bankSection").style.display = "block";
+        }
+    }
+
+    function setValidationGroup() {
+        var ddl = document.getElementById("<%= ddlPaymentMethod.ClientID %>");
+        var btn = document.getElementById("<%= LinkButton2.ClientID %>");
+
+        if (ddl.value === "UPI") {
+            btn.validationGroup = "UPIGroup";
+        } else {
+            btn.validationGroup = "BankGroup";
         }
 
-        // Page load pe bhi check kare (default selection ke liye)
-        window.onload = function () {
-            var ddl = document.getElementById("<%= ddlPaymentMethod.ClientID %>");
-            togglePaymentFields(ddl);
-        };
-    </script>
+        return Page_ClientValidate(btn.validationGroup);
+    }
+
+    window.onload = function () {
+        var ddl = document.getElementById("<%= ddlPaymentMethod.ClientID %>");
+        togglePaymentFields(ddl);
+    };
+</script>
+
 
     <script>
         document.getElementById("searchBox").addEventListener("keyup", function () {
