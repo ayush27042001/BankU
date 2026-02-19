@@ -79,8 +79,19 @@ namespace NeoXPayout
             string accountNo = txtAccountNo.Text.Trim();          
             string mobile = txtMobileBill.Text.Trim();             
             string operatorCode = hfOperatorText.Value;           
-            string orderid = Guid.NewGuid().ToString("N").Substring(0, 12); 
-           
+            string orderid = Guid.NewGuid().ToString("N").Substring(0, 12);
+            string MPIN = Session["UserMPIN"].ToString();
+            if (MPIN != txtMpin.Text)
+            {
+                ErrHeader.CssClass = "modal-title";
+                ErrHeader.Text = "Transaction Failed!";
+                lblErrorMessage.Text = "Enter Correct MPIN!";
+                ErrMobile.Text = mobile;
+                ErrId.Text =  orderid;             
+                string script = "var myModal = new bootstrap.Modal(document.getElementById('ErrorModal')); myModal.show();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showErrorModal", script, true);
+                return;
+            }
             string username = "6200361373";
             string token = "e34173d9f32d5e44d2c5e6061867374d";
 

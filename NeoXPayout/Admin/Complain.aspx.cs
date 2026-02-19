@@ -24,7 +24,6 @@ namespace NeoXPayout.Admin
 
             }
         }
-
         private void LoadDisputes()
         {
 
@@ -32,7 +31,7 @@ namespace NeoXPayout.Admin
                 ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand(
-                    "SELECT Id, UserId, TransactionId, Type, Description, Status, CreatedAt FROM userTicket  ORDER BY CreatedAt DESC", con);
+                    "SELECT Id, UserId, TransactionId, Type, Description, Status,FilePath, CreatedAt FROM userTicket  ORDER BY CreatedAt DESC", con);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
 

@@ -119,6 +119,7 @@ namespace NeoXPayout
             con.Close();
             Response.Redirect("Dashboard.aspx");
 
+
         }
 
         protected void rptProduct_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -184,6 +185,7 @@ namespace NeoXPayout
                     cmd.Parameters.AddWithValue("@VendorId", Id);
                     cmd.Parameters.AddWithValue("@PaymentMethod", "UPI");
                     cmd.Parameters.AddWithValue("@UPIID", txtUpiId.Text.Trim());
+                    getdetails1();
                 }
                 else if (paymentMethod == "Bank")
                 {
@@ -389,6 +391,7 @@ namespace NeoXPayout
                 cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = userId;
                 cmd.ExecuteNonQuery();
             }
+            getdetails2();
         }
         private void ShowMessage(string message, bool isSuccess)
         {
@@ -581,6 +584,8 @@ namespace NeoXPayout
                 cmd.Parameters.AddWithValue("@PhoneNumber", txtphn.Text);
                 cmd.Parameters.AddWithValue("@Email", txtemailid.Text);
                 cmd.ExecuteNonQuery();
+                getdetails();
+              
             }
         }
 
