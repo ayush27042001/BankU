@@ -177,6 +177,17 @@ namespace NeoXPayout
         }
 
         [System.Web.Services.WebMethod]
+        public static bool ValidateMPIN(string enteredMpin)
+        {
+            string sessionMpin = HttpContext.Current.Session["UserMPIN"]?.ToString();
+
+            if (string.IsNullOrEmpty(sessionMpin))
+                return false;
+
+            return sessionMpin == enteredMpin;
+        }
+
+        [System.Web.Services.WebMethod]
         public static bool ValidateBank(string AccNo)
         {
             string userid = HttpContext.Current.Session["BankURTUID"].ToString();
@@ -201,9 +212,9 @@ namespace NeoXPayout
 
         //protected void BankPayout_Click(object sender, EventArgs e)
         //{
-        //    string UserId= Session["BankURTUID"].ToString();
+        //    string UserId = Session["BankURTUID"].ToString();
         //    decimal balance = 0;
-        //    decimal.TryParse(Um.GetBalance(UserId), out balance); 
+        //    decimal.TryParse(Um.GetBalance(UserId), out balance);
         //    //string payoutTo = txtPayout.Text.Trim();
         //    string accountNumber = txtAccount.Text.Trim();
         //    string beneName = txtBene.Text.Trim();
@@ -214,25 +225,25 @@ namespace NeoXPayout
         //    string remarks = txtMobile.Text.Trim();
         //    string beneficiaryEmail = ddlBankName.SelectedValue;
         //    string orderId = "ORD" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
-        //    string Mobile= txtMobile.Text.Trim();
+        //    string Mobile = txtMobile.Text.Trim();
         //    string BankName = ddlBankName.SelectedValue;
         //    Random random = new Random();
-        //    string RefId = random.Next(1000000000, 1999999999).ToString(); 
+        //    string RefId = random.Next(1000000000, 1999999999).ToString();
 
 
         //    if (amount > balance)
         //    {
         //        lblMessage.InnerText = "Error: Insufficient balance for this payout.";
-        //        lblMessage.Attributes["class"] = "text-danger"; 
-        //        return; 
+        //        lblMessage.Attributes["class"] = "text-danger";
+        //        return;
         //    }
-        //    else 
+        //    else
         //    {
         //        Decimal NewBalance = balance - amount;
         //        string con = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
         //        using (SqlConnection conn = new SqlConnection(con))
         //        {
-        //             string query = "insert into tbluserbalance(Old_Bal,Amount,New_Bal,TxnType,crDrType,UserId,Remarks,TxnDatetime)values(@Old_Bal,@Amount,@New_Bal,@TxnType,@crDrType,@UserId,@Remarks,GETDATE());";
+        //            string query = "insert into tbluserbalance(Old_Bal,Amount,New_Bal,TxnType,crDrType,UserId,Remarks,TxnDatetime)values(@Old_Bal,@Amount,@New_Bal,@TxnType,@crDrType,@UserId,@Remarks,GETDATE());";
         //            using (SqlCommand cmd = new SqlCommand(query, conn))
         //            {
         //                cmd.Parameters.AddWithValue("@Old_Bal", balance);
@@ -296,7 +307,7 @@ namespace NeoXPayout
         //    lblMessage.InnerText = jObjects["Message"].ToString();
         //    string scode = jObjects["Status"].ToString();
         //    if (scode == "1")
-        //    {            
+        //    {
         //        using (SqlConnection conn = new SqlConnection(connStr))
         //        {
         //            string updateQuery = @"

@@ -112,9 +112,9 @@
                             ₹<%# string.Format("{0:n2}", Eval("New_Bal")) %>
                         </td>
 
-                        <td data-order='<%# Eval("TxnDatetime","{0:yyyyMMdd}") %>'>
-                            <%# Eval("TxnDatetime","{0:dd MMM yyyy}") %>
-                        </td>
+                     <td data-order='<%# Eval("TxnDatetime","{0:yyyyMMddHHmmss}") %>'>
+                        <%# Eval("TxnDatetime","{0:dd MMM yyyy hh:mm tt}") %>
+                    </td>
 
                         <td class="text-muted text-truncate" style="max-width:180px;">
                             <%# Eval("Remarks") %>

@@ -128,8 +128,8 @@
                             </span>
                         </td>
 
-                        <td data-order='<%# Eval("TxnDate","{0:yyyyMMdd}") %>'>
-                            <%# Eval("TxnDate","{0:dd MMM yyyy}") %>
+                        <td data-order='<%# Eval("TxnDate","{0:yyyyMMddHHmmss}") %>'>
+                            <%# Eval("TxnDate","{0:dd MMM yyyy hh:mm tt}") %>
                         </td>
                     </tr>
                 </ItemTemplate>
