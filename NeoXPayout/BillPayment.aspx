@@ -599,11 +599,14 @@ table th {
             <asp:HiddenField ID="hfOperatorText" runat="server" />
             <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlOperatorBill" InitialValue="" ErrorMessage="Select operator" CssClass="text-danger" Display="Dynamic" ValidationGroup="BillPay" />
         </div>
-
-      <%--  <div class="mb-3">
-            <asp:TextBox ID="txtBillAmount" runat="server" CssClass="form-control" TextMode="Number" placeholder="Amount (₹)"></asp:TextBox>
-            <asp:RequiredFieldValidator runat="server" ControlToValidate="txtBillAmount" ErrorMessage="Amount required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BillPay" />
-        </div>--%>
+         <div class="mb-3">
+               <asp:TextBox ID="txtMpin" runat="server" CssClass="form-control" placeholder="MPIN" autocomplete="new-password"
+                inputmode="numeric" TextMode="Password" MaxLength="4"></asp:TextBox>
+               <asp:RegularExpressionValidator  ControlToValidate="txtMpin" ValidationExpression="^\d{4}$" ErrorMessage="Enter 4 digit MPIN" ForeColor="Red"
+                runat="server"  Display="Dynamic" />
+               <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtMpin"
+                ErrorMessage="MPIN is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BillPay"/>
+         </div>
 
         <div class="text-end">
             <asp:LinkButton runat="server" CssClass="btn btn-primary" Style="background-color:#6e007c" 

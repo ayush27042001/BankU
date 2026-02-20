@@ -205,8 +205,16 @@ namespace NeoXPayout
             string circle = ddlCircle.SelectedValue;
             decimal amount;
             decimal.TryParse(txtAmount.Text.Trim(), out amount);
-            
-           
+            string MPIN = Session["UserMPIN"].ToString();
+            if (MPIN != txtMpin.Text) 
+            {
+                errorModalLabel.Text = "Transaction Failed";
+                lblmsg.Text = "Enter Correct MPIN";
+                string script = "var myModal = new bootstrap.Modal(document.getElementById('errorModal')); myModal.show();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showErrorModal", script, true);
+                return;
+            }
+
             string urlRecharge = "https://partner.banku.co.in/api/Recharge";
             string bodyRecharge = "{\"UserId\":\"" + UserId + "\",\"Apiversion\":\"" + "1.0" + "\",\"ServiceName\":\"" + "PREPAID" + "\",\"Amt\":\"" + amount + "\",\"OperatorId\":\"" + Operator + "\",\"Number\":\"" + Mobile + "\"}";
             string ApiresponseRecharge = String.Empty;
@@ -267,6 +275,10 @@ namespace NeoXPayout
 
                 string script = "var myModal = new bootstrap.Modal(document.getElementById('successModal')); myModal.show();";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccessModal", script, true);
+                txtAmount.Text = "";
+                txtMpin.Text = "";
+                txtMobile.Text = "";
+
             }
             else if (Status =="FAILED" && data != null)
             {
@@ -615,8 +627,16 @@ namespace NeoXPayout
             string orderId = "ORD" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
             string circle = DropDownList1.SelectedValue;
             decimal amount;
-            decimal.TryParse(TextBox2.Text.Trim(), out amount);        
-
+            decimal.TryParse(TextBox2.Text.Trim(), out amount);
+            string MPIN = Session["UserMPIN"].ToString();
+            if (MPIN != dthmpin.Text)
+            {
+                errorModalLabel.Text = "Transaction Failed";
+                lblmsg.Text = "Enter Correct MPIN";
+                string script = "var myModal = new bootstrap.Modal(document.getElementById('errorModal')); myModal.show();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showErrorModal", script, true);
+                return;
+            }
             string urlRecharge = "https://partner.banku.co.in/api/Recharge";
             string bodyRecharge = "{\"UserId\":\"" + UserId + "\",\"Apiversion\":\"" + "1.0" + "\",\"ServiceName\":\"" + "DTH" + "\",\"Amt\":\"" + amount + "\",\"OperatorId\":\"" + Operator + "\",\"Number\":\"" + Mobile + "\"}";
             string ApiresponseRecharge = String.Empty;

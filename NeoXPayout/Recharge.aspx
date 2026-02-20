@@ -540,11 +540,15 @@ table th {
                 <asp:RequiredFieldValidator ID="rfvAmount" runat="server" ControlToValidate="txtAmount"
                     ErrorMessage="Amount is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup"/>
             </div>
+             <div class="mb-3">
+                <asp:TextBox ID="txtMpin" runat="server" CssClass="form-control" placeholder="MPIN" autocomplete="new-password"
+                 inputmode="numeric" TextMode="Password" MaxLength="4"></asp:TextBox>
+                <asp:RegularExpressionValidator  ControlToValidate="txtMpin" ValidationExpression="^\d{4}$" ErrorMessage="Enter 4 digit MPIN" ForeColor="Red"
+                 runat="server" />
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtMpin"
+                  ErrorMessage="MPIN is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup"/>
+            </div>
             <div class="text-end mt-1">
-                <%--<button type="button" class="btn btn-link p-0 text-primary view-plans-btn" 
-                        data-bs-toggle="offcanvas" data-bs-target="#plansSidebar">
-                    View Plans
-                </button>--%>
                 <asp:LinkButton runat="server" class="btn btn-link p-0 text-primary view-plans-btn" OnClientClick="document.getElementById('<%= hfLastSidebar.ClientID %>').value='singlePayoutSidebar';" ID="PlanMobile" OnClick="PlanMobile_Click">View Plans</asp:LinkButton>
             </div>
 
@@ -643,11 +647,17 @@ table th {
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="TextBox2"
                     ErrorMessage="Amount is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup1"/>
             </div>
+            <div class="mb-3">
+               <asp:TextBox ID="dthmpin" runat="server" CssClass="form-control" placeholder="MPIN" TextMode="Password" autocomplete="new-password"
+                       inputmode="numeric" MaxLength="4"></asp:TextBox>
+
+            <asp:RegularExpressionValidator  ControlToValidate="dthmpin" ValidationExpression="^\d{4}$" ErrorMessage="Enter 4 digit MPIN" ForeColor="Red"
+               runat="server"  Display="Dynamic" />
+
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="dthmpin"
+                    ErrorMessage="MPIN is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup1"/>
+            </div>
             <div class="text-end mt-1">
-               <%-- <button type="button" class="btn btn-link p-0 text-primary view-plans-btn" 
-                        data-bs-toggle="offcanvas" data-bs-target="#plansSidebar">
-                    View Plans
-                </button>--%>
                 <asp:LinkButton runat="server" class="btn btn-link p-0 text-primary view-plans-btn" ID="PlanDth"  OnClientClick="document.getElementById('<%= hfLastSidebar.ClientID %>').value='dthSidebar';" OnClick="PlanDth_Click">View Plans</asp:LinkButton>
             </div>
 

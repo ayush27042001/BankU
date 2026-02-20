@@ -101,6 +101,11 @@
            <asp:TextBox runat="server" ID="txtDescription" cssclass="form-control" TextMode="MultiLine" Rows="4" Placeholder="Enter description here"></asp:TextBox>
            
         </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Upload File</label>
+        
+           <asp:FileUpload runat="server" ID="fDoc" cssclass="form-control" />
+        </div>
      
         <div class="d-flex justify-content-between mt-4">
             <asp:LinkButton runat="server" ID="btnSave" class="btn text-white px-4" style="background:purple;" OnClick="btnSave_Click">Send</asp:LinkButton>

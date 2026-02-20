@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -65,7 +66,24 @@ namespace NeoXPayout
             string transactionId = txtTxn.Text.Trim();
             string userId = Session["BankURTUID"].ToString();
             string description = txtDescription.Text.Trim();
+            string filePath = "";
 
+            if (fDoc.HasFile)
+            {
+                string folderPath = Server.MapPath("~/Uploads/Tickets/");
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(fDoc.FileName);
+                string fullPath = Path.Combine(folderPath, fileName);
+
+                fDoc.SaveAs(fullPath);
+
+                filePath = "/Uploads/Tickets/" + fileName;
+            }
 
             string connectionString = ConfigurationManager
                 .ConnectionStrings["BankUConnectionString"].ConnectionString;
@@ -74,11 +92,7 @@ namespace NeoXPayout
             {
                 con.Open();
 
-                string query = @"
-            INSERT INTO userTicket
-            (UserId, TransactionId, Type, Description, Status, CreatedAt)
-            VALUES
-            (@UserId, @TransactionId, @Type, @Description, @Status, GETDATE())";
+                string query = @" INSERT INTO userTicket  (UserId, TransactionId, Type, Description, Status, CreatedAt, FilePath)  VALUES  (@UserId, @TransactionId, @Type, @Description, @Status, GETDATE(), @FilePath)";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -87,6 +101,8 @@ namespace NeoXPayout
                     cmd.Parameters.AddWithValue("@Type", ticketType);
                     cmd.Parameters.AddWithValue("@Description", description);
                     cmd.Parameters.AddWithValue("@Status", "Pending");
+                    cmd.Parameters.AddWithValue("@FilePath", filePath);
+
                     cmd.ExecuteNonQuery();
                 }
             }

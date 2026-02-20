@@ -14,9 +14,15 @@ namespace NeoXPayout
             if (!IsPostBack)
             {
                 if (Session["BankURTName"] != null)
+                {
                     fullname.Text = Session["BankURTName"].ToString();
+                }
+                else
+                {
+                    Response.Redirect("LoginBankU.aspx");
+                }
 
-              
+
                 if (Session["MPINAttempts"] == null)
                     Session["MPINAttempts"] = 0;
             }

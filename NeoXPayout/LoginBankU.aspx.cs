@@ -112,6 +112,7 @@ namespace NeoXPayout
 
                 LoadUserSessionFromRegistration(number);
                 Session["LastPage"] = "Dashboard.aspx";
+                Session["IsMPINVerified"] = false;
                 Response.Redirect("MPIN.aspx");
                 return;
             }
