@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+
     const validateUrl = "https://api.banku.co.in/api/IDFCPayout/idfc/bene-validation";
     const payoutUrl = "https://api.banku.co.in/api/IDFCPayout/idfc/fund-transfer";
     const headers = {
@@ -20,7 +21,7 @@
             beneValidationReq: {
                 remitterName: $("#ContentPlaceHolder1_hdnUserName").val(),
                 companyCode: "BANKU",
-                remitterMobileNumber: "+91-"+$("#ContentPlaceHolder1_DebitAcc").val() || "+91-9999999999",
+                remitterMobileNumber: "+91-" + $("#ContentPlaceHolder1_DebitAcc").val() || "+91-9999999999",
                 accountType: "10",
                 creditorAccountId: accountNo,
                 ifscCode: ifsc,
@@ -76,12 +77,17 @@
     $("#ContentPlaceHolder1_hfPaymentMode").val("IMPS");
 
     $("#ContentPlaceHolder1_BankPayout2").on("click", function (e) {
+
         $(".loader-overlay").css("display", "flex");
         e.preventDefault();
         if (!Page_ClientValidate("BankPayoutGroup")) {
             $(".loader-overlay").css("display", "none");
             return;
         }
+        let mpin = $("#ContentPlaceHolder1_txtMpin").val().trim();
+
+        $("#ContentPlaceHolder1_BankPayout2").prop("disabled", true).val("Processing...");
+
         const payload = {
             initiateAuthGenericFundTransferAPIReq: {
                 tellerBranch: "41101",
@@ -97,13 +103,15 @@
                 beneficiaryName: $("#ContentPlaceHolder1_txtBene").val(),
                 beneficiaryAddress: "NA",
                 emailID: "support@banku.co.in",
-                mobileNo: "+91-"+$("#ContentPlaceHolder1_txtMobile").val(),
+                mobileNo: "+91-" + $("#ContentPlaceHolder1_txtMobile").val(),
                 companyCode: "BANKU",
-                userId: $("#ContentPlaceHolder1_hdnUserId").val()
+                userId: $("#ContentPlaceHolder1_hdnUserId").val(),
+                mpin: mpin
             }
         };
 
-        $("#ContentPlaceHolder1_BankPayout2").prop("disabled", true).val("Processing...");
+
+        /*    $("#ContentPlaceHolder1_BankPayout2").prop("disabled", true).val("Processing...");*/
 
         $.ajax({
             url: payoutUrl,
@@ -116,26 +124,27 @@
                 const meta = apiResp?.metaData;
                 const data = apiResp?.resourceData;
                 if (meta?.status === "SUCCESS") {
+                    $("#ContentPlaceHolder1_BankPayout2").prop("disabled", true).val("Proceed");
+                    $("#ContentPlaceHolder1_txtAccount").val("");
+                    $("#ContentPlaceHolder1_txtIFSC").val("");
+                    $("#ContentPlaceHolder1_txtBene").val("");
+                    $("#ContentPlaceHolder1_txtAmount").val("");
+                    $("#ContentPlaceHolder1_txtMobile").val("");
+                    $("#ContentPlaceHolder1_txtMpin").val("");
+                    $(".loader-overlay").css("display", "none");
                     showInvoice(data, meta, $("#ContentPlaceHolder1_txtAccount").val(), $("#ContentPlaceHolder1_txtAmount").val(), $("#ContentPlaceHolder1_txtIFSC").val());
+
                     var modal = new bootstrap.Modal(document.getElementById('InvoiceTrnx'));
                     modal.show();
                 } else {
-                    showFailed(meta?.message || "Transaction failed.");
+                    showFailed(res?.message || meta?.message || "Transaction failed.");
                 }
                 $(".loader-overlay").css("display", "none");
             },
             error: function () {
                 showFailed("Fund transfer failed due to server error.");
             },
-            complete: function () {
-                $("#ContentPlaceHolder1_BankPayout2").prop("disabled", true).val("Proceed");
-                $("#ContentPlaceHolder1_txtAccount").val("");
-                $("#ContentPlaceHolder1_txtIFSC").val("");
-                $("#ContentPlaceHolder1_txtBene").val("");
-                $("#ContentPlaceHolder1_txtAmount").val("");
-                $("#ContentPlaceHolder1_txtMobile").val("");
-                $(".loader-overlay").css("display", "none");
-            }
+
         });
     });
 

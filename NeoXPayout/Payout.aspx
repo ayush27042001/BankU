@@ -290,6 +290,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
   <hr />
+  <%--  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#failedModal">
+    Test Modal
+</button>--%>
     <div class="loader-overlay">
         <div class="spinner-border text-purple" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -486,14 +489,14 @@
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <asp:TextBox ID="txtIFSC" runat="server" CssClass="form-control" placeholder="IFSC Code" ReadOnly="true"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvIFSC" runat="server" ControlToValidate="txtIFSC"
                                 ErrorMessage="IFSC Code is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
                         </div>
-                        <div class="col-md-3">
-                            <button type="button" style="background-color: #6e007c; padding: 10px" id="btnValidateBene" class="btn-sm btn btn-success">Validate</button>
-                        </div>
+                      <%-- <div class="col-md-3">--%>
+                            <button type="button" style="background-color: #6e007c; padding: 10px" id="btnValidateBene" class="btn-sm btn btn-success" disabled hidden>Validate</button>
+                     <%-- </div>--%>
                     </div>
 
                     <div class="mb-3">
@@ -512,14 +515,7 @@
                         <button type="button" class="mode-btn active" id="btnIMPS" data-mode="IMPS">IMPS</button>
                         <button type="button" class="mode-btn" id="btnNEFT" data-mode="NEFT">NEFT</button>
                         <asp:HiddenField ID="hfPaymentMode" runat="server" />
-                        <%--<asp:RequiredFieldValidator 
-                            ID="rfvPaymentMode" 
-                            runat="server" 
-                            ControlToValidate="hfPaymentMode" 
-                            ErrorMessage="Please select a payment mode" 
-                            Display="Dynamic" 
-                            ForeColor="Red">
-                        </asp:RequiredFieldValidator>--%>
+                      
                     </div>
                     <asp:HiddenField runat="server" ID="hdnUserId" />
                     <asp:HiddenField runat="server" ID="hdnUserName" />
@@ -528,6 +524,20 @@
                         <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Mobile Number"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtMobile"
                             ErrorMessage="Mobile Number is required" CssClass="text-danger" Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+                    </div>
+
+                   <div class="mb-3" style="margin-top: 10px">   
+                        <asp:TextBox  ID="txtMpin"  runat="server" CssClass="form-control" placeholder="MPIN" MaxLength="4" >
+                        </asp:TextBox>
+
+                        <!-- Required -->
+                        <asp:RequiredFieldValidator  ID="rfMpin"  runat="server" ControlToValidate="txtMpin" ErrorMessage="MPIN is required" 
+                            CssClass="text-danger"  Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+
+                        <!-- Only 4 digit number -->
+                        <asp:RegularExpressionValidator ID="revMpin" runat="server" ControlToValidate="txtMpin" ValidationExpression="^\d{4}$"
+                            ErrorMessage="MPIN must be 4 digits"  CssClass="text-danger"  Display="Dynamic" ValidationGroup="BankPayoutGroup" />
+
                     </div>
                     <asp:Button runat="server" disabled CssClass="btn btn-primary w-100" Style="background-color: #6e007c"
                         ID="BankPayout2" ValidationGroup="BankPayoutGroup" Text="Proceed" />
@@ -691,14 +701,25 @@
 
     <div class="modal fade" id="failedModal" tabindex="-1" data-bs-backdrop="static"
         data-bs-keyboard="false" style="z-index: 9999999 !important;">
+    
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">Failed</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+
                 <div class="modal-body" id="failedMessage">
                 </div>
+
+               
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -753,12 +774,14 @@
             win.document.close();
         }
         function fillBankDetails(ddl) {
-
+            var btn = document.getElementById('<%= BankPayout2.ClientID %>');
             var value = ddl.value;
-
+            var sessionName = '<%= Session["BankURTName"] != null ? Session["BankURTName"].ToString() : "" %>';
             if (value === "") {
                 document.getElementById('<%= txtAccount.ClientID %>').value = "";
-            document.getElementById('<%= txtIFSC.ClientID %>').value = "";
+                document.getElementById('<%= txtIFSC.ClientID %>').value = "";
+                document.getElementById('<%= txtBene.ClientID %>').value = "";
+                btn.disabled = true; 
             return;
         }
 
@@ -766,7 +789,9 @@
 
         if (parts.length === 2) {
             document.getElementById('<%= txtAccount.ClientID %>').value = parts[0];
-                document.getElementById('<%= txtIFSC.ClientID %>').value = parts[1];
+            document.getElementById('<%= txtIFSC.ClientID %>').value = parts[1];
+            document.getElementById('<%= txtBene.ClientID %>').value = sessionName;
+            btn.disabled = false; 
             }
         }
     </script>
@@ -789,7 +814,6 @@
                 .catch(err => console.error(err));
         });
     </script>
-
 
     <script>
         document.querySelectorAll(".toggle-btn").forEach(btn => {
@@ -842,8 +866,6 @@
 
     </script>
 
-
-    <!-- Clear data on close -->
     <script>
         document.getElementById('singlePayoutSidebar').addEventListener('hidden.bs.offcanvas', function () {
             
