@@ -1,13 +1,28 @@
-﻿const apiBase = "https://api.banku.co.in/api/admin";
-const apiBaseforDD = "https://api.banku.co.in/api/dropdowns";
+﻿//const apiBase = "https://api.banku.co.in/api/admin";
+const apiBase = "https://localhost:7142/api/admin";
+//const apiBaseforDD = "https://api.banku.co.in/api/dropdowns";
+const apiBaseforDD = "https://localhost:7142/api/dropdowns";
 let headerPage = 1, slabPage = 1, distPage = 1;
 const pageSize = 5;
+
+$("#planId").change(function () {
+
+    loadHeaders(headerPage);
+});
 
 function loadServices() {
     $.get(`${apiBaseforDD}/services`, function (data) {
         const ddl = $("#serviceId");
         ddl.empty().append('<option value="">Select Service</option>');
         data.forEach(s => ddl.append(`<option value="${s.id}">${s.serviceName}</option>`));
+    });
+}
+
+function loadPlans() {
+    $.get(`${apiBaseforDD}/commission-plans`, function (data) {
+        const ddl = $("#planId");
+        ddl.empty().append('<option value="">Select Plan</option>');
+        data.forEach(s => ddl.append(`<option value="${s.planId}">${s.display}</option>`));
     });
 }
 
@@ -27,8 +42,8 @@ function loadOperators(serviceName) {
     });
 }
 
-function loadCommissionRules(serviceId, providerId) {
-    $.get(`${apiBaseforDD}/commission-rules?serviceId=${serviceId}&providerId=${providerId}`, function (data) {
+function loadCommissionRules(serviceId, providerId, planid) {
+    $.get(`${apiBaseforDD}/commission-rules?serviceId=${serviceId}&providerId=${providerId}&planid=${planid}`, function (data) {
         const ddl = $("#slabRuleId");
         ddl.empty().append('<option value="">Select Rule</option>');
         data.forEach(r => ddl.append(`<option value="${r.commissionRuleId}">${r.display}</option>`));
@@ -46,11 +61,17 @@ function loadCommissionSlabs(ruleId) {
 
 // Headers
 function loadHeaders(page = 1) {
-    $.get(`${apiBase}/commission-headers?page=${page}&pageSize=${pageSize}`, function (data) {
+    if ($("#planId option:selected").val() == "") {
+        alert('Please Select Plan');
+        return;
+    }
+    var PlanId = $("#planId option:selected").val();
+    $.get(`${apiBase}/commission-headers?planId= ${PlanId} &page=${page}&pageSize=${pageSize}`, function (data) {
         const tbody = $("#headerTable tbody"); tbody.empty();
         data.items.forEach(h => {
             tbody.append(`<tr>
         <td>${h.commissionRuleId}</td>
+         <td>${h.planName}</td>
         <td>${h.serviceId}</td>
         <td>${h.providerId}</td>
         <td>${h.operatorId || '-'}</td>
@@ -64,9 +85,28 @@ function loadHeaders(page = 1) {
 }
 
 $("#addHeader").click(() => {
-    const dto = { serviceId: $("#serviceId option:selected").text(), providerId: $("#providerId option:selected").val(), operatorId: $("#operatorId").val() ? parseInt($("#operatorId").val()) : null };
+    const dto = { planId: $("#planId option:selected").val(), serviceId: $("#serviceId option:selected").text(), providerId: $("#providerId option:selected").val(), operatorId: $("#operatorId").val() ? parseInt($("#operatorId").val()) : null };
     if (!dto.serviceId || !dto.providerId) { alert("Service & Provider required"); return; }
-    $.ajax({ url: `${apiBase}/commission-headers`, type: 'POST', contentType: 'application/json', data: JSON.stringify(dto), success: () => loadHeaders(headerPage), error: err => alert(err.responseText) });
+    $.ajax({
+        url: `${apiBase}/commission-headers`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dto),
+        success: function () {
+            loadHeaders(headerPage);
+
+            const serviceId = $("#serviceId option:selected").text();
+            const providerId = $("#providerId").val();
+            const planid = $("#planId").val();
+
+            if (serviceId && providerId) {
+                loadCommissionRules(serviceId, providerId, planid);
+            }
+        },
+        error: function (err) {
+            alert(err.responseText);
+        }
+    });
 });
 
 function toggleHeader(id, current) {
@@ -101,9 +141,37 @@ function loadSlabs(page = 1) {
 }
 
 $("#addSlab").click(() => {
-    const dto = { commissionRuleId: parseInt($("#slabRuleId").val()), fromAmount: parseFloat($("#fromAmount").val()), toAmount: parseFloat($("#toAmount").val()) };
-    if (dto.fromAmount >= dto.toAmount) { alert("From < To"); return; }
-    $.ajax({ url: `${apiBase}/commission-slabs`, type: 'POST', contentType: 'application/json', data: JSON.stringify(dto), success: () => loadSlabs(slabPage), error: err => alert(err.responseText) });
+
+    const ruleId = parseInt($("#slabRuleId").val());
+
+    const dto = {
+        commissionRuleId: ruleId,
+        fromAmount: parseFloat($("#fromAmount").val()),
+        toAmount: parseFloat($("#toAmount").val())
+    };
+
+    if (dto.fromAmount >= dto.toAmount) {
+        alert("From < To");
+        return;
+    }
+
+    $.ajax({
+        url: `${apiBase}/commission-slabs`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dto),
+        success: function () {
+
+            // reload slab grid
+            loadSlabs(slabPage);
+
+            // reload dropdown after add success
+            loadCommissionSlabs(ruleId);
+        },
+        error: function (err) {
+            alert(err.responseText);
+        }
+    });
 });
 function deleteSlab(id) { if (!confirm("Delete slab?")) return; $.ajax({ url: `${apiBase}/commission-slabs/${id}`, type: 'DELETE', success: () => loadSlabs(slabPage) }); }
 $("#prevSlab").click(() => { if (slabPage > 1) slabPage--; loadSlabs(slabPage); });
@@ -145,6 +213,7 @@ $("#nextDist").click(() => { distPage++; loadDistributions(distPage); });
 
 // Initial load
 $(document).ready(function () {
+    loadPlans();
     loadServices();
 
     $("#serviceId").change(function () {
@@ -157,7 +226,8 @@ $(document).ready(function () {
     $("#providerId").change(function () {
         const serviceId = $("#serviceId option:selected").text();
         const providerId = $(this).val();
-        if (serviceId && providerId) loadCommissionRules(serviceId, providerId);
+        const planid = $("#planId").val();
+        if (serviceId && providerId && planid) loadCommissionRules(serviceId, providerId, planid);
         $("#distSlabId").empty().append('<option value="">Select Slab</option>');
     });
 
@@ -165,7 +235,7 @@ $(document).ready(function () {
         const ruleId = $(this).val();
         loadCommissionSlabs(ruleId);
     });
-    loadHeaders(headerPage);
+
     $("#slabRuleId").change(() => loadSlabs(slabPage));
     $("#distSlabId").change(() => loadDistributions(distPage));
 });

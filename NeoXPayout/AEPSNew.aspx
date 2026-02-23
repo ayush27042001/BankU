@@ -443,15 +443,8 @@
         </div>
     </div>
     <asp:Panel runat="server" ID="pnlMain">
-        <button type="button" class="btn btn-receipt btn-primary hidden">Test</button>
-        <button type="button" class="btn btnTxn btn-primary hidden">Testtxn</button>
-        <%--<button class="btn btn-primary hidden " type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsLoginSidebar">
-            Open AEPS Login
-        </button>--%>
-        <button class="btn btn-primary hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#aepsKYCModal">
-            EKyc
-        </button>
-
+        
+     
         <div class="container">
 
 

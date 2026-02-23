@@ -1732,6 +1732,7 @@
     <Content Include="Transaction.aspx" />
     <Content Include="TransactionDone.aspx" />
     <Content Include="Views\Admin\CommisionMgmt\CommisionMgmt.html" />
+    <Content Include="Views\Admin\CommisionMgmt\commission-plan.html" />
     <Content Include="ViewUserDist.aspx" />
     <Content Include="wait.jpg" />
     <Content Include="WalletReport.aspx" />
