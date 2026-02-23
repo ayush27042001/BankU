@@ -525,9 +525,9 @@ function callAgentStatusV2(callback) {
             if (res.Status === "SUCCESS") {
                 callback(true);
             } else {
-                showFailed(res?.Data[0]?.status || res?.Message);
+                //showFailed(res?.Data[0]?.status || res?.Message);
                 openLoginPopup();
-                callback(false);  
+                callback(false);
             }
         },
         error: function (xhr) {
@@ -558,7 +558,7 @@ function callAgentStatus() {
 
                 $(".loader-overlay").css("display", "none");
             } else {
-                showFailed(res?.Data[0]?.status || res?.Message);
+                //showFailed(res?.Data[0]?.status || res?.Message);
                 openLoginPopup();
                 $(".loader-overlay").css("display", "none");
             }
@@ -681,9 +681,18 @@ $(".checkEKYCStatus").click(function () {
         success: function (res) {
             console.log("AEPS Response:", res);
             if (res.Status === "SUCCESS") {
-                showSuccess(res.Message);
-                referenceKey = res.Data[0].xmllist.referenceKey;
-                $(".loader-overlay").css("display", "none");
+                if (res.Message == "Biometric authentication required") {
+                    showFailed(res.Message);
+                    var myOffcanvas = new bootstrap.Offcanvas($('#aepsEKYCModel')[0]);
+                    myOffcanvas.show();
+                    referenceKey = res.Data[0].xmllist.referenceKey;
+                    $(".loader-overlay").css("display", "none");
+                }
+                else {
+                    showSuccess(res.Message);
+                    referenceKey = res.Data[0].xmllist.referenceKey;
+                    $(".loader-overlay").css("display", "none");
+                }
             }
             else {
                 showFailed(res?.Data[0]?.status || res?.Message);
@@ -695,6 +704,7 @@ $(".checkEKYCStatus").click(function () {
                     var myOffcanvas = new bootstrap.Offcanvas($('#aepsLoginSidebar')[0]);
                     myOffcanvas.show();
                 }
+
                 $(".loader-overlay").css("display", "none");
             }
         },

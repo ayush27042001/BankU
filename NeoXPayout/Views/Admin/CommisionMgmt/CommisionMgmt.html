@@ -26,15 +26,18 @@
             <div class="card-body">
                 <form class="row g-2 mb-3" id="headerForm">
                     <div class="col-md-3">
+                        <select id="planId" class="form-select"><option value="">Select Plan</option></select>
+                    </div>
+                    <div class="col-md-2">
                         <select id="serviceId" class="form-select"><option value="">Select Service</option></select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select id="providerId" class="form-select"><option value="">Select Provider</option></select>
                     </div>
                     <div class="col-md-3">
                         <select id="operatorId" class="form-select"><option value="">Select Operator</option></select>
                     </div>
-                    <div class="col-md-3 d-grid">
+                    <div class="col-md-2 d-grid">
                         <button type="button" class="btn btn-primary" id="addHeader">Add Rule</button>
                     </div>
                 </form>
@@ -43,6 +46,7 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
+                                <th>Plan Name</th>
                                 <th>Service</th>
                                 <th>Provider</th>
                                 <th>Operator</th>
