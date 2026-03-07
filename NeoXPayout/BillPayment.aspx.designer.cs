@@ -183,7 +183,7 @@ namespace NeoXPayout
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBillAmount;
+        protected global::System.Web.UI.WebControls.TextBox lblBillAmount;
 
         /// <summary>
         /// lblBillNo control.

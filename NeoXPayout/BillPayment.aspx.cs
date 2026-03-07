@@ -160,7 +160,7 @@ namespace NeoXPayout
         }
         protected void btnPayNow_Click(object sender, EventArgs e)
         {
-            string Amount = HiddenField1.Value;
+            string Amount = lblBillAmount.Text;
             string Name = HiddenField2.Value;
             string billerResponse = HiddenField3.Value;
             string inputParams = HiddenField4.Value;

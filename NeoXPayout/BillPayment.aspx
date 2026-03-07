@@ -751,7 +751,8 @@ table th {
 
                     <div class="mb-2 d-flex justify-content-between border-bottom pb-1">
                         <span class="fw-semibold">Bill Amount :</span>
-                        <asp:Label ID="lblBillAmount" runat="server" CssClass="fw-bold text-danger"></asp:Label>
+                      <%--  <asp:Label ID="lblBillAmount" runat="server" CssClass="fw-bold text-danger"></asp:Label>--%>
+                        <asp:TextBox ID="lblBillAmount" runat="server" CssClass="fw-bold text-danger"></asp:TextBox>
                     </div>
 
                     <div class="mb-2 d-flex justify-content-between border-bottom pb-1">
