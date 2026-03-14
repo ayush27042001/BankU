@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/APIDocument/developer.Master" AutoEventWireup="true" CodeBehind="Document.aspx.cs" Inherits="NeoXPayout.APIDocument.Document" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<%--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">--%>
 <style>
 .col-md-4 
 {
@@ -13,6 +14,98 @@ BankU-Badge
     border-radius:5px
 }
 </style>
+
+<%--    table fix row and column --%>
+    <style>
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+/* Zebra rows */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+</style>
+<%--    <style>
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+}
+</style>--%>
+
+  <%--  end--%>
+
+   <%-- request and response css --%>
+    <style>
+ .code-container {
+    position: relative;
+    padding: 10px;
+    background: #f2f0f0;
+    border-radius: 6px;
+    margin-bottom: 20px; /* spacing between multiple blocks */
+}
+
+.code-block pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 15px;
+    border-radius: 6px;
+    max-height: 450px;       /* taller scrollable block */
+    overflow-y: auto;        /* vertical scroll */
+    overflow-x: auto;        /* horizontal scroll for long lines */
+    white-space: pre;        /* preserve exact formatting */
+    text-align: left;        /* left-aligned text */
+    font-family: Consolas, monospace; 
+    font-size: 14px;
+    line-height: 1.5;        /* readability */
+    scroll-behavior: smooth; /* smooth scrolling */
+}
+
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-size: 13px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background: #0056b3;
+}
+ 
+    </style>
+   <%-- end--%>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
@@ -76,127 +169,56 @@ BankU-Badge
     <!-- Tab panes -->
     <div class="tab-content pt-4" id="myTabContent">
 
-      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
       <div class="container py-4">
         <div class="row">
       
           <!-- Jumpstart -->
-          <div class="col-md-4 mb-4">
+         <%-- <div class="col-md-4 mb-4">
             <h6 class="fw-bold border-bottom pb-1" style="color:purple">Jumpstart</h6>
             <ul class="list-unstyled">
               <li><a href="#" class="text-dark text-decoration-none" onclick="openApiTab('jumpstart-overview')">Overview</a></li>
             </ul>
-          </div>
+          </div>--%>
 
           <!-- AI & ML -->
+             <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound" >
+                    <ItemTemplate>
             <div class="col-md-4 mb-4">
-              <h6 class="fw-bold border-bottom pb-1" style="color:purple">AI &amp; ML</h6>
+              <h6 class="fw-bold border-bottom pb-1" style="color:purple"><%# Eval("Category") %></h6>
               <ul class="list-unstyled">
+                  <asp:Repeater ID="apiname" runat="server">
+                      <ItemTemplate>
                 <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">Overview</a>
+
+                    <a href="javascript:void(0);" 
+   class="text-dark text-decoration-none"
+   onclick="GetAPIDetail(<%# Eval("Id") %>); openApiTab();">
+   <%# Eval("APIName") %>
+</a>
+
+    <%--              <a href="javascript:void(0);" 
+   class="text-dark text-decoration-none"
+   onclick="GetAPIDetail(<%# Eval("Id") %>);">
+   <%# Eval("APIName") %>
+</a>--%>
+                  <span class='badge <%# Eval("APIType").ToString().ToLower() == "get" ? "bg-success" : "bg-primary" %> small'>
+    <%# Eval("APIType") %>
+</span>
                 </li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">Face Comparison</a>
-                  <span class="badge bg-primary small">POST</span>
-                </li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">Facial Detection &amp; Analysis</a>
-                  <span class="badge bg-primary small">POST</span>
-                </li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">View More…</a>
-                </li>
+                          </ItemTemplate>
+
+              </asp:Repeater>
+
+                   
+                    
+
+             
               </ul>
             </div>
-
-          <!-- Banking -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Banking</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">Overview</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">Account Statement</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">Balance Check</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">View More…</a></li>
-            </ul>
-          </div>
-
-          <!-- Cards -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Cards</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">Corporate Gift Cards</a></li>
-            </ul>
-          </div>
-
-          <!-- Collect -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Collect</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">Overview</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">UPI Stack</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">Virtual Accounts</a></li>
-            </ul>
-          </div>
-
-          <!-- Financial Inclusion -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Financial Inclusion</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">AePS</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">Remittance (Domestic)</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">Remittance (Nepal)</a></li>
-            </ul>
-          </div>
-
-          <!-- Financial Verifications -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Financial Verifications</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">Bank Account Verification</a></li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">Card BIN Checker</a>
-                  <span class="badge bg-primary small">POST</span>
-                </li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">IFSC Lookup</a>
-                  <span class="badge bg-success">GET</span>
-                </li>
-             
-            </ul>
-          </div>
-
-          <!-- Geo Intelligence -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Geo Intelligence</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">Overview</a></li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">IP Lookup</a>
-                  <span class="badge bg-primary">POST</span>
-                </li>
-                <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">PIN Code Lookup</a>
-                  <span class="badge bg-success">GET</span>
-                </li>
-           
-              <li><a href="#" class="text-dark text-decoration-none">View More…</a></li>
-            </ul>
-          </div>
-
-          <!-- Identity Verification -->
-          <div class="col-md-4 mb-4">
-            <h6 class="fw-bold border-bottom pb-1" style="color:purple">Identity Verification</h6>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-dark text-decoration-none">Overview</a></li>
-              <li class="d-flex justify-content-between align-items-center">
-                  <a href="#" class="text-dark text-decoration-none">Aadhaar Demographic </a>
-                  <span class="badge bg-primary">POST</span>
-               </li>
-             
-              <li><a href="#" class="text-dark text-decoration-none">Aadhaar Offline eKYC</a></li>
-              <li><a href="#" class="text-dark text-decoration-none">View More…</a></li>
-            </ul>
-          </div>
+                  </ItemTemplate>
+                 </asp:Repeater>
+        
 
         </div>
       </div>
@@ -208,6 +230,7 @@ BankU-Badge
         <div class="row">
       
           <!-- Sidebar Nav -->
+           
           <div class="col-md-4 col-lg-3 bg-light border-end vh-100 overflow-auto p-3" style="position: sticky; top: 0;">
               <h6 class="text-uppercase fw-bold small mb-3">Documentation</h6>
               <ul class="nav flex-column mb-4" id="guidesSidebar" role="tablist">
@@ -348,34 +371,146 @@ BankU-Badge
           <div class="container-fluid">
             <div class="row">
 
-              <!-- Sidebar Nav -->
-              <div class="col-md-4 col-lg-3 bg-light border-end vh-100 overflow-auto p-3" style="position: sticky; top: 0;">
-             
-                <ul class="nav flex-column mb-4">
-                 
-                   <asp:Repeater ID="rptCategory" runat="server" OnItemDataBound="rptCategory_ItemDataBound">
-                    <ItemTemplate>
-                        <h6 class="text-uppercase fw-bold small mb-3 mt-3"><%# Eval("Category") %></h6>
-                        <ul class="nav flex-column">
-                            <asp:Repeater ID="rptAPI" runat="server">
-                                <ItemTemplate>
-                                    <li class="nav-item">
-                                       <a href="javascript:void(0);" class="nav-link" style="color:purple" 
-                                           onclick="GetAPIDetail(<%# Eval("Id") %>);">
-                                           <%# Eval("APIName") %>
-                                        </a>
+           <!-- Sidebar Nav -->
+<style>
+/* Sidebar Container */
+#apiSidebar {
+    padding-left: 0;
+}
 
-                                        </a>
-                                    </li>
-                                </ItemTemplate>
-                            </asp:Repeater>
-                        </ul>
-                    </ItemTemplate>
-                </asp:Repeater>
+/* Category Heading */
+#apiSidebar h6{
+    color:#6c757d;
+    font-size:12px;
+    letter-spacing:1px;
+    border-bottom:1px solid #e5e5e5;
+    padding-bottom:5px;
+}
 
-                 
+/* API Links */
+.api-item .nav-link{
+    color:#444;
+    font-size:14px;
+    padding:8px 10px;
+    border-radius:6px;
+    transition:all .3s ease;
+}
+
+/* Hover Effect */
+.api-item .nav-link:hover{
+    background:#f3f0ff;
+    color:#6f42c1;
+    transform:translateX(4px);
+}
+
+/* Active API */
+.api-item .nav-link.active{
+    background:#dcbbde;
+    
+    color:white;
+    font-weight:500;
+}
+
+/* Search box */
+#txtSearchAPI{
+    border-radius:20px;
+    padding-left:15px;
+}
+</style>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+
+                        var links = document.querySelectorAll("#apiSidebar .nav-link");
+
+                        links.forEach(function (link) {
+
+                            link.addEventListener("click", function () {
+
+                                links.forEach(function (l) {
+                                    l.classList.remove("active");
+                                });
+
+                                this.classList.add("active");
+
+                            });
+
+                        });
+
+                    });
+                </script>
+
+    
+            <div class="col-md-4 col-lg-3 bg-light border-end vh-100 overflow-auto p-3" style="position: sticky; top: 0;">
+    
+    <!-- Search Bar -->
+    <div class="mb-3">
+        <input type="text" id="txtSearchAPI" class="form-control form-control-sm" placeholder="Search API..." onkeyup="filterAPIList()">
+    </div>
+
+    <ul class="nav flex-column mb-4" id="apiSidebar">
+        <asp:Repeater ID="rptCategory" runat="server" OnItemDataBound="rptCategory_ItemDataBound">
+            <ItemTemplate>
+                <h6 class="text-uppercase fw-bold small mb-3 mt-3"><%# Eval("Category") %></h6>
+                <ul class="nav flex-column">
+                   <script>
+                       window.onload = function () {
+                           var firstApi = document.querySelector(".api-item a");
+                           if (firstApi) {
+                               firstApi.click();
+                           }
+                       };
+                   </script>
+                    <asp:Repeater ID="rptAPI" runat="server">
+<ItemTemplate>
+<li class="nav-item api-item">
+<a href="javascript:void(0);" 
+   class="nav-link text-purple"
+   onclick="GetAPIDetail(<%# Eval("Id") %>); openApiTab();">
+   <%# Eval("APIName") %>
+</a>
+</li>
+</ItemTemplate>
+</asp:Repeater>
                 </ul>
-              </div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </ul>
+</div>
+
+<script>
+    function filterAPIList() {
+        const filter = document.getElementById('txtSearchAPI').value.toLowerCase();
+        const items = document.querySelectorAll('.api-item');
+
+        items.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            if (text.includes(filter)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Optional: hide category headers if all child APIs are hidden
+        const categories = document.querySelectorAll('#apiSidebar > h6');
+        categories.forEach(cat => {
+            const siblingItems = [];
+            let next = cat.nextElementSibling;
+            if (next && next.tagName === 'UL') {
+                next.querySelectorAll('.api-item').forEach(li => siblingItems.push(li));
+            }
+            const anyVisible = siblingItems.some(li => li.style.display !== 'none');
+            cat.style.display = anyVisible ? '' : 'none';
+        });
+    }
+</script>
+
+<style>
+.text-purple {
+    color: purple !important;
+}
+</style>
 
               <!-- Right Side Content -->
               <div class="col-md-8 col-lg-9 p-4">
@@ -384,7 +519,50 @@ BankU-Badge
 
                 <div class="tab-pane fade" id="dynamic-content" role="tabpanel" aria-labelledby="Dynamic-tab" >
                   <h2><asp:Label runat="server" ID="lblName"></asp:Label></h2>
-                    <p class="text-muted"><span class="badge bg-primary small">POST </span> <asp:Label runat="server" ID="lblLink"></asp:Label></p>
+                   <p class="text-muted position-relative">
+    <span class="badge bg-primary small">POST </span>
+    <asp:Label runat="server" ID="lblLink"></asp:Label>
+    <button type="button" class="copy-btn" onclick="copyText('<%= lblLink.ClientID %>', this)">
+        📋 Copy
+    </button>
+</p>
+                    
+<script>
+    function copyText(labelId, btn) {
+        var lbl = document.getElementById(labelId);
+        if (lbl) {
+            navigator.clipboard.writeText(lbl.innerText).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = "Copied!";
+                setTimeout(() => { btn.innerText = originalText; }, 1500);
+            }).catch(err => {
+                console.error('Copy failed', err);
+            });
+        }
+    }
+</script>
+
+<style>
+.text-muted {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* spacing between badge, label, button */
+}
+
+.copy-btn {
+    border: none;
+    background: #007bff;
+    color: white;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background: #0056b3;
+}
+</style>
                   <p>
                       <asp:Label runat="server" ID="lblDesc"></asp:Label>
                   </p>
@@ -400,27 +578,36 @@ BankU-Badge
                      <asp:Label runat="server" ID="lblReqparam"></asp:Label>
                   </div>
 
-                 <h4 class="mt-4">Sample Request</h4>               
-                 <div class="card" style="padding:8px; background-color:#f2f0f0">                     
-                    <div class="code-block">
-                          <asp:Label runat="server" ID="lblSampleReq"></asp:Label>
-                    </div>
-                   </div>
+<h4 class="mt-4">Sample Request</h4>
+<div class="card code-container">
+
+    <button type="button" class="copy-btn" onclick="copyText('lblSampleReq', this)">
+        📋 Copy
+    </button>
+
+    <div class="code-block">
+        <pre id="reqBlock"><asp:Label runat="server" ID="lblSampleReq" ClientIDMode="Static"></asp:Label></pre>
+    </div>
+
+</div>
 
                  <h4 class="mt-4">Response Parameters</h4>
                 
                  <div class="table-responsive">
                      <asp:Label runat="server" ID="lblRespParam"></asp:Label>
                   </div>
- 
-                 <h4 class="mt-4">Sample Response</h4>               
-                 <div class="card" style="padding:8px; background-color:#f2f0f0">                    
-                    <div class="code-block">
-                        <pre>
-                            <asp:Label runat="server" ID="lblSampleResp"></asp:Label>
-                        </pre>
-                    </div>
-                  </div>
+ <h4 class="mt-4">Sample Response</h4>
+<div class="card code-container">
+
+    <button type="button" class="copy-btn" onclick="copyText('lblSampleResp', this)">
+        📋 Copy
+    </button>
+
+    <div class="code-block">
+        <pre id="respBlock"><asp:Label runat="server" ID="lblSampleResp" ClientIDMode="Static"></asp:Label></pre>
+    </div>
+
+</div>
 
                      </div>
                   </div>
@@ -499,6 +686,24 @@ function openApiTab(tabId) {
   nestedTab.show();
 }
 </script>
+
+    <script>
+        function copyText(id, btn) {
+
+            var text = document.getElementById(id).innerText;
+
+            navigator.clipboard.writeText(text).then(function () {
+
+                btn.innerHTML = "✔ Copied";
+
+                setTimeout(function () {
+                    btn.innerHTML = "📋 Copy";
+                }, 2000);
+
+            });
+
+        }
+    </script>
 
 </asp:Content>
 

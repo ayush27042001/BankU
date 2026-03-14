@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -38,11 +39,11 @@ namespace NeoXPayout.Admin
             string ID = Request.QueryString["ID"];
             if (string.IsNullOrEmpty(ID))
             {
-                Response.Write("<script>alert('Invalid User ID'); window.location='ViewUser.aspx';</script>");
+                Response.Write("<script>alert('Invalid User ID'); window.location='ViewUserBanku.aspx';</script>");
                 return;
             }
 
-            string query = "SELECT aadharUpload, panUpload, photoUpload, gstUpload FROM Registration WHERE RegistrationId = @ID";
+            string query = "SELECT aadharUpload, panUpload, photoUpload, gstUpload,BusinessProofUploadtype ,ShopFrontupload,ShopInupload, KycApplication FROM Registration WHERE RegistrationId = @ID";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -53,26 +54,44 @@ namespace NeoXPayout.Admin
 
                 if (dt.Rows.Count == 0)
                 {
-                    Response.Write("<script>alert('User not found'); window.location='ViewUser.aspx';</script>");
+                    Response.Write("<script>alert('User not found'); window.location='ViewUserBanku.aspx';</script>");
                     return;
                 }
 
                 DataRow row = dt.Rows[0];
 
-                SetDoc(imgAadhar, lblAadharStatus, row["aadharUpload"]);
-                SetDoc(imgPan, lblPanStatus, row["panUpload"]);
-                SetDoc(imgPhoto, lblPhotoStatus, row["photoUpload"]);
-                SetDoc(imgGst, lblGstStatus, row["gstUpload"], isOptional: true);
+                SetDoc(imgAadhar, lnkAadhar, lblAadharStatus, row["aadharUpload"]);
+                SetDoc(imgPan, lnkPan, lblPanStatus, row["panUpload"]);
+                SetDoc(imgFront, lnkFront, lblShopFront, row["ShopFrontupload"]);
+                SetDoc(imgInside, lnkInside, lblShopIn, row["ShopInupload"]);
+                SetDoc(imgApplication, lnkApplication, lblApplication, row["KycApplication"]);
+                SetDoc(imgPhoto, lnkPhoto, lblPhotoStatus, row["photoUpload"]);
+                SetDoc(imgGst, lnkGst, lblGstStatus, row["gstUpload"], true);
             }
         }
-        private void SetDoc(Image img, Label lbl, object dbValue, bool isOptional = false)
+        private void SetDoc(Image img, HyperLink link, Label lbl, object dbValue, bool isOptional = false)
         {
             string path = dbValue?.ToString();
 
             if (!string.IsNullOrEmpty(path))
             {
-                img.ImageUrl = path;
-                img.Visible = true;
+                string ext = Path.GetExtension(path).ToLower();
+
+                if (ext == ".pdf")
+                {
+                    img.Visible = false;
+
+                    link.Visible = true;
+                    link.NavigateUrl = path;
+                    link.Text = Path.GetFileName(path);
+                    link.Target = "_blank";
+                }
+                else
+                {
+                    img.ImageUrl = path;
+                    img.Visible = true;
+                    link.Visible = false;
+                }
 
                 lbl.Text = "Uploaded";
                 lbl.CssClass = "badge bg-success mt-2";
@@ -80,8 +99,9 @@ namespace NeoXPayout.Admin
             else
             {
                 img.Visible = false;
+                link.Visible = false;
 
-                lbl.Text = isOptional ? "Not Uploaded (Optional)" : "Not Uploaded";
+                lbl.Text = isOptional ? "Not Uploaded" : "Not Uploaded";
                 lbl.CssClass = "badge bg-danger mt-2";
             }
         }

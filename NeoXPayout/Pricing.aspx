@@ -2,110 +2,162 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
    <style>
-    /* Gradient Header Purple + Orange */
-    .header-bar {
-      background: Purple;color:#fff;
-      color: #fff;
-      padding: 10px;
-      font-weight: 600;
-      border-radius: 8px 8px 0 0;
-    }
-    .table-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .table thead th {
-      background: Purple;color:#fff;
-      color: #fff;
-      margin-top:20px;
-      text-align: center;
-      font-weight: 600;
-      white-space: nowrap;   
-    }
-    .table td {
-      white-space: nowrap;   
-      text-align: center;
-    }
-    .table-responsive {
-      overflow-x: auto;  
-    }
-    .form-control {
-      text-align: center;
-      min-width: 100px; 
-    }
-    .btn-edit {
-      background: purple;color:#fff;
-      color: #fff;
-      border-radius: 5px;
-      border: none;
-      padding: 5px 10px;
-    }
-    .btn-edit:hover {
-      opacity: 0.9;
-    }
+.bg-purple{
+    background:#6a0dad;
+}
+
+.card{
+    border-radius:10px;
+}
+
+.table thead th{
+    background:#212529;
+    color:white;
+    text-align:center;
+    font-weight:600;
+}
+
+.table td{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.table-hover tbody tr:hover{
+    background:#f5f1ff;
+}
+
+.badge{
+    font-size:12px;
+    padding:6px 10px;
+}
+
+.share-value{
+    color:#2e7d32;
+    font-weight:600;
+}
+
+.table-responsive{
+    max-height:600px;
+}
   </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <hr />
 
-<div class="p-3 bg-light">
- 
-  <div class="mb-3">
-    <div class="header-bar d-flex align-items-center">
-      <span class="me-2">🔍</span> Filter
+<div class="container-fluid mt-3">
+
+    <!-- Search Card -->
+    <div class="card shadow-sm mb-3">
+    <div class="card-body p-3">
+
+        <div class="input-group">
+
+            <span class="input-group-text text-white" style="background-color:purple">
+                🔍 Search Commission
+            </span>
+
+            <input type="text"
+                   id="filterInput"
+                   class="form-control"
+                   placeholder="Search service, operator, plan...">
+
+        </div>
+
     </div>
-    <input type="text" id="filterInput" class="form-control mt-2" placeholder="Type a keyword...">
-  </div>
+</div>
+   
+    <!-- Table Card -->
+    <div class="card shadow-sm">
 
+     <div class="card-header d-flex justify-content-between align-items-center bg-purple ">
+         <span class="fw-semibold text-purple">
+            💰 Plan : <asp:Label ID="lblPlanName" runat="server"></asp:Label>
+        </span>
+    <span>Total Records: <b id="totalRecords">0</b></span>
+</div>
 
-  <div class="table-card">
-    <div class="header-bar">
-      Manage Margin (Total Records: <span id="totalRecords">54</span>)
-    </div>
-    <div class="table-responsive">
-      <table class="table table-bordered align-middle mb-0" id="marginTable">
-        <thead>
-            <tr>
-                <th>Sr No</th>
-                <th>Service Name</th>
-                <th>Operator Name</th>
-                <th>My Share</th>
-                <th>Commission Type</th>
-            </tr>
-        </thead>
+        <div class="table-responsive">
 
-        <tbody>
-            <asp:Repeater ID="rptMargin" runat="server" OnItemDataBound="rptMargin_ItemDataBound">
-                <ItemTemplate>
+            <table class="table table-hover table-bordered align-middle mb-0" id="marginTable">
+
+                <thead class="table-dark sticky-top">
+
                     <tr>
-                        <td><%# Container.ItemIndex + 1 %></td>
-                        <td><%# Eval("ServiceName") %></td>
-                        <td><%# Eval("OperatorName") %></td>
-                        <td>
-                            <asp:TextBox ID="txtMyShare" ReadOnly="true" runat="server"
-                                CssClass="form-control"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtCommType" ReadOnly="true" runat="server"
-                                Text='<%# Eval("CommissionType") %>' CssClass="form-control"></asp:TextBox>
-                        </td>
+                        <th>Sr</th>
+                        <th>Plan</th>
+                        <th>Service</th>
+                        <th>Operator</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Share</th>
+                        <th>Type</th>
                     </tr>
-                </ItemTemplate>
-            </asp:Repeater>
-        </tbody>
-    </table>
+
+                </thead>
+
+                <tbody>
+
+                    <asp:Repeater ID="rptMargin" runat="server">
+
+                        <ItemTemplate>
+
+                            <tr>
+
+                                <td><%# Container.ItemIndex + 1 %></td>
+
+                                <td>
+                                    <span class="badge bg-primary">
+                                        <%# Eval("PlanName") %>
+                                    </span>
+                                </td>
+
+                                <td><%# Eval("ServiceId") %></td>
+
+                                <td>
+                                    <%# Eval("OperatorId") %>
+                                </td>
+
+                                <td>
+                                    ₹ <%# Eval("FromAmount") %>
+                                </td>
+
+                                <td>
+                                    ₹ <%# Eval("ToAmount") %>
+                                </td>
+
+                            <td class="share-value">
+                                <%# Eval("CommissionType").ToString()=="2" 
+                                    ? Eval("CommissionValue") + " %" 
+                                    : "₹ " + Eval("CommissionValue") %>
+                            </td>
+
+                                <td>
+                                    <span class="badge <%# Convert.ToInt32(Eval("CommissionType")) == 1 ? "bg-success" : "bg-warning text-dark" %>">
+                                        <%# Convert.ToInt32(Eval("CommissionType")) == 1 ? "FLAT" : "PERCENT" %>
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        </ItemTemplate>
+
+                    </asp:Repeater>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Pagination -->
+        <div class="card-footer bg-white">
+            <nav class="d-flex justify-content-end">
+                <ul class="pagination pagination-sm mb-0" id="pagination"></ul>
+            </nav>
+        </div>
 
     </div>
-    <!-- Pagination -->
-    <div class="d-flex justify-content-end p-2">
-      <nav>
-        <ul class="pagination pagination-sm mb-0" id="pagination">
-       
-        </ul>
-      </nav>
-    </div>
-  </div>
+
 </div>
 
   <!-- Bootstrap JS -->

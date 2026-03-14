@@ -35,7 +35,31 @@
                         <select id="providerId" class="form-select"><option value="">Select Provider</option></select>
                     </div>
                     <div class="col-md-3">
-                        <select id="operatorId" class="form-select"><option value="">Select Operator</option></select>
+                        <select id="operatorId" class="form-select">
+                            <option value="">Select Operator</option>
+
+                            <!-- Recharge -->
+                            <option value="AIRTEL" data-type="RECHARGE">Airtel</option>
+                            <option value="BSNL" data-type="RECHARGE">BSNL</option>
+                            <option value="VI" data-type="RECHARGE">VI</option>
+                            <option value="JIO" data-type="RECHARGE">JIO</option>
+
+                            <!-- Bill Payment -->
+                            <option value="WATER" data-type="BILLPAY">Water Bill</option>
+                            <option value="ELECTRICITY" data-type="BILLPAY">Electricity Bill</option>
+                            <option value="GAS" data-type="BILLPAY">Gas Bill</option>
+                            <option value="FASTAG" data-type="BILLPAY">Fastag</option>
+                            <option value="LOAN" data-type="BILLPAY">Loan Payment</option>
+                            <option value="POSTPAID" data-type="BILLPAY">Mobile Postpaid</option>
+                            <option value="BROADBAND" data-type="BILLPAY">Broadband</option>
+
+                            <!-- DTH -->
+                            <option value="TATAPLAY" data-type="DTH">Tata Play</option>
+                            <option value="SUNDIRECT" data-type="DTH">Sun Direct</option>
+                            <option value="VIDEOCON" data-type="DTH">Videocon D2h</option>
+                            <option value="DISHTV" data-type="DTH">Dish Tv</option>
+                            <option value="AIRTELTV" data-type="DTH">Airtel Digital Tv</option>
+                        </select>
                     </div>
                     <div class="col-md-2 d-grid">
                         <button type="button" class="btn btn-primary" id="addHeader">Add Rule</button>
@@ -161,5 +185,6 @@
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../../CustomJS/CommiosnMgmt/AdminCommisionMgmt.js"></script>
+   
 </body>
 </html>

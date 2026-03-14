@@ -40,6 +40,8 @@ namespace NeoXPayout.APIDocument
 
                     rptCategory.DataSource = dtCategory;
                     rptCategory.DataBind();
+                    Repeater1.DataSource = dtCategory;
+                    Repeater1.DataBind();
 
                     // store full data for inner repeaters
                     ViewState["APIData"] = dt;
@@ -58,7 +60,7 @@ namespace NeoXPayout.APIDocument
                 }
                 else
                 {
-                    
+
                 }
             }
         }
@@ -82,6 +84,7 @@ namespace NeoXPayout.APIDocument
                     Repeater rptAPI = (Repeater)e.Item.FindControl("rptAPI");
                     rptAPI.DataSource = dt;
                     rptAPI.DataBind();
+
                 }
             }
         }
@@ -114,6 +117,30 @@ namespace NeoXPayout.APIDocument
                 return null;
             }
         }
+
+        protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                string category = DataBinder.Eval(e.Item.DataItem, "Category").ToString();
+
+                using (SqlConnection con = new SqlConnection(connStr))
+                {
+                    string query = "SELECT APIName,ApiType, Id FROM APIDocument WHERE Category=@Category AND Status='Active'";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@Category", category);
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    Repeater apiname = (Repeater)e.Item.FindControl("apiname");
+                    apiname.DataSource = dt;
+                    apiname.DataBind();
+                }
+            }
+        }
+
 
     }
 }

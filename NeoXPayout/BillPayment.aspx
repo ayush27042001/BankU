@@ -452,7 +452,7 @@ table th {
         </div>
     </div>
 
-    <div class="col-6 col-md-2">
+      <div class="col-6 col-md-2">
        <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
         
         <span class="coming-soon-text">Coming Soon</span>
@@ -482,7 +482,7 @@ table th {
         </div>
     </div>
 
-    <div class="col-6 col-md-2">
+      <div class="col-6 col-md-2">
          <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
         
         <span class="coming-soon-text">Coming Soon</span>
@@ -492,7 +492,7 @@ table th {
         </div>
     </div>
 
-    <%--<div class="col-6 col-md-2">
+      <%--<div class="col-6 col-md-2">
         <div class="card bill-card p-3 text-center" data-billtype="EMI" data-bs-toggle="offcanvas" data-bs-target="#billSidebar">
             <img src="assets/images/payment/takeover.png" alt="EMI"  style="height:60px; width:60px;" 
              class="mx-auto d-block"/>
@@ -510,7 +510,7 @@ table th {
         </div>
     </div>
 
-     <div class="col-6 col-md-2">
+      <div class="col-6 col-md-2">
         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
         
         <span class="coming-soon-text">Coming Soon</span>
@@ -520,7 +520,7 @@ table th {
         </div>
     </div>
 
-    <div class="col-6 col-md-2">
+      <div class="col-6 col-md-2">
         <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
         
         <span class="coming-soon-text">Coming Soon</span>
@@ -530,7 +530,7 @@ table th {
         </div>
     </div>
 
-    <div class="col-6 col-md-2">
+      <div class="col-6 col-md-2">
          <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
         
         <span class="coming-soon-text">Coming Soon</span>
@@ -540,7 +540,7 @@ table th {
         </div>
     </div>
 
-    <div class="col-6 col-md-2">
+      <div class="col-6 col-md-2">
           <div class="card bill-card p-3 text-center disabled-card coming-soon-wrapper">
         
         <span class="coming-soon-text">Coming Soon</span>
@@ -751,7 +751,8 @@ table th {
 
                     <div class="mb-2 d-flex justify-content-between border-bottom pb-1">
                         <span class="fw-semibold">Bill Amount :</span>
-                        <asp:Label ID="lblBillAmount" runat="server" CssClass="fw-bold text-danger"></asp:Label>
+                      <%--  <asp:Label ID="lblBillAmount" runat="server" CssClass="fw-bold text-danger"></asp:Label>--%>
+                        <asp:TextBox ID="lblBillAmount" runat="server" CssClass="fw-bold text-danger"></asp:TextBox>
                     </div>
 
                     <div class="mb-2 d-flex justify-content-between border-bottom pb-1">

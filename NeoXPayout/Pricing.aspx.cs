@@ -23,39 +23,101 @@ namespace NeoXPayout
 
             if (!IsPostBack)
             {
-                BindRepeater();
+                LoadCommission();
 
             }
         }
-       private void BindRepeater()
+        public void LoadCommission()
         {
-            using (SqlConnection con = new SqlConnection(conStr))
+            string accountType = Session["AccountHolderType"].ToString();
+            int planId = GetPlanId();
+            string userType = "";
+            if (accountType == "BankU Seva Kendra")
             {
-                SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM MarginSetting", con);
+                userType = "Retailer";
+            }
+            else if (accountType == "Distributor")
+            {
+                userType = "AD";
+            }
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = @"SELECT 
+                        cp.PlanName,
+                        ch.ServiceId,
+                        ISNULL(ch.OperatorId,'-') AS OperatorId,
+                        cs.FromAmount,
+                        cs.ToAmount,
+                        cd.CommissionValue,
+                        cd.CommissionType
+                    FROM CommissionHeader ch
+                    INNER JOIN CommissionPlan cp
+                        ON ch.PlanId = cp.PlanId
+                    INNER JOIN CommissionSlabs cs 
+                        ON ch.CommissionRuleId = cs.CommissionRuleId
+                    INNER JOIN CommissionDistribution cd 
+                        ON cs.CommissionSlabId = cd.CommissionSlabId
+                    WHERE ch.PlanId=@PlanId
+                    AND ch.IsActive=1
+                     AND cd.UserType = @UserType";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@PlanId", planId);
+                cmd.Parameters.AddWithValue("@UserType", userType);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    lblPlanName.Text = dt.Rows[0]["PlanName"].ToString();
+                }
                 rptMargin.DataSource = dt;
                 rptMargin.DataBind();
             }
+        }
+        public int GetPlanId()
+        {
+            int planId = 1;
+            string userId = Session["BankURTUID"].ToString();
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = "SELECT CommissionPlanId FROM Registration WHERE RegistrationId = @UserId";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                con.Open();
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value && result.ToString() != "")
+                {
+                    planId = Convert.ToInt32(result);
+                }
+
+                con.Close();
+            }
+
+            return planId;
         }
         protected void rptMargin_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                string userType = Session["AccountHolderType"]?.ToString() ?? "";
-
                 TextBox txtMyShare = (TextBox)e.Item.FindControl("txtMyShare");
 
-                string ipShare = DataBinder.Eval(e.Item.DataItem, "IPShare").ToString();
-                string wlShare = DataBinder.Eval(e.Item.DataItem, "WLShare").ToString();
+                decimal value = Convert.ToDecimal(DataBinder.Eval(e.Item.DataItem, "CommissionValue"));
+                int type = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "CommissionType"));
 
-                if (userType == "Distributor")
+                if (type == 1)
                 {
-                    txtMyShare.Text = ipShare;  
+                    txtMyShare.Text = value + " ₹";
                 }
                 else
                 {
-                    txtMyShare.Text = wlShare;  
+                    txtMyShare.Text = value + " %";
                 }
             }
         }

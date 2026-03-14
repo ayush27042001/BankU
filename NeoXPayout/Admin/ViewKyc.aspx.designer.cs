@@ -33,6 +33,15 @@ namespace NeoXPayout.Admin
         protected global::System.Web.UI.WebControls.Image imgAadhar;
 
         /// <summary>
+        /// lnkAadhar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkAadhar;
+
+        /// <summary>
         /// lblAadharStatus control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace NeoXPayout.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgPan;
+
+        /// <summary>
+        /// lnkPan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkPan;
 
         /// <summary>
         /// lblPanStatus control.
@@ -69,6 +87,15 @@ namespace NeoXPayout.Admin
         protected global::System.Web.UI.WebControls.Image imgPhoto;
 
         /// <summary>
+        /// lnkPhoto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkPhoto;
+
+        /// <summary>
         /// lblPhotoStatus control.
         /// </summary>
         /// <remarks>
@@ -76,6 +103,15 @@ namespace NeoXPayout.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPhotoStatus;
+
+        /// <summary>
+        /// proofType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl proofType;
 
         /// <summary>
         /// imgGst control.
@@ -87,6 +123,15 @@ namespace NeoXPayout.Admin
         protected global::System.Web.UI.WebControls.Image imgGst;
 
         /// <summary>
+        /// lnkGst control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkGst;
+
+        /// <summary>
         /// lblGstStatus control.
         /// </summary>
         /// <remarks>
@@ -94,5 +139,86 @@ namespace NeoXPayout.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblGstStatus;
+
+        /// <summary>
+        /// imgFront control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgFront;
+
+        /// <summary>
+        /// lnkFront control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkFront;
+
+        /// <summary>
+        /// lblShopFront control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblShopFront;
+
+        /// <summary>
+        /// imgInside control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgInside;
+
+        /// <summary>
+        /// lnkInside control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkInside;
+
+        /// <summary>
+        /// lblShopIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblShopIn;
+
+        /// <summary>
+        /// imgApplication control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgApplication;
+
+        /// <summary>
+        /// lnkApplication control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkApplication;
+
+        /// <summary>
+        /// lblApplication control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblApplication;
     }
 }

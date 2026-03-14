@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/NeoxAdmin.Master" AutoEventWireup="true" CodeBehind="ViewUser.aspx.cs" Inherits="NeoXPayout.Admin.ViewUser" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/NeoxAdmin.Master" AutoEventWireup="true" CodeBehind="ViewUserBanku.aspx.cs" Inherits="NeoXPayout.Admin.ViewUser" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="../assets/vendor/dataTables.min.css">
 
@@ -102,3 +102,4 @@ document.addEventListener("DOMContentLoaded", function () {
     </script>
 
 </asp:Content>
+

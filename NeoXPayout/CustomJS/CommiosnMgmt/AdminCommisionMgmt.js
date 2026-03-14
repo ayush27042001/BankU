@@ -85,7 +85,7 @@ function loadHeaders(page = 1) {
 }
 
 $("#addHeader").click(() => {
-    const dto = { planId: $("#planId option:selected").val(), serviceId: $("#serviceId option:selected").text(), providerId: $("#providerId option:selected").val(), operatorId: $("#operatorId").val() ? parseInt($("#operatorId").val()) : null };
+    const dto = { planId: $("#planId option:selected").val(), serviceId: $("#serviceId option:selected").text(), providerId: $("#providerId option:selected").val(), operatorId: $("#operatorId").val() || null };
     if (!dto.serviceId || !dto.providerId) { alert("Service & Provider required"); return; }
     $.ajax({
         url: `${apiBase}/commission-headers`,
