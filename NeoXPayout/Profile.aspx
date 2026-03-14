@@ -303,7 +303,9 @@
                                             <div class="card-body p-4">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <h5 class="card-title fw-semibold mb-0 text-dark">KYC</h5>
+                                                  
                                                      <asp:Panel runat="server" ID="pnlUpload">
+                                                           <button id="download"  Class="btn btn-sm btn-success" type="button">Download Application</button>
                                                         <button ID="btnkyc" Class="btn btn-sm" type="button"
                                                         style="background-color: purple; color: #fff; border: none;" onclick="openkycModal()">Upload</button>
                                                      </asp:Panel>
@@ -322,17 +324,27 @@
                                                         <small class="fw-semibold text-uppercase text-secondary">PAN Card</small>
                                                         <asp:Label ID="pan" runat="server" CssClass="text-dark fw-medium"></asp:Label>
                                                     </div>
-
                                                     <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                                                        <small class="fw-semibold text-uppercase text-secondary">GST Certificate</small>
-                                                        <asp:Label ID="gst" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                        <small class="fw-semibold text-uppercase text-secondary">Business Proof</small>
+                                                    <asp:Label ID="gst" runat="server" CssClass="text-dark fw-medium"></asp:Label>
                                                     </div>
 
                                                     <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
                                                         <small class="fw-semibold text-uppercase text-secondary">Photo</small>
                                                         <asp:Label ID="img" runat="server" CssClass="text-dark fw-medium"></asp:Label>
                                                     </div>
-                                                    
+                                                     <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">Outlet/Shop GeoTag<br /> Photo Front</small>
+                                                        <asp:Label ID="shop" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
+                                                       <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">Outlet/Shop GeoTag<br /> Photo Inside</small>
+                                                        <asp:Label ID="shopInside" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
+                                                      <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                        <small class="fw-semibold text-uppercase text-secondary">Application Form</small>
+                                                        <asp:Label ID="Agreement" runat="server" CssClass="text-dark fw-medium"></asp:Label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -363,42 +375,162 @@
 
       <!-- Modal Body -->
       <div class="modal-body">
+          <asp:Label runat="server" ID="docErr"></asp:Label>
 		  <div class="mb-3">
-			<label class="form-label fw-semibold">Aadhaar Card</label>
+			<label class="form-label fw-semibold">Aadhaar Card <span class="text-muted small">(JPG / PNG / PDF only)</span></label>
              <asp:FileUpload ID="fuAadhaar" runat="server" CssClass="form-control" />
               	<asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server"
 			      ControlToValidate="fuAadhaar"
 				  ValidationGroup="uploadDoc"
 			      ErrorMessage="Aadhar Card is required"
 			      CssClass="text-danger small" Display="Dynamic" />
+              <asp:RegularExpressionValidator ID="revAadhar" runat="server"
+                ControlToValidate="fuAadhaar"
+                ValidationExpression="^.*\.(jpg|jpeg|png|pdf)$"
+                ValidationGroup="uploadDoc"
+                ErrorMessage="Only JPG, PNG or PDF allowed"
+                CssClass="text-danger small" Display="Dynamic" />
 		  </div>
 
 		  <div class="mb-3">
-			 <label class="form-label fw-semibold">PAN Card</label>
+			 <label class="form-label fw-semibold">PAN Card <span class="text-muted small">(JPG / PNG / PDF only)</span></label>
              <asp:FileUpload ID="fuPan" runat="server" CssClass="form-control" />
               <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server"
 			      ControlToValidate="fuPan"
 				  ValidationGroup="uploadDoc"
 			      ErrorMessage="Pan Card is required"
 			      CssClass="text-danger small" Display="Dynamic" />
-		  </div>
+               <asp:RegularExpressionValidator ID="revPan" runat="server"
+                ControlToValidate="fuPan"
+                ValidationExpression="^.*\.(jpg|jpeg|png|pdf)$"
+                ValidationGroup="uploadDoc"
+                ErrorMessage="Only JPG, PNG or PDF allowed"
+                CssClass="text-danger small" Display="Dynamic" />
+	     </div>
 		 		 
-         <div class=" mb-3">
+           <div class="mb-3">
             <label class="form-label fw-semibold">Photo</label>
-            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control" />
-              <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server"
-			      ControlToValidate="fuPhoto"
-				  ValidationGroup="uploadDoc"
-			      ErrorMessage="Photo is required"
-			      CssClass="text-danger small" Display="Dynamic" />
-         </div>
+
+            <video id="video" width="100%" autoplay class="border rounded" style="display:none;"></video>
+
+            <canvas id="canvas" style="display:none;"></canvas>
+
+            <img id="preview" style="width:100%;margin-top:10px;display:none;" />
+
+            <br />
+
+            <button type="button" id="btnOpenCamera" class="btn btn-primary mt-2" onclick="startCamera()">
+                Open Camera
+            </button>
+
+            <button type="button" id="btnCapture" class="btn btn-success mt-2" onclick="capturePhoto()" style="display:none;">
+                Take Photo
+            </button>
+
+            <button type="button" id="btnRetake" class="btn btn-warning mt-2" onclick="retakePhoto()" style="display:none;">
+                Retake Photo
+            </button>
+
+            <asp:HiddenField ID="hfPhoto" runat="server" />
+        </div>
 
            <div class=" mb-3">
 			 <label class="form-label fw-semibold">
-                GST Certificate <span class="text-muted">(Optional)</span>
+              Business Proof <span class="text-muted small">(JPG / PNG / PDF only)</span>
             </label>
+                  <asp:DropDownList runat="server" ID="ddlProof" CssClass="form-control mb-2">
+                    <asp:ListItem Text="Select Proof Type" Value=""></asp:ListItem>
+                    <asp:ListItem Text="GST Certificate" Value="GST Certificate"></asp:ListItem>
+                    <asp:ListItem Text="Udhyam Certificate" Value="Udhyam Certificate"></asp:ListItem>
+                    <asp:ListItem Text="Shop & Establishment License" Value="ShopEstablishmentLicense"></asp:ListItem>
+                    <asp:ListItem Text="Trade License" Value="TradeLicense"></asp:ListItem>
+                    <asp:ListItem Text="Certificate of Incorporation" Value="CertificateOfIncorporation"></asp:ListItem>
+                    <asp:ListItem Text="Partnership Deed" Value="PartnershipDeed"></asp:ListItem>
+                    <asp:ListItem Text="LLP Agreement" Value="LLPAgreement"></asp:ListItem>
+                    <asp:ListItem Text="PAN Card of Business" Value="BusinessPAN"></asp:ListItem>
+                    <asp:ListItem Text="Electricity Bill" Value="ElectricityBill"></asp:ListItem>
+                    <asp:ListItem Text="Telephone Bill" Value="TelephoneBill"></asp:ListItem>
+
+                    <asp:ListItem Text="Water Bill" Value="WaterBill"></asp:ListItem>
+                    <asp:ListItem Text="Rent Agreement" Value="RentAgreement"></asp:ListItem>
+                    <asp:ListItem Text="Property Tax Receipt" Value="PropertyTaxReceipt"></asp:ListItem>
+                    <asp:ListItem Text="Municipal Trade License" Value="MunicipalTradeLicense"></asp:ListItem>
+                    <asp:ListItem Text="Cancelled Cheque of Business" Value="CancelledChequeBusiness"></asp:ListItem>
+                    <asp:ListItem Text="Bank Statement of Business" Value="BusinessBankStatement"></asp:ListItem>
+                    <asp:ListItem Text="FSSAI License" Value="FSSAILicense"></asp:ListItem>
+                    <asp:ListItem Text="Registration Certificate" Value="RegistrationCertificate"></asp:ListItem>
+                    <asp:ListItem Text="Import Export Code (IEC)" Value="IEC"></asp:ListItem>
+                    <asp:ListItem Text="Trademark Registration" Value="TrademarkRegistration"></asp:ListItem>
+                    <asp:ListItem Text="Others" Value="Others"></asp:ListItem>
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server"
+			      ControlToValidate="ddlProof"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage=" Business Proof is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+
             <asp:FileUpload ID="fuGst" runat="server" CssClass="form-control" />
+
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server"
+			      ControlToValidate="fuGst"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Upload Business Proof"
+			      CssClass="text-danger small" Display="Dynamic" />
+               <asp:RegularExpressionValidator ID="revBusinessProof" runat="server"
+                    ControlToValidate="fuGst"
+                    ValidationExpression="^.*\.(jpg|jpeg|png|pdf)$"
+                    ValidationGroup="uploadDoc"
+                    ErrorMessage="Only JPG, PNG or PDF allowed"
+                    CssClass="text-danger small" Display="Dynamic" />
 		  </div>
+
+            <div class="mb-3">
+			 <label class="form-label fw-semibold">Outlet/Shop GeoTag Photo (Front side) <span class="text-muted small">(JPG / PNG )</span></label>
+             <asp:FileUpload ID="fuShopFront" runat="server" CssClass="form-control" />
+              <asp:RequiredFieldValidator ID="rffront" runat="server"
+			      ControlToValidate="fuShopFront"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Shop Photo is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+               <asp:RegularExpressionValidator ID="refront" runat="server"
+                ControlToValidate="fuShopFront"
+                ValidationExpression="^.*\.(jpg|jpeg|png)$"
+                ValidationGroup="uploadDoc"
+                ErrorMessage="Only JPG, PNG allowed"
+                CssClass="text-danger small" Display="Dynamic" />
+	     </div>
+
+           <div class="mb-3">
+			 <label class="form-label fw-semibold">Outlet/Shop GeoTag Photo (Inside) <span class="text-muted small">(JPG / PNG )</span></label>
+             <asp:FileUpload ID="fuInside" runat="server" CssClass="form-control" />
+              <asp:RequiredFieldValidator ID="rfInside" runat="server"
+			      ControlToValidate="fuInside"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Shop Photo is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+               <asp:RegularExpressionValidator ID="reInside" runat="server"
+                ControlToValidate="fuInside"
+                ValidationExpression="^.*\.(jpg|jpeg|png)$"
+                ValidationGroup="uploadDoc"
+                ErrorMessage="Only JPG, PNG allowed"
+                CssClass="text-danger small" Display="Dynamic" />
+	     </div>
+
+            <div class="mb-3">
+			 <label class="form-label fw-semibold">Application Form Upload</label>
+             <asp:FileUpload ID="fuAgreement" runat="server" CssClass="form-control" />
+              <asp:RequiredFieldValidator ID="rfagree" runat="server"
+			      ControlToValidate="fuAgreement"
+				  ValidationGroup="uploadDoc"
+			      ErrorMessage="Application Form is required"
+			      CssClass="text-danger small" Display="Dynamic" />
+               <asp:RegularExpressionValidator ID="reAgree" runat="server"
+                ControlToValidate="fuAgreement"
+                ValidationExpression="^.*\.(jpg|jpeg|png|pdf)$"
+                ValidationGroup="uploadDoc"
+                ErrorMessage="Only JPG, PNG, PDF allowed"
+                CssClass="text-danger small" Display="Dynamic" />
+	     </div>
 		  <!-- Add Button -->
 		
 		 <div class="mt-3">
@@ -825,6 +957,89 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    document.getElementById("download").onclick = function () {
+        const link = document.createElement("a");
+        link.href = "uploadfile/KYCForms.pdf";
+        link.download = "KYCForms.pdf";
+        link.click();
+    };
+</script>
+<script>
+
+    let stream;
+
+    function startCamera() {
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (mediaStream) {
+
+                stream = mediaStream;
+
+                const video = document.getElementById('video');
+
+                video.srcObject = mediaStream;
+                video.style.display = "block";
+
+                document.getElementById("btnCapture").style.display = "inline-block";
+                document.getElementById("btnOpenCamera").style.display = "none";
+                document.getElementById("preview").style.display = "none";
+
+            })
+            .catch(function () {
+                alert("Camera not available or permission denied.");
+            });
+    }
+
+
+    function capturePhoto() {
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+
+        const imageData = canvas.toDataURL('image/png');
+
+        document.getElementById('<%=hfPhoto.ClientID%>').value = imageData;
+
+    const preview = document.getElementById('preview');
+    preview.src = imageData;
+    preview.style.display = "block";
+
+    video.style.display = "none";
+
+    document.getElementById("btnCapture").style.display = "none";
+    document.getElementById("btnRetake").style.display = "inline-block";
+
+    stopCamera();
+}
+
+
+function retakePhoto() {
+
+    document.getElementById("btnRetake").style.display = "none";
+    document.getElementById("btnOpenCamera").style.display = "inline-block";
+
+    document.getElementById("preview").style.display = "none";
+
+        document.getElementById('<%=hfPhoto.ClientID%>').value = "";
+
+    }
+
+
+    function stopCamera() {
+
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+
+    }
+</script>
+<script>
 
     function openBankModal() {
         document.getElementById('bankuModalBackdrop').style.display = 'none';
@@ -861,7 +1076,6 @@
         mySidebar.show();
     }
 </script>
-
 <script>
     function previewImage(event) {
         const file = event.target.files[0];

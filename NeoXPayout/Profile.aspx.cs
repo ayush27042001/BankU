@@ -134,17 +134,22 @@ namespace NeoXPayout
                     : account;
                 lblAccountType.Text = row["AccountHolderType"]?.ToString() ?? "";
 
-               string aadharimg = row["aadharUpload"]?.ToString() ?? "";
-               string panimg = row["panUpload"]?.ToString() ?? "";
+                string aadharimg = row["aadharUpload"]?.ToString() ?? "";
+                string panimg = row["panUpload"]?.ToString() ?? "";
                 string photoimg = row["photoUpload"]?.ToString() ?? "";
                 string gstimg = row["gstUpload"]?.ToString() ?? "";
+                string shopfront = row["ShopFrontupload"]?.ToString() ?? "";
+                string shopIn = row["ShopInupload"]?.ToString() ?? "";
+                string agreement = row["KycApplication"]?.ToString() ?? "";
 
-                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) &&  !string.IsNullOrEmpty(photoimg))
+                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) &&  !string.IsNullOrEmpty(photoimg) && !string.IsNullOrEmpty(shopfront) && !string.IsNullOrEmpty(shopIn) && !string.IsNullOrEmpty(agreement))
                 {
                     aadhar.Text = "Uploaded";
                     pan.Text = "Uploaded";
                     img.Text = "Uploaded";
-
+                    shop.Text = "Uploaded";
+                    shopInside.Text = "Uploaded";
+                    Agreement.Text= "Uploaded";
                     if (!string.IsNullOrEmpty(gstimg))
                         gst.Text = "Uploaded";
                     else
@@ -159,7 +164,9 @@ namespace NeoXPayout
                     pan.Text = string.IsNullOrEmpty(panimg) ? "Not Uploaded" : "Uploaded";
                     img.Text = string.IsNullOrEmpty(photoimg) ? "Not Uploaded" : "Uploaded";
                     gst.Text = string.IsNullOrEmpty(gstimg) ? "Not Uploaded" : "Uploaded";
-
+                    shop.Text = string.IsNullOrEmpty(shopfront) ? "Not Uploaded" : "Uploaded";
+                    Agreement.Text =string.IsNullOrEmpty(agreement) ? "Not Uploaded" : "Uploaded";
+                    shopInside.Text = string.IsNullOrEmpty(shopIn) ? "Not Uploaded" : "Uploaded";
                     lblKycStatus.Text = "❌ KYC Not Completed";
                     lblKycStatus.CssClass = "text-danger fw-semibold";
                 }
@@ -700,7 +707,7 @@ namespace NeoXPayout
                 return;
             }
 
-            string query = "SELECT aadharUpload, panUpload, photoUpload, gstUpload FROM Registration WHERE RegistrationId = @UserId";
+            string query = "SELECT aadharUpload,KycApplication, panUpload, photoUpload, gstUpload,ShopFrontupload,ShopInupload FROM Registration WHERE RegistrationId = @UserId";
 
             SqlCommand mcom = new SqlCommand(query, con);
             mcom.Parameters.AddWithValue("@UserId", UserId);
@@ -716,13 +723,17 @@ namespace NeoXPayout
                 string panimg = row["panUpload"]?.ToString() ?? "";
                 string photoimg = row["photoUpload"]?.ToString() ?? "";
                 string gstimg = row["gstUpload"]?.ToString() ?? "";
-
-                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) && !string.IsNullOrEmpty(photoimg))
+                string Shopfront = row["ShopFrontupload"]?.ToString() ?? "";
+                string ShopIn = row["ShopInupload"]?.ToString() ?? "";
+                string AgreementUp= row["KycApplication"]?.ToString() ?? "";
+                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) && !string.IsNullOrEmpty(photoimg) && !string.IsNullOrEmpty(Shopfront) && !string.IsNullOrEmpty(ShopIn) && !string.IsNullOrEmpty(AgreementUp))
                 {
                     aadhar.Text = "Uploaded";
                     pan.Text = "Uploaded";
                     img.Text = "Uploaded";
-
+                    shop.Text = "Uploaded";
+                    shopInside.Text = "Uploaded";
+                    Agreement.Text = "Uploaded";
                     if (!string.IsNullOrEmpty(gstimg))
                         gst.Text = "Uploaded";
                     else
@@ -737,7 +748,9 @@ namespace NeoXPayout
                     pan.Text = string.IsNullOrEmpty(panimg) ? "Not Uploaded" : "Uploaded";
                     img.Text = string.IsNullOrEmpty(photoimg) ? "Not Uploaded" : "Uploaded";
                     gst.Text = string.IsNullOrEmpty(gstimg) ? "Not Uploaded" : "Uploaded";
-
+                    Agreement.Text= string.IsNullOrEmpty(AgreementUp) ? "Not Uploaded" : "Uploaded";
+                    shop.Text = string.IsNullOrEmpty(Shopfront) ? "Not Uploaded" : "Uploaded";
+                    shopInside.Text = string.IsNullOrEmpty(ShopIn) ? "Not Uploaded" : "Uploaded";
                     lblKycStatus.Text = "❌ KYC Not Completed";
                     lblKycStatus.CssClass = "text-danger fw-semibold";
                 }
@@ -747,10 +760,68 @@ namespace NeoXPayout
         }
         protected void btnSubmitKyc_Click(object sender, EventArgs e)
         {
-            if (!fuAadhaar.HasFile || !fuPan.HasFile || !fuPhoto.HasFile)
+            if (!fuAadhaar.HasFile || !fuPan.HasFile || !fuShopFront.HasFile || !fuInside.HasFile|| !fuAgreement.HasFile)
             {
-                lblKycStatus.Text = "Please upload Aadhaar, PAN and Photo.";
-                lblKycStatus.CssClass = "text-danger fw-semibold";
+                docErr.Text = "Please upload Aadhaar, PAN, Outlet/Shop GeoTag Photo, Agreement and Selfie.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+            string aadhaarExt = Path.GetExtension(fuAadhaar.FileName).ToLower();
+            string panExt = Path.GetExtension(fuPan.FileName).ToLower();
+            string ShopIn = Path.GetExtension(fuInside.FileName).ToLower();
+            string ShopOut = Path.GetExtension(fuShopFront.FileName).ToLower();
+            string Agreement = Path.GetExtension(fuAgreement.FileName).ToLower();
+
+            string gstExt = fuGst.HasFile ? Path.GetExtension(fuGst.FileName).ToLower() : "";
+
+            /* Allowed extensions */
+            string[] docExt = { ".jpg", ".jpeg", ".png", ".pdf" };
+            string[] imgExt = { ".jpg", ".jpeg", ".png" };
+
+            if (!docExt.Contains(aadhaarExt))
+            {
+                docErr.Text = "Aadhaar must be JPG, PNG or PDF.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+            if (!docExt.Contains(Agreement))
+            {
+                docErr.Text = "Application Form must be JPG, PNG or PDF.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+            if (!imgExt.Contains(ShopIn))
+            {
+                docErr.Text = "Shop GeoTag Photo must be JPG, PNG.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+            if (!imgExt.Contains(ShopOut))
+            {
+                docErr.Text = "Shop GeoTag Photo must be JPG, PNG.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+            if (!docExt.Contains(panExt))
+            {
+                docErr.Text = "PAN must be JPG, PNG or PDF.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+
+            string photoBase64 = hfPhoto.Value;
+
+            if (string.IsNullOrEmpty(photoBase64))
+            {
+                docErr.Text = "Please capture photo.";
+                docErr.CssClass = "text-danger fw-semibold";
+                return;
+            }
+
+            if (fuGst.HasFile && !docExt.Contains(gstExt))
+            {
+                docErr.Text = "Business proof must be JPG, PNG or PDF.";
+                docErr.CssClass = "text-danger fw-semibold";
                 return;
             }
 
@@ -763,12 +834,21 @@ namespace NeoXPayout
 
             string aadhaarFile = "Aadhaar_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuAadhaar.FileName);
             string panFile = "PAN_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuPan.FileName);
-            string photoFile = "Photo_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuPhoto.FileName);
+            string ShopFront = "ShopFront_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuShopFront.FileName);
+            string ShopInside = "ShopIn_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuInside.FileName);
+            string photoFile = "Photo_" + userId + "_" + DateTime.Now.Ticks + ".png";
+            string AgreementFile= "Agreement_" + userId + "_" + DateTime.Now.Ticks + Path.GetExtension(fuAgreement.FileName);
+            string base64Data = photoBase64.Split(',')[1];
+            byte[] imageBytes = Convert.FromBase64String(base64Data);
+
+            File.WriteAllBytes(serverPath + photoFile, imageBytes);
             string gstFile = null;
             
             fuAadhaar.SaveAs(serverPath + aadhaarFile);
             fuPan.SaveAs(serverPath + panFile);
-            fuPhoto.SaveAs(serverPath + photoFile);
+            fuShopFront.SaveAs(serverPath + ShopFront);
+            fuInside.SaveAs(serverPath + ShopInside);
+            fuAgreement.SaveAs(serverPath + AgreementFile);
 
             if (fuGst.HasFile)
             {
@@ -781,21 +861,25 @@ namespace NeoXPayout
             string panUrl = folderPath + panFile;
             string photoUrl = folderPath + photoFile;
             string gstUrl = gstFile != null ? folderPath + gstFile : null;
+            string ShopInUrl = folderPath + ShopInside;
+            string ShopFrontUrl = folderPath + ShopFront;
+            string AgreementUrl= folderPath + AgreementFile;
 
-            // ---- DB Update ----
-            using (SqlConnection con = new SqlConnection(
-                ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection( ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {
-                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, photoUpload = @Photo, gstUpload = @Gst WHERE RegistrationId = @UserId";
+                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, BusinessProofUploadtype=@BusinessProofUploadtype, photoUpload = @Photo, ShopInupload=@ShopInupload,KycApplication=@KycApplication, ShopFrontupload=@ShopFrontupload, gstUpload = @Gst WHERE RegistrationId = @UserId";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@Aadhaar", aadhaarUrl);
                     cmd.Parameters.AddWithValue("@Pan", panUrl);
+                    cmd.Parameters.AddWithValue("@ShopInupload", ShopInUrl);
+                    cmd.Parameters.AddWithValue("@ShopFrontupload", ShopFrontUrl);
+                    cmd.Parameters.AddWithValue("@BusinessProofUploadtype", ddlProof.SelectedValue);
+                    cmd.Parameters.AddWithValue("@KycApplication", AgreementUrl);
                     cmd.Parameters.AddWithValue("@Photo", photoUrl);
                     cmd.Parameters.AddWithValue("@Gst", (object)gstUrl ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@UserId", userId);
-
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }

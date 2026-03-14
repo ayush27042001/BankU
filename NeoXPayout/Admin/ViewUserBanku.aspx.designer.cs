@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NeoXPayout.Admin {
-    
-    
-    public partial class ViewUser {
-        
+namespace NeoXPayout.Admin
+{
+
+
+    public partial class ViewUser
+    {
+
         /// <summary>
         /// rptProduct control.
         /// </summary>

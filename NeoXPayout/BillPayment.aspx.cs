@@ -75,6 +75,7 @@ namespace NeoXPayout
         protected void btnPayBill_Click(object sender, EventArgs e)
         {
             string billType = hfBillType.Value;
+
             string UserId = Session["BankURTUID"].ToString();
             string accountNo = txtAccountNo.Text.Trim();          
             string mobile = txtMobileBill.Text.Trim();             
@@ -175,6 +176,20 @@ namespace NeoXPayout
            
             string MobileNo1 = txtMobileBill.Text;
             string servicename = hfBillType.Value;
+
+            if (servicename == "WATERBILL")
+            {
+                servicename = "WATER";
+            }
+            else if (servicename == "LOANREPAYMENT")
+            {
+                servicename = "LOAN";
+            }
+            else if (servicename == "PREPAIDELECTRICITY")
+            {
+                servicename = "ELECTRICITY";
+            }
+
             string orderId = hfOrderId.Value;
          
             payMobile.Text = MobileNo1;

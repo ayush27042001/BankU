@@ -8,7 +8,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 namespace NeoXPayout.Admin
 {
     public partial class ViewUser : System.Web.UI.Page
@@ -28,7 +27,7 @@ namespace NeoXPayout.Admin
             {
                 if (!IsPostBack)
                 {
-                   
+
                     getdetails();
 
                 }
@@ -39,7 +38,7 @@ namespace NeoXPayout.Admin
         {
             string query = "select * from  Registration  order by RegistrationId desc";
             SqlCommand mcom = new SqlCommand(query, con);
-       
+
             SqlDataAdapter mda = new SqlDataAdapter(mcom);
             DataTable dt = new DataTable();
             mda.Fill(dt);
