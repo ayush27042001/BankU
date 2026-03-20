@@ -70,10 +70,12 @@ namespace NeoXPayout
             if (dt.Rows.Count == 0)
             {
                 rptProduct.Visible = false;
+                pnlNoData.Visible = true;
             }
             else
             {
                 rptProduct.Visible = true;
+                pnlNoData.Visible = false;
                 rptProduct.DataSource = dt;
                 rptProduct.DataBind();
             }
@@ -172,20 +174,23 @@ namespace NeoXPayout
                 {
                     lblmsg.Text = "OTP Verified Successfully";
 
-                // Get agreement ID saved earlier
-                string agreementId = Session["CurrentAgreementId"].ToString();
+                    string agreementId = Session["CurrentAgreementId"].ToString();
+                    //Check status BEFORE signing
+                    var details = GetAgreementDetails(agreementId);
 
-                // Fetch Agreement File Path from DB
-                string inputPdf = GetAgreementPdfPath(agreementId);
+                    if (details.Status == "Signed" || details.Status == "Approved")
+                    {
+                        lblmsg.Text = "Document already signed.";
+                        return;
+                    }
+                    string inputPdf = GetAgreementPdfPath(agreementId);
+                    string signedPdf = AddSignatureToPdf(inputPdf, name);
+                    SaveUserSignedPdf(agreementId, signedPdf, name);
 
-                // Create Signed PDF
-                string signedPdf = AddSignatureToPdf(inputPdf, name);   
+                    lblmsg.Text = "Document signed successfully. Waiting for admin approval.";
+                    getdetails();
 
-                updateStatus(agreementId, name);
-                // Download PDF
-                DownloadPdf(signedPdf);
-
-            }
+                }
                 else
                 {
                     lblmsg.Text = "OTP Incorrect";
@@ -196,28 +201,62 @@ namespace NeoXPayout
                 lblmsg.Text = "Error: " + ex.Message;
             }
         }
+        public void SaveUserSignedPdf(string agreementId, string path, string name)
+        {
+            con.Open();
 
+            SqlCommand cmd = new SqlCommand(@"UPDATE UserAgreement SET Status = 'Signed', FullName = @FullName, UserSignedPath = @Path WHERE AgreementId = @AgreementId", con);
+            cmd.Parameters.AddWithValue("@FullName", name);
+            cmd.Parameters.AddWithValue("@Path", path);
+            cmd.Parameters.AddWithValue("@AgreementId", agreementId);
+
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
         protected void rptProduct_ItemCommand1(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "SignIn")
             {
                 string agreementId = e.CommandArgument.ToString();
 
-                // Get BOTH status and fullname
                 var details = GetAgreementDetails(agreementId);
                 string status = details.Status;
                 string fullName = details.FullName;
 
+                // ✅ CASE 1: APPROVED → DOWNLOAD FINAL FILE
                 if (status == "Approved")
-                { 
-                    string path= GetAgreementPdfPath(agreementId);
-                    string signedPdf =AddSignatureToPdf(path, fullName);
-                    DownloadPdf(signedPdf);
+                {
+                    string finalPath = GetAdminSignedPdfPath(agreementId);
+
+                    if (!string.IsNullOrEmpty(finalPath))
+                    {
+                        DownloadPdf(Server.MapPath(finalPath));
+                    }
+                    else
+                    {
+                        lblmsg.Text = "Final signed document not found!";
+                    }
                 }
+
+                // ✅ CASE 2: SIGNED BUT NOT APPROVED
+                else if (status == "Signed")
+                {
+                    lblmsg.Text = "✔ Document signed successfully. It is currently under admin review. Please check back later.";
+                }
+
+                // ✅ CASE 3: NOT SIGNED → START OTP FLOW
                 else
-                { 
+                {
                     Session["CurrentAgreementId"] = agreementId;
-                    string aadhar = Session["AadharNo"].ToString();
+
+                    string aadhar = Session["AadharNo"]?.ToString();
+
+                    if (string.IsNullOrEmpty(aadhar))
+                    {
+                        lblmsg.Text = "Aadhaar not found!";
+                        return;
+                    }
+
                     SendAadhaar(aadhar);
                 }
             }
@@ -235,15 +274,41 @@ namespace NeoXPayout
                 if (status == "Approved")
                 {
                     btnSignIn.Text = "Download";
+                    btnSignIn.CssClass = "btn btn-success w-100 rounded-pill";
+                }
+                else if (status == "Signed")
+                {
+                    btnSignIn.Text = "Waiting for Approval";
+                    btnSignIn.Enabled = false;
+                    btnSignIn.CssClass = "btn btn-secondary w-100 rounded-pill";
                 }
                 else
                 {
                     btnSignIn.Text = "Sign Now";
+                    btnSignIn.CssClass = "btn btn-purple w-100 rounded-pill";
                 }
             }
         }
 
+        public string GetAdminSignedPdfPath(string agreementId)
+        {
+            string path = "";
 
+            con.Open();
+            SqlCommand cmd = new SqlCommand("SELECT AdminSignedPath FROM UserAgreement WHERE AgreementId=@AgreementId", con);
+
+            cmd.Parameters.AddWithValue("@AgreementId", agreementId);
+
+            object result = cmd.ExecuteScalar();
+            con.Close();
+
+            if (result != null)
+            {
+                path = result.ToString();
+            }
+
+            return path;
+        }
         private (string Status, string FullName) GetAgreementDetails(string agreementId)
         {
             string status = "";
@@ -292,7 +357,7 @@ namespace NeoXPayout
         public void updateStatus(string agreementId, string name)
         {
           con.Open();
-                SqlCommand cmdUpdate = new SqlCommand(@"UPDATE UserAgreement SET Status = 'Approved', fullName   = @fullName WHERE AgreementId = @AgreementId", con);
+                SqlCommand cmdUpdate = new SqlCommand(@"UPDATE UserAgreement SET Status = 'Signed', fullName   = @fullName WHERE AgreementId = @AgreementId", con);
 
                 cmdUpdate.Parameters.AddWithValue("@fullName", name);
                 cmdUpdate.Parameters.AddWithValue("@AgreementId", agreementId);
@@ -306,11 +371,18 @@ namespace NeoXPayout
             Response.ContentType = "application/pdf";
             Response.AppendHeader("Content-Disposition", "attachment; filename=" + file.Name);
             Response.WriteFile(file.FullName);
-            Response.End();
+            Response.Flush();
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
         public string AddSignatureToPdf(string inputPdfPath, string signerName)
         {
+            string folder = Server.MapPath("~/SignedDocs/");
+
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
             string outputPdfPath = Server.MapPath("~/SignedDocs/Signed_" + Guid.NewGuid() + ".pdf");
 
 

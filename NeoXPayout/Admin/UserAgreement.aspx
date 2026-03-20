@@ -3,14 +3,10 @@
 <!-- jQuery FIRST -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Select2 CSS -->
+<!-- THEN Select2 -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-<!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<!-- Bootstrap CSS (optional) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -49,19 +45,18 @@
 					    	<div class="mb-3 col-md-12 col-12">
 							<label class="col-form-label">User Id</label>
     
-							<asp:DropDownList ID="ddlUserId" CssClass="form-control" runat="server" 
-								DataTextField="UserName" DataValueField="UserId" AppendDataBoundItems="true">
-								<asp:ListItem Value="">-- Select User --</asp:ListItem>
-							</asp:DropDownList>
+							<asp:TextBox ID="txtUserSearch" runat="server" CssClass="form-control" 
+								placeholder="Search user..." list="userList"></asp:TextBox>
 
-							<asp:RequiredFieldValidator ID="rfvUserId" runat="server"
-								ControlToValidate="ddlUserId"
-								InitialValue=""
-								ValidationGroup="AddAgreement"
-								ErrorMessage="User Id is required"
-								CssClass="text-danger"
-								Display="Dynamic" />
-					    	</div>
+								<datalist id="userList">
+									<% foreach (System.Data.DataRow row in UsersTable.Rows) { %>
+										<option value="<%= row["FullName"] %> (<%= row["RegistrationId"] %>) " data-id="<%= row["RegistrationId"] %>"></option>
+									<% } %>
+								</datalist>
+
+							<asp:HiddenField ID="hdnUserId" runat="server" />
+
+							
 
 							<div class="mb-3 col-md-12 col-12">
 								<label class="col-form-label"> Upload Agreement</label>
@@ -117,16 +112,20 @@
         </div>
       </div>
     </div>
+	
+
 <script>
-    $(document).ready(function () {
-        $('#<%= ddlUserId.ClientID %>').select2({
-            placeholder: "-- Select User --",
-            allowClear: true,
-            width: '100%'
-        });
+    document.getElementById('<%= txtUserSearch.ClientID %>').addEventListener('input', function () {
+        var input = this.value;
+        var options = document.getElementById('userList').options;
+
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value === input) {
+                document.getElementById('<%= hdnUserId.ClientID %>').value = options[i].getAttribute("data-id");
+                break;
+            }
+        }
     });
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </asp:Content>

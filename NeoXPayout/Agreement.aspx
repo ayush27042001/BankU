@@ -46,7 +46,15 @@
     </h2>
     <asp:HiddenField runat="server" ID="hdnAadhaarRefId"/>
     <asp:Label runat="server" ID="lblmsg" CssClass="text-danger"></asp:Label>
-
+   <asp:Panel ID="pnlNoData" runat="server" Visible="false" CssClass="text-center py-5">
+    <div class="alert alert-warning rounded-4 shadow-sm">
+        <i class="bi bi-exclamation-circle fs-3"></i>
+        <h5 class="mt-2">No Agreements Found</h5>
+        <p class="text-muted mb-0">
+            You currently don't have any agreements available.
+        </p>
+    </div>
+</asp:Panel>
     <!-- Card Grid -->
     <div class="row g-4">
         <asp:Repeater ID="rptProduct" runat="server" OnItemCommand="rptProduct_ItemCommand1"   OnItemDataBound="rptProduct_ItemDataBound">

@@ -141,34 +141,57 @@ namespace NeoXPayout
                 string shopfront = row["ShopFrontupload"]?.ToString() ?? "";
                 string shopIn = row["ShopInupload"]?.ToString() ?? "";
                 string agreement = row["KycApplication"]?.ToString() ?? "";
+                string KycStatus = row["KycStatus"]?.ToString() ?? "";
 
-                if (!string.IsNullOrEmpty(aadharimg) && !string.IsNullOrEmpty(panimg) &&  !string.IsNullOrEmpty(photoimg) && !string.IsNullOrEmpty(shopfront) && !string.IsNullOrEmpty(shopIn) && !string.IsNullOrEmpty(agreement))
+                /* Document Upload Status */
+
+                aadhar.Text = string.IsNullOrEmpty(aadharimg) ? "Not Uploaded" : "Uploaded";
+                pan.Text = string.IsNullOrEmpty(panimg) ? "Not Uploaded" : "Uploaded";
+                img.Text = string.IsNullOrEmpty(photoimg) ? "Not Uploaded" : "Uploaded";
+                gst.Text = string.IsNullOrEmpty(gstimg) ? "Not Uploaded" : "Uploaded";
+                shop.Text = string.IsNullOrEmpty(shopfront) ? "Not Uploaded" : "Uploaded";
+                shopInside.Text = string.IsNullOrEmpty(shopIn) ? "Not Uploaded" : "Uploaded";
+                Agreement.Text = string.IsNullOrEmpty(agreement) ? "Not Uploaded" : "Uploaded";
+
+
+                /* All Documents Mandatory */
+
+                bool allDocsUploaded =
+                    !string.IsNullOrEmpty(aadharimg) &&
+                    !string.IsNullOrEmpty(panimg) &&
+                    !string.IsNullOrEmpty(photoimg) &&
+                    !string.IsNullOrEmpty(gstimg) &&
+                    !string.IsNullOrEmpty(shopfront) &&
+                    !string.IsNullOrEmpty(shopIn) &&
+                    !string.IsNullOrEmpty(agreement);
+
+
+                /* KYC Status */
+
+                if (!allDocsUploaded)
                 {
-                    aadhar.Text = "Uploaded";
-                    pan.Text = "Uploaded";
-                    img.Text = "Uploaded";
-                    shop.Text = "Uploaded";
-                    shopInside.Text = "Uploaded";
-                    Agreement.Text= "Uploaded";
-                    if (!string.IsNullOrEmpty(gstimg))
-                        gst.Text = "Uploaded";
-                    else
-                        gst.Text = "Not Uploaded";
-                    pnlUpload.Visible = false;  
-                    lblKycStatus.Text = "✅ KYC Completed";
-                    lblKycStatus.CssClass = "text-success fw-semibold";
+                    lblKycStatus.Text = "❌ KYC Not Completed - Please Upload All Documents";
+                    lblKycStatus.CssClass = "text-danger fw-semibold";
                 }
                 else
                 {
-                    aadhar.Text = string.IsNullOrEmpty(aadharimg) ? "Not Uploaded" : "Uploaded";
-                    pan.Text = string.IsNullOrEmpty(panimg) ? "Not Uploaded" : "Uploaded";
-                    img.Text = string.IsNullOrEmpty(photoimg) ? "Not Uploaded" : "Uploaded";
-                    gst.Text = string.IsNullOrEmpty(gstimg) ? "Not Uploaded" : "Uploaded";
-                    shop.Text = string.IsNullOrEmpty(shopfront) ? "Not Uploaded" : "Uploaded";
-                    Agreement.Text =string.IsNullOrEmpty(agreement) ? "Not Uploaded" : "Uploaded";
-                    shopInside.Text = string.IsNullOrEmpty(shopIn) ? "Not Uploaded" : "Uploaded";
-                    lblKycStatus.Text = "❌ KYC Not Completed";
-                    lblKycStatus.CssClass = "text-danger fw-semibold";
+                    if (KycStatus == "Complete")
+                    {
+                        pnlUpload.Visible = false;
+                        lblKycStatus.Text = "✅ KYC Completed";
+                        lblKycStatus.CssClass = "text-success fw-semibold";
+                    }
+                    else if (KycStatus == "ReUpload")
+                    {
+                        lblKycStatus.Text = "⚠ KYC ReUpload Required";
+                        lblKycStatus.CssClass = "text-danger fw-semibold";
+                    }
+                    else
+                    {
+                        pnlUpload.Visible = false;
+                        lblKycStatus.Text = "⏳ KYC Submitted - Under Review";
+                        lblKycStatus.CssClass = "text-warning fw-semibold";
+                    }
                 }
 
 
@@ -739,8 +762,8 @@ namespace NeoXPayout
                     else
                         gst.Text = "Not Uploaded";
                     pnlUpload.Visible = false;
-                    lblKycStatus.Text = "✅ KYC Completed";
-                    lblKycStatus.CssClass = "text-success fw-semibold";
+                    lblKycStatus.Text = "⏳ KYC Submitted - Under Review";
+                    lblKycStatus.CssClass = "text-Warning fw-semibold";
                 }
                 else
                 {
@@ -867,7 +890,7 @@ namespace NeoXPayout
 
             using (SqlConnection con = new SqlConnection( ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {
-                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, BusinessProofUploadtype=@BusinessProofUploadtype, photoUpload = @Photo, ShopInupload=@ShopInupload,KycApplication=@KycApplication, ShopFrontupload=@ShopFrontupload, gstUpload = @Gst WHERE RegistrationId = @UserId";
+                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, BusinessProofUploadtype=@BusinessProofUploadtype, photoUpload = @Photo, ShopInupload=@ShopInupload,KycApplication=@KycApplication, ShopFrontupload=@ShopFrontupload, gstUpload, KycStatus=@KycStatus = @Gst WHERE RegistrationId = @UserId";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -878,6 +901,7 @@ namespace NeoXPayout
                     cmd.Parameters.AddWithValue("@BusinessProofUploadtype", ddlProof.SelectedValue);
                     cmd.Parameters.AddWithValue("@KycApplication", AgreementUrl);
                     cmd.Parameters.AddWithValue("@Photo", photoUrl);
+                    cmd.Parameters.AddWithValue("@KycStatus", "Pending");
                     cmd.Parameters.AddWithValue("@Gst", (object)gstUrl ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@UserId", userId);
                     con.Open();

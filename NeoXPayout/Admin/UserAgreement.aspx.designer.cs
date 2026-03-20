@@ -60,22 +60,22 @@ namespace NeoXPayout.Admin
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
 
         /// <summary>
-        /// ddlUserId control.
+        /// txtUserSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlUserId;
+        protected global::System.Web.UI.WebControls.TextBox txtUserSearch;
 
         /// <summary>
-        /// rfvUserId control.
+        /// hdnUserId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUserId;
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserId;
 
         /// <summary>
         /// fuAgreement control.

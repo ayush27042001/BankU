@@ -43,7 +43,7 @@ namespace NeoXPayout.Admin
                 return;
             }
 
-            string query = "SELECT aadharUpload, panUpload, photoUpload, gstUpload,BusinessProofUploadtype ,ShopFrontupload,ShopInupload, KycApplication FROM Registration WHERE RegistrationId = @ID";
+            string query = "SELECT aadharUpload, panUpload, photoUpload, KycStatus,gstUpload,BusinessProofUploadtype ,ShopFrontupload,ShopInupload, KycApplication FROM Registration WHERE RegistrationId = @ID";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -59,7 +59,25 @@ namespace NeoXPayout.Admin
                 }
 
                 DataRow row = dt.Rows[0];
+                lblKycStatus.Text = row["KycStatus"].ToString();
 
+                string status = row["KycStatus"].ToString();
+
+                switch (status)
+                {
+                    case "Pending":
+                        lblKycStatus.CssClass = "badge bg-warning fs-6";
+                        break;
+
+                    case "ReUpload":
+                        lblKycStatus.CssClass = "badge bg-danger fs-6";
+                        break;
+
+                    case "Complete":
+                        lblKycStatus.CssClass = "badge bg-success fs-6";
+                        break;
+                }
+                ddlKycStatus.SelectedValue = status;
                 SetDoc(imgAadhar, lnkAadhar, lblAadharStatus, row["aadharUpload"]);
                 SetDoc(imgPan, lnkPan, lblPanStatus, row["panUpload"]);
                 SetDoc(imgFront, lnkFront, lblShopFront, row["ShopFrontupload"]);
@@ -106,6 +124,31 @@ namespace NeoXPayout.Admin
             }
         }
 
+        protected void btnUpdateStatus_Click(object sender, EventArgs e)
+        {
+            string ID = Request.QueryString["ID"];
 
+            if (string.IsNullOrEmpty(ID))
+                return;
+
+            string status = ddlKycStatus.SelectedValue;
+
+            string query = "UPDATE Registration SET KycStatus=@Status WHERE RegistrationId=@ID";
+
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.Parameters.AddWithValue("@ID", ID);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+            lblKycStatus.Text = status;
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert",
+                "alert('KYC Status Updated Successfully');", true);
+        }
     }
 }
