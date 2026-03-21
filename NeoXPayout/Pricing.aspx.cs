@@ -32,13 +32,13 @@ namespace NeoXPayout
             string accountType = Session["AccountHolderType"].ToString();
             int planId = GetPlanId();
             string userType = "";
-            if (accountType == "BankU Seva Kendra")
-            {
-                userType = "Retailer";
-            }
-            else if (accountType == "Distributor")
+            if (accountType == "Distributor")
             {
                 userType = "AD";
+            }
+            else 
+            {
+                userType = "Retailer";               
             }
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {

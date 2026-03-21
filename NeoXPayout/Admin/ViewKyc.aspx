@@ -113,6 +113,37 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-4">
+    <div class="col-md-12">
+        <div class="border rounded-3 p-3">
+            <h6 class="mb-3">KYC Status</h6>
+
+            <!-- Current Status -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Current Status</label><br />
+                <asp:Label ID="lblKycStatus" runat="server" CssClass="badge bg-warning fs-6"></asp:Label>
+            </div>
+
+            <!-- Update Status -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Update Status</label>
+                <asp:DropDownList ID="ddlKycStatus" runat="server" CssClass="form-select">
+                    <asp:ListItem Text="Pending" Value="Pending"></asp:ListItem>
+                    <asp:ListItem Text="ReUpload" Value="ReUpload"></asp:ListItem>
+                    <asp:ListItem Text="Complete" Value="Complete"></asp:ListItem>
+                </asp:DropDownList>
+            </div>
+
+            <!-- Button -->
+            <asp:Button ID="btnUpdateStatus"
+                runat="server"
+                Text="Update KYC Status"
+                CssClass="btn btn-primary"
+                OnClick="btnUpdateStatus_Click" />
+        </div>
+    </div>
+</div>
     </div>
 </div>
 

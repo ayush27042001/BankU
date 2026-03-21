@@ -24,6 +24,8 @@ namespace NeoXPayout.Admin
             }
             BindUsers();
         }
+        public DataTable UsersTable;
+
         private void BindUsers()
         {
             DataTable dt = new DataTable();
@@ -37,26 +39,21 @@ namespace NeoXPayout.Admin
                 }
             }
 
-            // Add formatted display column MobileNo (RegistrationId)
             dt.Columns.Add("MobileDisplay", typeof(string));
+
             foreach (DataRow row in dt.Rows)
             {
-                row["MobileDisplay"] = $"{row["FullName"]} ({row["RegistrationId"]})";
+                row["MobileDisplay"] = row["FullName"] + " (" + row["RegistrationId"] + ")";
             }
 
-            ddlUserId.DataSource = dt;
-            ddlUserId.DataTextField = "MobileDisplay";
-            ddlUserId.DataValueField = "RegistrationId";
-            ddlUserId.DataBind();
-
-            ddlUserId.Items.Insert(0, new ListItem("-- Select User --", ""));
+            UsersTable = dt; 
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             string AgreementType = txtType.Text.Trim();
            
-            string UserId = ddlUserId.SelectedValue;
+            string UserId = hdnUserId.Value;
             string AggId = txtAggId.Text.Trim();
 
 

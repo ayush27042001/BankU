@@ -23,41 +23,108 @@
                             <th>User Id</th>             
                             <th>Type</th>     
                             <th>File Path</th>
-                            <th>Created At</th>                                 
-                            <th>Status</th>                      
+                            <th>Created At</th>     
+                           
+                            <th>Status</th>  
+                           <th>User Signed</th>
+                            <th>Admin SignedPath</th>     
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <asp:Repeater runat="server" ID="rptProduct" OnItemCommand="rptProduct_ItemCommand">
-                        <ItemTemplate>
-                                <tr>
-                                    <td><%# Eval("AgreementId") %></td>
-                                    <td><%# Eval("UserId") %></td>   
-                                    <td><%# Eval("AgreementType") %></td>
-                                    <td><%# Eval("FilePath") %></td>   
-                                    <td data-order='<%# Eval("CreatedAt","{0:yyyyMMdd}") %>'><%# Eval("CreatedAt", "{0:dd/MM/yyyy hh:mm tt}") %></td> 
-                                    <td 
-                                        style='<%# 
-                                            Eval("Status").ToString() == "Complete" 
-                                            ? "color:#155724;padding:1px 8px;border-radius:20px;text-align:center;font-weight:bold;display:inline-block;" 
-                                            : "color:#d80000;padding:1px 8px;border-radius:20px;text-align:center;font-weight:bold;display:inline-block;" 
-                                        %>'>
-                                        <%# Eval("Status") %>
-                                   </td> 
-                                   <td>
-                                         <asp:LinkButton ID="btnDelete" 
-                                            runat="server" 
-                                            CssClass="btn btn-sm btn-danger ms-1"
-                                            CommandName="DeleteRecord"
-                                            CommandArgument='<%# Eval("Id") %>'
-                                            OnClientClick="return confirm('Are you sure you want to delete this record?');">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </asp:LinkButton>
-                                   </td>
+                          <ItemTemplate>
+                            <tr>
+                                <td><%# Eval("AgreementId") %></td>
+                                <td><%# Eval("UserId") %></td>   
+                                <td><%# Eval("AgreementType") %></td>
 
-                                </tr>
-                        </ItemTemplate>
+                                <!-- ORIGINAL FILE -->
+                                <td>
+                                    <asp:HyperLink runat="server"
+                                        NavigateUrl='<%# Eval("FilePath") != DBNull.Value && !string.IsNullOrEmpty(Eval("FilePath").ToString()) 
+                                            ? ResolveUrl(Eval("FilePath").ToString()) 
+                                            : "#" %>'
+                                        Target="_blank"
+                                        CssClass='<%# Eval("FilePath") != DBNull.Value && !string.IsNullOrEmpty(Eval("FilePath").ToString()) 
+                                            ? "btn btn-sm btn-primary" 
+                                            : "btn btn-sm btn-secondary disabled" %>'>
+                                        Download
+                                    </asp:HyperLink>
+                                </td>
+
+                                <!-- DATE -->
+                                <td data-order='<%# Eval("CreatedAt","{0:yyyyMMdd}") %>'>
+                                    <%# Eval("CreatedAt", "{0:dd/MM/yyyy hh:mm tt}") %>
+                                </td> 
+
+                                <!-- STATUS -->
+                                <td style='<%# Eval("Status").ToString() == "Approved" ? "color:#155724;padding:1px 8px;border-radius:20px;text-align:center;font-weight:bold;display:inline-block;" : "color:#d80000;padding:1px 8px;border-radius:20px;text-align:center;font-weight:bold;display:inline-block;" %>'>  
+                                        <%# Eval("Status") %>        
+                                </td> 
+
+                                <!-- USER SIGNED -->
+                                <td>
+                                 <asp:HyperLink runat="server"
+                                    NavigateUrl='<%# GetSignedUrl(Eval("UserSignedPath")) %>'
+                                    Target="_blank"
+                                    CssClass='<%# 
+                                        (Eval("UserSignedPath") == null || Eval("UserSignedPath") == DBNull.Value || string.IsNullOrEmpty(Eval("UserSignedPath").ToString())) 
+                                        ? "btn btn-sm btn-secondary disabled" 
+                                        : "btn btn-sm btn-info" %>'>
+
+                                    <%# 
+                                        (Eval("UserSignedPath") == null || Eval("UserSignedPath") == DBNull.Value || string.IsNullOrEmpty(Eval("UserSignedPath").ToString())) 
+                                        ? "Not Signed" 
+                                        : "View Signed" %>
+
+                                </asp:HyperLink>
+                                </td>
+
+                                <!-- ADMIN SIGNED -->
+                                <td>
+                                  <asp:HyperLink runat="server"
+                                    NavigateUrl='<%# Eval("AdminSignedPath") != DBNull.Value && !string.IsNullOrEmpty(Eval("AdminSignedPath").ToString()) 
+                                        ? ResolveUrl("/" + Eval("AdminSignedPath").ToString().Replace("~/","")) 
+                                        : "#" %>'
+                                    Target="_blank"
+                                    CssClass='<%# Eval("AdminSignedPath") != DBNull.Value && !string.IsNullOrEmpty(Eval("AdminSignedPath").ToString()) 
+                                        ? "btn btn-sm btn-success" 
+                                        : "btn btn-sm btn-secondary disabled" %>'>
+                                    <%# Eval("AdminSignedPath") != DBNull.Value && !string.IsNullOrEmpty(Eval("AdminSignedPath").ToString()) 
+                                        ? "Download" 
+                                        : "Not Approved" %>
+                                </asp:HyperLink>
+                                </td>
+
+                                <!-- ACTION -->
+                                <td>
+                                    <!-- DELETE -->
+                                    <asp:LinkButton ID="btnDelete" 
+                                        runat="server" 
+                                        CssClass="btn btn-sm btn-danger ms-1"
+                                        CommandName="DeleteRecord"
+                                        CommandArgument='<%# Eval("Id") %>'
+                                        OnClientClick="return confirm('Delete this record?');">
+                                        <i class="fa fa-trash"></i>
+                                    </asp:LinkButton>
+
+                                    <!-- APPROVE -->
+                                    <asp:LinkButton ID="btnResign" 
+                                        runat="server" 
+                                        CssClass='<%# Eval("Status").ToString() == "Signed" 
+                                            ? "btn btn-sm btn-success ms-1" 
+                                            : "btn btn-sm btn-secondary ms-1 disabled" %>'
+                                        Enabled='<%# Eval("Status").ToString() == "Signed" %>'
+                                        CommandName="ReSign"
+                                        CommandArgument='<%# Eval("AgreementId") %>'>
+                                        <i class="fa fa-check"></i> 
+                                        <%# Eval("Status").ToString() == "Signed" ? "Approve" : "Pending" %>
+                                    </asp:LinkButton>
+                                </td>
+
+                            </tr>
+                          </ItemTemplate>
                         </asp:Repeater>                                         
                     </tbody>
           </table>
