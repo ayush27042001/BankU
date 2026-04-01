@@ -443,8 +443,8 @@
         </div>
     </div>
     <asp:Panel runat="server" ID="pnlMain">
-        
-     
+
+
         <div class="container">
 
 
@@ -715,6 +715,9 @@
                         </div>
                         <div class="col-12">
                             <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="Withdraw">Cash Withdrawal </button>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="CashDeposit">Cash Deposit </button>
                         </div>
                         <div class="col-12">
                             <button type="button" class="operator-card w-100 p-3 border rounded" data-operator="AadharPay">Aadhar Pay </button>
@@ -2023,7 +2026,7 @@
                 receiptModal.show();
             });
         });
-       
+
         // ✅ Print function
         function printReceipt() {
             var printContent = document.getElementById('printArea').innerHTML;

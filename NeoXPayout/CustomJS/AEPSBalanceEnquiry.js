@@ -890,6 +890,36 @@ function callCashWidhrawal(pidXml) {
         }
     });
 }
+
+function callCashDeposit(pidXml) {
+    const payload = buildBalanceEnquiryPayload(pidXml);
+    if (!payload) return;
+    $(".loader-overlay").css("display", "flex");
+    $.ajax({
+        url: "https://partner.banku.co.in/api/AEPSTXN",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 30000,
+        data: JSON.stringify(payload),
+        success: function (res) {
+            console.log("AEPS Response:", res);
+            if (res.Status === "SUCCESS") {
+                ManageInvoicePay("CashDeposit", res);
+                $(".loader-overlay").css("display", "none");
+            } else {
+                showFailed(res?.Data[0]?.status || res.Message);
+                $(".loader-overlay").css("display", "none");
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            showFailed("Network / CORS Error");
+            $(".loader-overlay").css("display", "none");
+        }
+    });
+}
+
 function callAadharPay(pidXml) {
     const payload = buildBalanceEnquiryPayload(pidXml);
     if (!payload) return;
@@ -1055,12 +1085,12 @@ function buildBalanceEnquiryPayload(pidXml) {
         request: {
             aadhaar_uid: $("#ContentPlaceHolder1_txtAadhar").val(),
             agent_id: navigator.userAgent,
-            amount: selectedOperator === "Balance" ? "0" : selectedOperator === "Statement" ? "0" : selectedOperator == "Withdraw" ? Amount : selectedOperator === "AadharPay" ? Amount : "0",
+            amount: selectedOperator === "Balance" ? "0" : selectedOperator === "Statement" ? "0" : selectedOperator == "Withdraw" ? Amount : selectedOperator === "AadharPay" ? Amount : selectedOperator == "CashDeposit" ? Amount : "0",
             bankiin: $("#ContentPlaceHolder1_ddlCircle").val(),
             latitude: $("#ContentPlaceHolder1_hdLatitude").val(), //Need to pick dynamic i added for now just for testing
             longitude: $("#ContentPlaceHolder1_hdLongitude").val(),//Need to pick dynamic i added for now just for testing
             mobile: $("#ContentPlaceHolder1_txtMobile").val(),
-            sp_key: selectedOperator === "Balance" ? "BAP" : selectedOperator === "Statement" ? "SAP" : selectedOperator == "Withdraw" ? "WAP" : selectedOperator === "AadharPay" ? "MZZ" : "",
+            sp_key: selectedOperator === "Balance" ? "BAP" : selectedOperator === "Statement" ? "SAP" : selectedOperator == "Withdraw" ? "WAP" : selectedOperator === "AadharPay" ? "MZZ" : selectedOperator == "CashDeposit" ? "cd" : "",
             pidDataType: "X",
             pidData: pid.pidData,
             ci: pid.ci,
@@ -1284,12 +1314,12 @@ function buildSignUpValidatePayload() {
 }
 
 function ManageInvoicePay(Mode, response) {
-    if (Mode == "BALANCE" || Mode == "AADHARPAY" || Mode == "WITHDRAWAL") {
+    if (Mode == "BALANCE" || Mode == "AADHARPAY" || Mode == "WITHDRAWAL" || Mode =="CashDeposit") {
 
-        var TxnType = Mode == "BALANCE" ? "Balance Inquiry Invoice" : Mode == "WITHDRAWAL" ? "CASH Withdrawal Invoice" : "Aadhar Pay Invoice";
+        var TxnType = Mode == "BALANCE" ? "Balance Inquiry Invoice" : Mode == "WITHDRAWAL" ? "CASH Withdrawal Invoice" : Mode == "CashDeposit"? "Cash Deposit Invoice" : "Aadhar Pay Invoice";
 
 
-        if (Mode == "AADHARPAY" || Mode == "WITHDRAWAL") {
+        if (Mode == "AADHARPAY" || Mode == "WITHDRAWAL" || Mode == "CashDeposit") {
 
             $(".withdrawamount").text($("#ContentPlaceHolder1_txtamount").val());
             $(".withdrawrow").css("display", "contents");
