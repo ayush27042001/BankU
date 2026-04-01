@@ -277,6 +277,9 @@ async function captureFingerprint(deviceType = "") {
         else if (deviceType === "EKYC") {
             callAgentEKYC(pidXml);
         }
+        else if (selectedOperator === "CashDeposit") {
+            callCashDeposit(pidXml);
+        }
         else {
             alert("Operator not implemented yet");
         }
