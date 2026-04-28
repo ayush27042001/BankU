@@ -38,21 +38,39 @@ namespace NeoXPayout
 
         public void getProfileImage()
         {
-            string userId = Session["BankURTUID"].ToString();
-            string sql = "SELECT ProfileImage FROM Registration WHERE RegistrationId = @RegistrationId";
+            string userId = Session["BankURTUID"]?.ToString();
+
+            string sql = "SELECT photoUpload FROM Registration WHERE RegistrationId = @RegistrationId";
+
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {
                 con.Open();
+
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@RegistrationId", userId);
+
                 object imgPath = cmd.ExecuteScalar();
-                if (imgPath != DBNull.Value && imgPath != null)
+
+                if (imgPath != null && imgPath != DBNull.Value)
                 {
-                    imgPreview.Src = imgPath.ToString();
+                    string path = imgPath.ToString();
+
+                    if (path.StartsWith("http://") || path.StartsWith("https://"))
+                    {
+                        imgPreview.Src = path;
+                    }
+                    else if (path.StartsWith("~/"))
+                    {
+                        imgPreview.Src = ResolveUrl(path);
+                    }
+                    else
+                    {
+                        imgPreview.Src = ResolveUrl("~/" + path);
+                    }
                 }
                 else
                 {
-                    imgPreview.Src = "assets/images/user.png";
+                    imgPreview.Src = ResolveUrl("~/assets/images/user.png");
                 }
             }
         }
@@ -175,23 +193,41 @@ namespace NeoXPayout
                 }
                 else
                 {
-                    if (KycStatus == "Complete")
+                    if (KycStatus == "Approved")
                     {
                         pnlUpload.Visible = false;
+                        pnlCertificate.Visible = true;
                         lblKycStatus.Text = "✅ KYC Completed";
                         lblKycStatus.CssClass = "text-success fw-semibold";
+
+                        // Fill certificate data
+                        lblCertName.Text = row["FullName"]?.ToString();
+                        lblCertMobile.Text = row["MobileNo"]?.ToString();
+                        lblCertPan.Text = row["PANNo"]?.ToString();
+                        lblCustId.Text = row["RegistrationId"]?.ToString();
+                        lblAadhar.Text = row["AadharNo"]?.ToString();
+                        Label1.Text = DateTime.Now.ToString("dd-MM-yyyy");
+
+                        // Open popup
+                        ScriptManager.RegisterStartupScript(this, this.GetType(),
+                            "Popup", "$('#kycCertificateModal').modal('show');", true);
                     }
-                    else if (KycStatus == "ReUpload")
+                    else if (KycStatus == "Clarification")
                     {
                         lblKycStatus.Text = "⚠ KYC ReUpload Required";
                         lblKycStatus.CssClass = "text-danger fw-semibold";
                     }
-                    else
+                    else if (KycStatus == "Review")
                     {
                         pnlUpload.Visible = false;
                         lblKycStatus.Text = "⏳ KYC Submitted - Under Review";
                         lblKycStatus.CssClass = "text-warning fw-semibold";
                     }
+                    else if (KycStatus == "Rejected")
+                    {
+                        lblKycStatus.Text = "⏳ KYC Rejected - Please Upload All Documents Again";
+                        lblKycStatus.CssClass = "text-danger fw-semibold";
+                     }
                 }
 
 
@@ -458,73 +494,73 @@ namespace NeoXPayout
 
             return name;
         }
-        protected void SaveImage_Click(object sender, EventArgs e)
-        {
-            lblMessage.Text = "";
-            lblMessage.CssClass = "mt-2 d-block fw-bold";
+        //protected void SaveImage_Click(object sender, EventArgs e)
+        //{
+        //    lblMessage.Text = "";
+        //    lblMessage.CssClass = "mt-2 d-block fw-bold";
 
-            if (profileUpload.HasFile)
-            {
-                string userId = Session["BankURTUID"].ToString();
+        //    if (profileUpload.HasFile)
+        //    {
+        //        string userId = Session["BankURTUID"].ToString();
 
-                // Get original file extension
-                string extension = Path.GetExtension(profileUpload.FileName);
+        //        // Get original file extension
+        //        string extension = Path.GetExtension(profileUpload.FileName);
 
-                // Generate random file name using GUID
-                string fileName = Guid.NewGuid().ToString() + extension;
+        //        // Generate random file name using GUID
+        //        string fileName = Guid.NewGuid().ToString() + extension;
 
-                string folderPath = Server.MapPath("~/uploads/");
-                if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
+        //        string folderPath = Server.MapPath("~/uploads/");
+        //        if (!Directory.Exists(folderPath))
+        //            Directory.CreateDirectory(folderPath);
 
-                string filePath = Path.Combine(folderPath, fileName);
+        //        string filePath = Path.Combine(folderPath, fileName);
 
-                // Check file size under 500 KB
-                if (profileUpload.PostedFile.ContentLength > 500 * 1024)
-                {
-                    lblMessage.Text = "⚠️ File size must be less than 500 KB.";
-                    lblMessage.CssClass += " text-danger";
-                    return;
-                }
+        //        // Check file size under 500 KB
+        //        if (profileUpload.PostedFile.ContentLength > 500 * 1024)
+        //        {
+        //            lblMessage.Text = "⚠️ File size must be less than 500 KB.";
+        //            lblMessage.CssClass += " text-danger";
+        //            return;
+        //        }
 
-                try
-                {
-                    // Save the file
-                    profileUpload.SaveAs(filePath);
+        //        try
+        //        {
+        //            // Save the file
+        //            profileUpload.SaveAs(filePath);
 
-                    // Update preview
-                    imgPreview.Src = "~/uploads/" + fileName;
+        //            // Update preview
+        //            imgPreview.Src = "~/uploads/" + fileName;
 
-                    // Save image path to DB
-                    string imagePath = "~/uploads/" + fileName;
-                    string sql = @"UPDATE Registration 
-                           SET ProfileImage = @ProfileImage
-                           WHERE RegistrationId = @RegistrationId";
+        //            // Save image path to DB
+        //            string imagePath = "~/uploads/" + fileName;
+        //            string sql = @"UPDATE Registration 
+        //                   SET ProfileImage = @ProfileImage
+        //                   WHERE RegistrationId = @RegistrationId";
 
-                    using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
-                    {
-                        con.Open();
-                        SqlCommand cmd = new SqlCommand(sql, con);
-                        cmd.Parameters.AddWithValue("@ProfileImage", imagePath);
-                        cmd.Parameters.AddWithValue("@RegistrationId", userId);
-                        cmd.ExecuteNonQuery();
-                    }
-                    getProfileImage();
-                    lblMessage.Text = "✅ Profile photo updated successfully!";
-                    lblMessage.CssClass += " text-success";
-                }
-                catch (Exception ex)
-                {
-                    lblMessage.Text = "❌ Failed to update profile photo. Please try again.";
-                    lblMessage.CssClass += " text-danger";
-                }
-            }
-            else
-            {
-                lblMessage.Text = "⚠️ Please select an image first.";
-                lblMessage.CssClass += " text-warning";
-            }
-        }
+        //            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+        //            {
+        //                con.Open();
+        //                SqlCommand cmd = new SqlCommand(sql, con);
+        //                cmd.Parameters.AddWithValue("@ProfileImage", imagePath);
+        //                cmd.Parameters.AddWithValue("@RegistrationId", userId);
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //            getProfileImage();
+        //            lblMessage.Text = "✅ Profile photo updated successfully!";
+        //            lblMessage.CssClass += " text-success";
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            lblMessage.Text = "❌ Failed to update profile photo. Please try again.";
+        //            lblMessage.CssClass += " text-danger";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        lblMessage.Text = "⚠️ Please select an image first.";
+        //        lblMessage.CssClass += " text-warning";
+        //    }
+        //}
 
         protected void btnADDGST_Click(object sender, EventArgs e)
         {
@@ -795,6 +831,9 @@ namespace NeoXPayout
             string ShopOut = Path.GetExtension(fuShopFront.FileName).ToLower();
             string Agreement = Path.GetExtension(fuAgreement.FileName).ToLower();
 
+            string Mobile = Session["BankURTMobileno"].ToString();
+            string Name = Session["BankURTName"].ToString();
+            string kycid= "BANKUKYC" + Session["BankURTUID"].ToString();
             string gstExt = fuGst.HasFile ? Path.GetExtension(fuGst.FileName).ToLower() : "";
 
             /* Allowed extensions */
@@ -890,7 +929,7 @@ namespace NeoXPayout
 
             using (SqlConnection con = new SqlConnection( ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
             {
-                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, BusinessProofUploadtype=@BusinessProofUploadtype, photoUpload = @Photo, ShopInupload=@ShopInupload,KycApplication=@KycApplication, ShopFrontupload=@ShopFrontupload, gstUpload, KycStatus=@KycStatus = @Gst WHERE RegistrationId = @UserId";
+                string query = @"UPDATE Registration SET aadharUpload = @Aadhaar, panUpload = @Pan, BusinessProofUploadtype=@BusinessProofUploadtype, photoUpload = @Photo, ShopInupload=@ShopInupload,KycApplication=@KycApplication, ShopFrontupload=@ShopFrontupload, gstUpload=@Gst, KycStatus=@KycStatus  WHERE RegistrationId = @UserId";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -901,13 +940,14 @@ namespace NeoXPayout
                     cmd.Parameters.AddWithValue("@BusinessProofUploadtype", ddlProof.SelectedValue);
                     cmd.Parameters.AddWithValue("@KycApplication", AgreementUrl);
                     cmd.Parameters.AddWithValue("@Photo", photoUrl);
-                    cmd.Parameters.AddWithValue("@KycStatus", "Pending");
+                    cmd.Parameters.AddWithValue("@KycStatus", "Review");
                     cmd.Parameters.AddWithValue("@Gst", (object)gstUrl ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@UserId", userId);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
             }
+            Um.SendKycStatusMsg(Mobile, Name, kycid,"Review");
             getkycdetails();
             // ---- Success ----
             lblKycStatus.Text = "KYC Completed Successfully";

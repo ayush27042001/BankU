@@ -92,7 +92,7 @@
     float: right;            
     font-weight: 600;         
     text-decoration: none !important;
-    color: #007bff;         
+    color: #800080;         
     cursor: pointer;          
     margin-top: 8px;         
 }
@@ -110,7 +110,7 @@
 }
 
 .data-view h2 {
-  background: linear-gradient(90deg, #6C63FF, #5A2D82);
+  background: linear-gradient(90deg, #800080, #800080);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 24px;
@@ -125,7 +125,7 @@ table {
 }
 
 thead {
-  background: #5A2D82;
+  background:#800080;
   color: #fff;
 }
 
@@ -178,6 +178,95 @@ tbody td {
         background: #1cc88a !important;
         color: #fff !important;
     }
+ .banku-modal {
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.banku-modal .modal-title {
+    font-size: 1.1rem;
+}
+
+/* Referral box */
+.ref-box {
+    display: flex;
+    align-items: center;
+    background: #f4f6f9;
+    border-radius: 12px;
+    padding: 6px 8px;
+}
+
+.ref-box .form-control {
+    font-size: 0.9rem;
+    padding-left: 8px;
+}
+
+/* Copy button inside box */
+.copy-btn {
+    background: #800080;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    transition: 0.2s ease;
+}
+
+.copy-btn:hover {
+    background:#c219c2;
+}
+
+/* Primary button */
+.btn-banku-primary {
+    background: #800080;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    height: 44px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.btn-banku-primary:hover {
+    background:#c219c2;
+}
+
+/* Secondary button */
+.btn-light {
+    border-radius: 10px;
+    height: 44px;
+    font-size: 0.9rem;
+}
+
+/* Smooth animation */
+.modal-content {
+    animation: bankuFade 0.25s ease;
+}
+
+@keyframes bankuFade {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.toast-msg {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #b01cad;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    z-index: 9999;
+}
 </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -188,13 +277,23 @@ tbody td {
                               <div class="card ">
                                    <div class="card-header border-bottom pb-0 bg-light shadow-sm rounded-top">
                                         <!--=== tab buttons ===-->
-                                        <ul class="nav nav-pills justify-content-start mb-2 px-2" style="overflow-x:auto; white-space:nowrap; gap:10px;">
-                                            <li class="nav-item">
-                                                <asp:LinkButton runat="server" ID="btnElectricity" CommandArgument="CreditCard"
-                                                    CssClass="nav-link custom-tab">Add New User</asp:LinkButton>
-                                            </li>
-                                          
-                                        </ul>
+                                       <ul class="nav nav-pills justify-content-between mb-2 px-2" style="overflow-x:auto; white-space:nowrap; gap:10px;">
+
+                                        <li class="nav-item">
+                                            <asp:LinkButton runat="server" ID="btnElectricity" CommandArgument="CreditCard"
+                                                CssClass="nav-link custom-tab">Add New User</asp:LinkButton>
+                                        </li>
+
+                                        <!-- Referral Button -->
+                                        <li class="nav-item ms-auto">
+                                            <asp:LinkButton ID="btnReferral" runat="server"
+                                                CssClass="btn btn-success"
+                                                OnClientClick="openReferralModal(); return false;">
+                                                <i class="bi bi-share-fill"></i> Referral
+                                            </asp:LinkButton>
+                                        </li>
+
+                                    </ul>
                                     </div>
                                    <div class="card-body ">
                                         <div class="tab-content" id="pills-tabContent">
@@ -238,7 +337,8 @@ tbody td {
                                                             </div>
                                                                                                                              <!-- OTP Modal Popup -->
                                                             <!-- OTP Modal Popup -->
-                                                            <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+                                                            <div class="modal fade" id="otpModal" tabindex="-1"  data-bs-backdrop="static"
+     data-bs-keyboard="false" aria-labelledby="otpModalLabel" aria-hidden="true">
                                                               <div class="modal-dialog modal-dialog-centered">
                                                                 <div class="modal-content">
 
@@ -333,4 +433,79 @@ tbody td {
     </tbody>
   </table>
 </div>
+  <div class="modal fade" id="referralModal" tabindex="-1"  data-bs-backdrop="static"
+     data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content banku-modal border-0">
+
+            <!-- Header -->
+            <div class="modal-header border-0">
+                <div>
+                    <h5 class="modal-title fw-semibold mb-0">
+                       Add User Using Link
+                    </h5>
+                    <small class="text-muted">Share your referral link</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body px-4 pb-4">
+
+                <!-- Referral Box -->
+                <div class="ref-box mb-3">
+                    <asp:TextBox ID="txtReferralLink" runat="server"
+                        CssClass="form-control border-0 bg-transparent fw-semibold"
+                        ReadOnly="true"></asp:TextBox>
+
+                    <button class="copy-btn" onclick="copyReferral()" type="button">
+                        Copy
+                    </button>
+                </div>
+
+                <!-- Primary Action -->
+                <button class="btn btn-banku-primary w-100 mb-2" type="button"
+                        onclick="shareWhatsApp()">
+                    Share via WhatsApp
+                </button>
+
+                <!-- Secondary Action -->
+                <button class="btn btn-light w-100 border" type="button"
+                        onclick="copyReferral()">
+                    Copy Link
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function openReferralModal() {
+        var modal = new bootstrap.Modal(document.getElementById('referralModal'));
+        modal.show();
+    }
+
+    function copyReferral() {
+        var copyText = document.getElementById('<%= txtReferralLink.ClientID %>');
+       copyText.select();
+       document.execCommand("copy");
+
+       // BankU style feedback
+       document.body.insertAdjacentHTML("beforeend",
+           `<div class="toast-msg">Copied ✔</div>`);
+
+       setTimeout(() => {
+           document.querySelector(".toast-msg").remove();
+       }, 2000);
+   }
+
+
+    function shareWhatsApp() {
+        var link = document.getElementById('<%= txtReferralLink.ClientID %>').value;
+        var message = "Join using my referral link: " + link;
+        window.open("https://wa.me/?text=" + encodeURIComponent(message), "_blank");
+    }
+</script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </asp:Content>

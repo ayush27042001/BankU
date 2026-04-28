@@ -1284,7 +1284,16 @@ Fintech as a service India"/>
     </footer>
     <!-- ======== End of 1.12. Footer section ======== -->
   </div>
-      
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="refToast" class="toast align-items-center text-bg-success border-0">
+        <div class="d-flex">
+            <div class="toast-body">
+                Referral availed successfully 🎉
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>  
  </form>
 <!-- bootstrap min javascript -->
 <script src="Website/assets/js/javascript-lib/bootstrap.min.js"></script>

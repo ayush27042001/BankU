@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeoXPayout.mycode;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -23,6 +24,10 @@ namespace NeoXPayout
             if (Acctype != "DISTRIBUTOR")
             {
                 Response.Redirect("Dashboard.aspx");
+            }
+            if (!IsPostBack)
+            {
+                GenerateReferralLink();
             }
             getdetails();
         }
@@ -91,11 +96,13 @@ namespace NeoXPayout
                     if (rowsAffected > 0)
                     {
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('User data saved successfully.');", true);
+                       
                     }
                     else
                     {
                         // This could mean either user not registered or already added
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Mobile not registered or already added.');", true);
+                       
                     }
                 }
                 catch (Exception ex)
@@ -103,6 +110,7 @@ namespace NeoXPayout
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Error saving data: " + ex.Message.Replace("'", "\\'") + "');", true);
                 }
             }
+            txtOTP.Text = "";
             getdetails();
         }
 
@@ -199,8 +207,27 @@ namespace NeoXPayout
             }
         }
 
+        private void GenerateReferralLink()
+        {
+            string userId = Session["BankURTUID"]?.ToString();
 
+            if (!string.IsNullOrEmpty(userId))
+            {
+                string encryptedId = CryptoHelper.Encrypt(userId);
+                string safeRef = ToUrlSafe(encryptedId);
+                string referralLink = Request.Url.GetLeftPart(UriPartial.Authority)
+                                        + "/LoginBanku.aspx?ref="
+                                        + safeRef;
 
+                txtReferralLink.Text = referralLink;
+            }
+        }
+        public static string ToUrlSafe(string base64)
+        {
+            return base64.Replace("+", "-")
+                         .Replace("/", "_")
+                         .Replace("=", "");
+        }
         //public void getdetails()
         //{
         //    string userId = Session["BankURTUID"].ToString();

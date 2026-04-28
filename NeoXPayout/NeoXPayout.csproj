@@ -136,6 +136,7 @@
     <Content Include="Admin\EditUser.aspx" />
     <Content Include="Admin\EditWebhook.aspx" />
     <Content Include="Admin\FeatureMap.aspx" />
+    <Content Include="Admin\KycApprovalLog.aspx" />
     <Content Include="Admin\ManageAPIDocument.aspx" />
     <Content Include="Admin\ManageApiReq.aspx" />
     <Content Include="Admin\ManageBlogs.aspx" />
@@ -2265,6 +2266,13 @@
     <Compile Include="Admin\FeatureMap.aspx.designer.cs">
       <DependentUpon>FeatureMap.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\KycApprovalLog.aspx.cs">
+      <DependentUpon>KycApprovalLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\KycApprovalLog.aspx.designer.cs">
+      <DependentUpon>KycApprovalLog.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ManageAPIDocument.aspx.cs">
       <DependentUpon>ManageAPIDocument.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2881,6 +2889,7 @@
       <DependentUpon>MPINValidation.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="mycode\CryptoHelper.cs" />
     <Compile Include="mycode\UserManagement.cs" />
     <Compile Include="Notification.aspx.cs">
       <DependentUpon>Notification.aspx</DependentUpon>

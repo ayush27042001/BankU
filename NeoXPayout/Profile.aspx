@@ -58,17 +58,17 @@
                                     <span class="position-absolute bottom-0 end-0 translate-middle p-2 bg-success border border-light rounded-circle shadow-sm"></span>
 
                                     <!-- Upload icon overlay -->
-                                    <div onclick="document.getElementById('<%= profileUpload.ClientID %>').click();" 
+                                  <%--  <div onclick="document.getElementById('<%= profileUpload.ClientID %>').click();" 
                                          class="position-absolute bottom-0 start-50 translate-middle-x bg-white rounded-circle p-2 shadow-sm"
                                          style="cursor: pointer;">
                                         <i class="bi bi-camera text-primary"></i>
                                     </div>
 
-                                    <asp:FileUpload ID="profileUpload" runat="server" CssClass="d-none" onchange="previewImage(event)" />
+                                    <asp:FileUpload ID="profileUpload" runat="server" CssClass="d-none" onchange="previewImage(event)" />--%>
                                 </div>
 
                                 <!-- Save Button -->
-                                <div class="text-center mt-2">
+                               <%-- <div class="text-center mt-2">
                                     <asp:Button ID="btnSaveImage" runat="server" 
                                                 Text="Save Photo" 
                                                 CssClass="btn btn-sm  shadow-sm px-3"
@@ -76,7 +76,7 @@
                                  <asp:Label ID="lblMessage" runat="server" CssClass="mt-2 d-block fw-bold" 
                                  style="font-size:12px;"></asp:Label>
 
-                                </div>
+                                </div>--%>
                             </div>
 
 
@@ -303,13 +303,28 @@
                                             <div class="card-body p-4">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <h5 class="card-title fw-semibold mb-0 text-dark">KYC</h5>
-                                                  
-                                                     <asp:Panel runat="server" ID="pnlUpload">
-                                                           <button id="download"  Class="btn btn-sm btn-success" type="button">Download Application</button>
-                                                        <button ID="btnkyc" Class="btn btn-sm" type="button"
-                                                        style="background-color: purple; color: #fff; border: none;" onclick="openkycModal()">Upload</button>
-                                                     </asp:Panel>
-                                                </div>
+
+                                                    <!-- ✅ Certificate Button (ONLY when Approved) -->
+                                                    <asp:Panel runat="server" ID="pnlCertificate" Visible="false">
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                            onclick="showKycModal()">
+                                                            Download Certificate
+                                                        </button>
+                                                    </asp:Panel>
+
+                                                    <!-- Existing Upload Panel -->
+                                                    <asp:Panel runat="server" ID="pnlUpload">
+                                                        <button id="download" class="btn btn-sm btn-success" type="button">
+                                                            Download Application
+                                                        </button>
+
+                                                        <button ID="btnkyc" class="btn btn-sm" type="button"
+                                                            style="background-color: purple; color: #fff; border: none;"
+                                                            onclick="openkycModal()">
+                                                            Upload
+                                                        </button>
+                                                    </asp:Panel>
+</div>
                                                 <asp:Label runat="server" ID="lblKycStatus" CssClass=" text-danger"></asp:Label>
                                                 <p class="text-muted small mb-4">Provide your documents for kyc.</p>
 
@@ -949,13 +964,85 @@
         </div>
       </div>
     </div>
+<div class="modal fade" id="kycCertificateModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content rounded-4 shadow">
 
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">KYC Approval Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Certificate -->
+        <div id="kycCertificate" style="border:2px solid #c9a96e; padding:25px; background:#fff;">
+            
+            <h3 class="text-center fw-bold" style="color:#3b2b63;">BankU India Limited</h3>
+            <h5 class="text-center mb-4">KYC APPROVAL REPORT</h5>
+
+            <div class="row">
+                <div class="col-6">
+                    <p><b>Name:</b> <asp:Label ID="lblCertName" runat="server" /></p>
+                    <p><b>Mobile:</b> <asp:Label ID="lblCertMobile" runat="server" /></p>
+                    <p><b>PAN:</b> <asp:Label ID="lblCertPan" runat="server" /></p>
+                </div>
+                <div class="col-6">
+                    <p><b>Cust ID:</b> <asp:Label ID="lblCustId" runat="server" /></p>
+                    <p><b>Aadhaar:</b> <asp:Label ID="lblAadhar" runat="server" /></p>
+                    <p><b>Date:</b> <asp:Label ID="Label1" runat="server" /></p>
+                </div>
+            </div>
+
+            <hr />
+
+            <p class="small">
+                This is to certify that the above-mentioned customer has successfully completed the KYC process.
+            </p>
+
+            <div class="d-flex justify-content-between mt-5">
+                <div>_________________<br />Officer</div>
+                <div>_________________<br />Checker</div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-success" type="button" onclick="downloadCertificate()">Download</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 </main>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+    function showKycModal() {
+        $('#kycCertificateModal').modal('show');
+    }
+    function downloadCertificate() {
+
+        const element = document.getElementById("kycCertificate");
+
+        html2canvas(element).then(canvas => {
+            const imgData = canvas.toDataURL("image/png");
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+            pdf.save("BankU_KYC_Certificate.pdf");
+        });
+    }
+</script>
 <script>
     document.getElementById("download").onclick = function () {
         const link = document.createElement("a");
