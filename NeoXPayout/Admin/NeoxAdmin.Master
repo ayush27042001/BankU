@@ -3,20 +3,22 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
-   <title>BankU India Limited Admin</title>
-     <meta charset="utf-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>BankU India Limited Admin</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
      
-     <!--[ Favicon]-->
-     <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
-     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/apple-touch-icon.png">
-     <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/apple-touch-icon.png">
-     <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
-     <!--[ Template main css file ]-->
-     <link rel="stylesheet" href="../assets/css/style.min.css">
-    <link rel="stylesheet" href="../assets/vendor/dataTables.min.css">
-
+<!--[ Favicon]-->
+<link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<!--[ Template main css file ]-->
+<link rel="stylesheet" href="../assets/css/style.min.css">
+<link rel="stylesheet" href="../assets/vendor/dataTables.min.css">
+<style>
+.banku-badge{  background: #dc3545;color: white; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 50px; min-width: 24px; text-align: center; box-shadow: 0 2px 8px rgba(220,53,69,.3);}
+</style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -87,12 +89,18 @@
         </a>
         <ul class="collapse list-unstyled ps-4" id="manageUserSubmenu">
             <li><a href="AddUser.aspx" class="d-block py-1">➤ Add User</a></li>
-            <li><a href="ViewUserBanku.aspx" class="d-block py-1">➤ View User</a></li>
+            <li>
+               <a href="ViewUserBanku.aspx" class="d-flex justify-content-between align-items-center py-1">
+                <span>➤ View User</span>
+                <asp:Label ID="lblReviewBadge" runat="server" CssClass="banku-badge"></asp:Label>
+               </a>
+            </li>
             <li><a href="UserLog.aspx" class="d-block py-1">➤ View User Log</a></li>
             <li><a href="rmManagement.aspx" class="d-block py-1">➤ Rm Management</a></li>
             <li><a href="RegisteredUser.aspx" class="d-block py-1">➤ Registered Users</a></li>
             <li><a href="userSessionLog.aspx" class="d-block py-1">➤ Active User Session</a></li>
             <li><a href="ProfileRequest.aspx" class="d-block py-1">➤ Profile request</a></li>
+             <li><a href="KycApprovalLog.aspx" class="d-block py-1">➤ KYC Approval Log</a></li>
         </ul>
     </li>
 <li class="nav-item">

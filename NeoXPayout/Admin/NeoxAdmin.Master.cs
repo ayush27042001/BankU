@@ -26,13 +26,31 @@ namespace NeoXPayout.Admin
             {
                 if (!IsPostBack)
                 {
+                    int reviewCount = GetReviewKycCount();
+
+                    lblReviewBadge.Text = reviewCount.ToString();
+                    lblReviewBadge.Visible = reviewCount > 0;
                     Label1.Text = this.Session["AdminName"].ToString();
                     //lblmainwallet.Text = Um.GetBalance(this.Session["AdminUID"].ToString());
                     
                 }
             }
         }
+        private int GetReviewKycCount()
+        {
+           
 
+            SqlCommand cmd = new SqlCommand(
+                "SELECT COUNT(*) FROM Registration WHERE KycStatus='Review'", con);
+
+            con.Open();
+
+            int count = (int)cmd.ExecuteScalar();
+
+            con.Close();
+
+            return count;
+        }
         public string APIbindbal(string uid)
         {
 

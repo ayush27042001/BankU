@@ -24,6 +24,15 @@ namespace NeoXPayout
         protected global::System.Web.UI.WebControls.LinkButton btnElectricity;
 
         /// <summary>
+        /// btnReferral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnReferral;
+
+        /// <summary>
         /// txtMobile control.
         /// </summary>
         /// <remarks>
@@ -130,5 +139,14 @@ namespace NeoXPayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptProduct;
+
+        /// <summary>
+        /// txtReferralLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtReferralLink;
     }
 }

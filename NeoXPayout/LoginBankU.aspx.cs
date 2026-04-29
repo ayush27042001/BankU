@@ -165,6 +165,9 @@ namespace NeoXPayout
 
         private void VerifyOTPFlow()
         {
+            string refId = Request.QueryString["ref"] != null
+                 ? Request.QueryString["ref"].ToString()
+                 : "";
             string enteredOtp = hdnOtpValue.Value;
             string storedOtp = Session["OTP"] as string;
             string mobile = TextBox1.Text.Trim();
@@ -202,7 +205,7 @@ namespace NeoXPayout
                 }
 
                 Session["mobileno"] = mobile;
-                Response.Redirect("Registration.aspx");
+                Response.Redirect("Registration.aspx?ref="+Server.UrlEncode(refId));
 
             }
             else

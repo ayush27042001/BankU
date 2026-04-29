@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -130,6 +133,23 @@ namespace NeoXPayout
             string pan = TextBox1.Text.Trim().ToUpper();
             string mpin = txtMPIN.Text.Trim();
             string confmpin = txtConfMPIN.Text.Trim();
+            string refId = Request.QueryString["ref"] != null
+                   ? Request.QueryString["ref"].ToString()
+                   : "";
+            string refUserId = "";
+
+            if (!string.IsNullOrEmpty(refId))
+            {
+                try
+                {
+                    string base64 = FromUrlSafe(refId);
+                    refUserId = Decrypt(base64);
+                }
+                catch
+                {
+                    refUserId = "";
+                }
+            }
             string mobile = Session["mobileno"]?.ToString();
             lblError.Text = "";
             if (string.IsNullOrEmpty(pan) || string.IsNullOrEmpty(mpin) || string.IsNullOrEmpty(confmpin))
@@ -179,20 +199,12 @@ namespace NeoXPayout
                                 Session["BankURTName"] = firstname;
                                 Session["BankURTMobileno"] = mobile;
                                 Session["BankURTUID"] = userreg;
-
+                                
                                 Session["SignupStatus"] = "DONE";
-                                //Session["PersonalInfoStatus"] = "Pending";
-                                //Session["KycStatus"] = "Pending";
-                                //Session["DocumentStatus"] = "Pending";
-                                //Session["MobileverifyStatus"] = "Pending";
-                                //Session["businessdetailsstatus"] = "Pending";
-                                //Session["RegistrationStatus"] = "Pending";
-
-                                //string aepscontent = Um.signupotp(mobile);
-                                //if (aepscontent != "-1")
-                                //{
-                                //    Session["BankURTOtp"] = aepscontent;
-                                //}
+                                if (!string.IsNullOrEmpty(refUserId))
+                                {
+                                    AddRef(refUserId);
+                                }
                                 return true;
                             }
                             else
@@ -1381,8 +1393,86 @@ namespace NeoXPayout
            
             btnBack.Visible = !(step == 0 || step == 4);
         }
+        public void AddRef(string RefID)
+        {
+            string mobileNumber = Session["BankURTMobileno"]?.ToString();
 
+            if (string.IsNullOrEmpty(mobileNumber) || string.IsNullOrEmpty(RefID))
+                return;
 
+            string status = "Active";
+            string reqDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string query = @"
+    IF NOT EXISTS (
+        SELECT 1 FROM DistUserAdd 
+        WHERE UserId = @UserId AND Number = @Number
+    )
+    BEGIN
+        INSERT INTO DistUserAdd (UserId, Number, Status, ReqDate)
+        VALUES (@UserId, @Number, @Status, @ReqDate)
+    END";
+
+            string connStr = ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@UserId", RefID);
+                cmd.Parameters.AddWithValue("@Number", mobileNumber);
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.Parameters.AddWithValue("@ReqDate", reqDate);
+
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+
+                if (rows > 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "toast",
+                    "var toast = new bootstrap.Toast(document.getElementById('refToast')); toast.show();", true);
+                }
+            }
+        }
+        public static string Decrypt(string cipherText)
+        {
+            try
+            {
+                cipherText = cipherText.Replace(" ", "+"); // Fix URL issue
+
+                using (Aes aes = Aes.Create())
+                {
+                    aes.Key = Encoding.UTF8.GetBytes("1234567890123456");
+                    aes.IV = Encoding.UTF8.GetBytes("1234567890123456");
+                    aes.Mode = CipherMode.CBC;
+                    aes.Padding = PaddingMode.PKCS7;
+
+                    byte[] buffer = Convert.FromBase64String(cipherText);
+
+                    using (MemoryStream ms = new MemoryStream(buffer))
+                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Read))
+                    using (StreamReader sr = new StreamReader(cs))
+                    {
+                        return sr.ReadToEnd();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "DECRYPT_ERROR"; // or log error
+            }
+        }
+        public static string FromUrlSafe(string input)
+        {
+            string base64 = input.Replace("-", "+")
+                                 .Replace("_", "/");
+
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+
+            return base64;
+        }
     }
-
 }

@@ -128,6 +128,49 @@ using System.Web;
         }
     }
 
+    public string SendKycStatusMsg(string mobileNo, string name, string custId, string status)
+    {
+        try
+        {
+            if (mobileNo == "-1")
+                return "-1";
+
+            string message = "";
+
+            switch (status.ToUpper())
+            {
+                case "REVIEW":
+                    message = $"Dear {name}, your KYC CUST ID: {custId} is currently under review. Our team is verifying your details. You will be notified once the process is completed.";
+                    break;
+
+                case "CLARIFICATION":
+                    message = $"Dear {name}, your KYC CUST ID: {custId} requires additional clarification. Please update the required details or documents to proceed further.";
+                    break;
+
+                case "APPROVED":
+                    message = $"Dear {name}, congratulations! Your KYC CUST ID: {custId} has been successfully approved. You can now access all BankU services.";
+                    break;
+
+                case "REJECTED":
+                    message = $"Dear {name}, your KYC CUST ID: {custId} has been rejected due to policy guidelines or risk assessment concerns. As per BankU policy, this KYC request cannot be approved or re-submitted.  For further assistance, please contact support.";
+                    break;
+
+                default:
+                    return "-1";
+            }
+
+            message += " – BankU KYC Team | help@banku.co.in | 1800-889-1373";
+
+            sendsmsKYC(mobileNo, message, status);
+
+            return "1";
+        }
+        catch
+        {
+            return "-1";
+        }
+    }
+
     public string verifyPanCF(string pan, string UserId)
     {
 
@@ -406,6 +449,43 @@ using System.Web;
             string Message = msg.ToString().Trim();
             string MobileNumber = MobileNo;
             string strUrl = "http://123.108.46.13/sms-panel/api/http/index.php?username=INTSALITE&apikey=90852-AB6E3&apirequest=Text&sender=BANKUI&mobile=" + MobileNumber + "&message=" + Message + "&route=TRANS&TemplateID=1707175179578398999&format=JSON";
+            var client = new RestSharp.RestClient(strUrl);
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            var content = response.Content;
+            return "1";
+        }
+        catch
+        {
+            return "-1";
+        }
+    }
+
+    public string sendsmsKYC(string MobileNo, string msg, string type)
+    {
+        try
+        {
+            //WBTXSL
+            string Message = msg.ToString().Trim();
+            string MobileNumber = MobileNo;
+            string templateid = "";
+            if (type.ToUpper() == "REVIEW")
+            {
+                templateid = "1707177434259242835";
+            }
+            else if(type.ToUpper() == "CLARIFICATION")
+            {
+                templateid = "1707177434265337106";
+            }
+            else if (type.ToUpper() == "APPROVED")
+            {
+                templateid = "1707177434253386775";
+            }
+            else if (type.ToUpper() == "REJECTED")
+            {
+                templateid = "1707177434270251767";
+            }
+            string strUrl = "http://123.108.46.13/sms-panel/api/http/index.php?username=INTSALITE&apikey=90852-AB6E3&apirequest=Text&sender=BANKUI&mobile=" + MobileNumber + "&message=" + Message + "&route=TRANS&TemplateID="+templateid+"&format=JSON";
             var client = new RestSharp.RestClient(strUrl);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
