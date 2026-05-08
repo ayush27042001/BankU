@@ -48,11 +48,8 @@ namespace NeoXPayout
                         break;
 
                     case "Bank":
-                        mvSteps.ActiveViewIndex = 4;  // View for Bank step
-                        break;
-
                     case "Aadhar":
-                        mvSteps.ActiveViewIndex = 5;  // View for Aadhar step
+                        mvSteps.ActiveViewIndex = 4;  // View for Bank/Aadhar step
                         break;
 
                     default:
