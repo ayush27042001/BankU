@@ -88,6 +88,22 @@ namespace NeoXPayout
             string number = TextBox1.Text.Trim();
             SendOTP(number);
         }
+        private bool IsMobileRegistered(string mobile)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["BankUConnectionString"].ConnectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Registration WHERE MobileNo = @Mobile";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Mobile", mobile);
+
+                conn.Open();
+
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return count > 0;
+            }
+        }
 
         private void SendOTPFlow()
         {
@@ -105,14 +121,25 @@ namespace NeoXPayout
                 return;
             }
 
+            // MOBILE CHECK FROM DATABASE
+            if (!IsMobileRegistered(number))
+            {
+                lblError.Text = "Mobile number not registered.";
+
+                // Redirect to Registration page
+                Response.Redirect("Registration.aspx");
+                return;
+            }
+
             InsertLoginAttempt(number);
 
             if (HasActiveLoginSession(number))
             {
-
                 LoadUserSessionFromRegistration(number);
+
                 Session["LastPage"] = "Dashboard.aspx";
                 Session["IsMPINVerified"] = false;
+
                 Response.Redirect("MPIN.aspx");
                 return;
             }
@@ -121,12 +148,52 @@ namespace NeoXPayout
             pnlOTP.Visible = true;
             LinkButton2.Visible = true;
             TextBox1.Visible = false;
-            string mobile = TextBox1.Text.Trim();
-            string last4 = mobile.Substring(mobile.Length - 4);
+
+            string last4 = number.Substring(number.Length - 4);
+
             lblConfirm.Text = $"(xxxxxx{last4}) <a href='LoginBankU.aspx' style='color: red;'>Change mobile Number</a>";
 
             SendOTP(number);
         }
+
+        //private void SendOTPFlow()
+        //{
+        //    string number = TextBox1.Text.Trim();
+
+        //    if (string.IsNullOrWhiteSpace(number))
+        //    {
+        //        lblError.Text = "Please enter a mobile number.";
+        //        return;
+        //    }
+
+        //    if (!System.Text.RegularExpressions.Regex.IsMatch(number, @"^\d{10}$"))
+        //    {
+        //        lblError.Text = "Please enter a valid 10-digit mobile number.";
+        //        return;
+        //    }
+
+        //    InsertLoginAttempt(number);
+
+        //    if (HasActiveLoginSession(number))
+        //    {
+
+        //        LoadUserSessionFromRegistration(number);
+        //        Session["LastPage"] = "Dashboard.aspx";
+        //        Session["IsMPINVerified"] = false;
+        //        Response.Redirect("MPIN.aspx");
+        //        return;
+        //    }
+
+        //    lblError.Text = "";
+        //    pnlOTP.Visible = true;
+        //    LinkButton2.Visible = true;
+        //    TextBox1.Visible = false;
+        //    string mobile = TextBox1.Text.Trim();
+        //    string last4 = mobile.Substring(mobile.Length - 4);
+        //    lblConfirm.Text = $"(xxxxxx{last4}) <a href='LoginBankU.aspx' style='color: red;'>Change mobile Number</a>";
+
+        //    SendOTP(number);
+        //}
         private void InsertLoginAttempt(string mobile)
         {
             bool isNewUser = IsNewUser(mobile);   // CHECK IF USER EXISTS
@@ -205,7 +272,7 @@ namespace NeoXPayout
                 }
 
                 Session["mobileno"] = mobile;
-                Response.Redirect("Registration.aspx?ref="+Server.UrlEncode(refId));
+                Response.Redirect("LoginBankU.aspx?ref=" + Server.UrlEncode(refId));
 
             }
             else
